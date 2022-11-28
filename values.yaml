@@ -202,6 +202,9 @@ mastodon:
       # -- Enable statsd publishing via STATSD_ADDR environment variable
       address: ""
 
+  # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
+  preparedStatements: true
+
 ingress:
   enabled: true
   annotations:
