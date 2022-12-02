@@ -15,10 +15,6 @@ on:
 permissions:
   contents: read
 
-defaults:
-  run:
-    working-directory: chart
-
 jobs:
   lint-templates:
     runs-on: ubuntu-22.04
