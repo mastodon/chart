@@ -5,25 +5,15 @@ name: Test chart
 
 on:
   pull_request:
-    paths:
-      - "chart/**"
-      - "!**.md"
-      - ".github/workflows/test-chart.yml"
+    paths-ignore:
+      - "README.md"
   push:
-    paths:
-      - "chart/**"
-      - "!**.md"
-      - ".github/workflows/test-chart.yml"
     branches-ignore:
       - "dependabot/**"
   workflow_dispatch:
 
 permissions:
   contents: read
-
-defaults:
-  run:
-    working-directory: chart
 
 jobs:
   lint-templates:
