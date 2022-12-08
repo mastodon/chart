@@ -173,16 +173,20 @@ mastodon:
     livenessProbe:
       tcpSocket:
         port: streaming
+      failureThreshold: 30
+      periodSeconds: 5
     readinessProbe:
-      httpGet:
-        path: /api/v1/streaming/health
-        port: streaming
-    startupProbe:
       httpGet:
         path: /api/v1/streaming/health
         port: streaming
       failureThreshold: 30
       periodSeconds: 5
+    startupProbe:
+      httpGet:
+        path: /api/v1/streaming/health
+        port: streaming
+      failureThreshold: 20
+      periodSeconds: 3
   web:
     port: 3000
     # -- Number of Web Pods running
@@ -205,16 +209,20 @@ mastodon:
     livenessProbe:
       tcpSocket:
         port: http
+      failureThreshold: 30
+      periodSeconds: 5
     readinessProbe:
-      httpGet:
-        path: /health
-        port: http
-    startupProbe:
       httpGet:
         path: /health
         port: http
       failureThreshold: 30
       periodSeconds: 5
+    startupProbe:
+      httpGet:
+        path: /health
+        port: http
+      failureThreshold: 20
+      periodSeconds: 3
 
   metrics:
     statsd:
