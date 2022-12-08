@@ -97,17 +97,17 @@ spec:
             - name: http
               containerPort: {{ .Values.mastodon.web.port }}
               protocol: TCP
-          {{- if .Values.mastodon.web.livenessProbe }}
+          {{- with .Values.mastodon.web.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.mastodon.web.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.mastodon.web.readinessProbe }}
+          {{- with .Values.mastodon.web.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.mastodon.web.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.mastodon.web.startupProbe }}
+          {{- with .Values.mastodon.web.startupProbe }}
           startupProbe:
-            {{- toYaml .Values.mastodon.web.startupProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with (default .Values.resources .Values.mastodon.web.resources) }}
           resources:
