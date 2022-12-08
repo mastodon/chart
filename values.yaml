@@ -171,13 +171,18 @@ mastodon:
     #   memory: 128Mi
     # -- (Streaming Deployment) liveness and readiness probes
     livenessProbe:
-      httpGet:
-        path: /api/v1/streaming/health
+      tcpSocket:
         port: streaming
     readinessProbe:
       httpGet:
         path: /api/v1/streaming/health
         port: streaming
+    startupProbe:
+      httpGet:
+        path: /api/v1/streaming/health
+        port: streaming
+      failureThreshold: 30
+      periodSeconds: 5
   web:
     port: 3000
     # -- Number of Web Pods running
