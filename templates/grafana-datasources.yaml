@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  labels:
+    grafana_datasource: "1"
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://{{ include "mastodon.prometheus.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:9090
+        access: proxy
+        basicAuth: true
+        basicAuthUser: {{ .Values.prometheus.basicAuthUser }}
+        secureJsonData:
+          basicAuthPassword: {{ .Values.prometheus.basicAuthPassword }}
+        isDefault: true
+        editable: false
+      - name: Postgres
+        type: postgres
+        url: {{ include "mastodon.postgresql.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:5432
+        database: {{ .Values.postgresql.auth.database }}
+        user: {{ .Values.postgresql.auth.username }}
+        secureJsonData:
+          password: {{ .Values.postgresql.auth.password }}
+        jsonData:
+          sslmode: 'disable'
+        editable: true

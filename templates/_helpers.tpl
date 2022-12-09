@@ -87,6 +87,10 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "mastodon.prometheus.fullname" -}}
+{{- printf "%s-%s" .Release.Name "prometheus-server" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{/*
 Get the mastodon secret.
 */}}

@@ -237,9 +237,13 @@ elasticsearch:
 prometheus:
   # `false` will disable the local prometheus store used for monitoring.
   enabled: true
+  # Used for creating datasource for Grafana. Not an override.
+  basicAuthUser: admin
+  # Used for creating datasource for Grafana. Not an override.
+  basicAuthPassword:
   server:
     probeHeaders:
-      # The value for Bearer should be base64-encoded "admin:PASSWORD"
+      # The value for Bearer should be base64-encoded "[basicAuthUser]:[basicAuthPassword]"
       # - name: "Authorization"
       #   value: "Bearer XXXXXXXXXXXXXXXXXXXXXXXXXx"
     service:
@@ -281,45 +285,6 @@ grafana:
     existingSecret: ""
     userKey: admin-user
     passwordKey: admin-password
-  # this should only be here if prometheus is enabled -- we need to do some
-  # conditionals.
-  datasources:
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-      - name: Prometheus
-        type: prometheus
-        url: http://mastodon-prometheus-server.mastodon.svc.cluster.local:9090
-        access: proxy
-        basicAuth: true
-        basicAuthUser: admin
-        secureJsonData:
-          basicAuthPassword:
-        isDefault: true
-        editable: false
-      - name: Postgres
-        type: postgres
-        url: mastodon-postgresql.mastodon.svc.cluster.local:5432
-        # XXX this and below should take the value from postgresql.auth.database
-        database: mastodon_production
-        user: mastodon
-        secureJsonData:
-          password:
-        jsonData:
-          sslmode: 'disable' # disable/require/verify-ca/verify-full
-        editable: true
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-      - name: 'default'
-        orgId: 1
-        folder: ''
-        type: file
-        disableDeletion: false
-        editable: true
-        options:
-          path: /var/lib/grafana/dashboards/default
   dashboardsConfigMaps:
     default: "grafana-dashboards"
 
