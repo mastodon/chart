@@ -318,6 +318,10 @@ data:
   LDAP_UID_CONVERSION_REPLACE: {{ . }}
   {{- end }}
   {{- end }}
+  {{- if .Values.prometheus.enabled }}
+  STATSD_ADDR: {{ include "mastodon.prometheus-statsd-exporter.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:9125
+  {{- else }}
   {{- with .Values.mastodon.metrics.statsd.address }}
   STATSD_ADDR: {{ . }}
+  {{- end }}
   {{- end }}

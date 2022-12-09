@@ -191,8 +191,8 @@ mastodon:
   metrics:
     statsd:
       # -- Enable statsd publishing via STATSD_ADDR environment variable
-      # XXX: need to make this set conditionally if prometheus is on
-      address: "mastodon-prometheus-statsd-exporter.mastodon.svc.cluster.local:9125"
+      # If prometheus is enabled it will be connected automatically and this value will not be used.
+      address:
 
 ingress:
   enabled: true
