@@ -5,6 +5,7 @@ metadata:
   labels:
     statsd-exporter-mappings: "1"
 data:
+  # Contents taken from https://ipng.ch/assets/mastodon/statsd-mapping.yaml
   statsd.mappingConf: |
     mappings:
       ## Web collector
