@@ -35,3 +35,19 @@ dependencies:
     version: 16.13.2
     repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
     condition: redis.enabled
+  - name: prometheus
+    version: 19.0.1
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled
+  - name: prometheus-statsd-exporter
+    version: 0.7.0
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled
+  - name: prometheus-postgres-exporter
+    version: 3.3.0
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled
+  - name: grafana
+    version: 6.45.0
+    repository: https://grafana.github.io/helm-charts
+    condition: grafana.enabled

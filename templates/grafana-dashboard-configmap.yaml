@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  labels:
+    grafana_dashboard: "1"
+data:
+  kubernetes.json: |
+{{ .Files.Get "monitoring/dashboards/kubernetes.json" | indent 4 }}
+  mastodon.json: |
+{{ .Files.Get "monitoring/dashboards/mastodon.json" | indent 4 }}
+  postgres.json: |
+{{ .Files.Get "monitoring/dashboards/postgres.json" | indent 4 }}
+  node_exporter.json: |
+{{ .Files.Get "monitoring/dashboards/node_exporter.json" | indent 4 }}

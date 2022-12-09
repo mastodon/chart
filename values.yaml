@@ -191,7 +191,8 @@ mastodon:
   metrics:
     statsd:
       # -- Enable statsd publishing via STATSD_ADDR environment variable
-      address: ""
+      # XXX: need to make this set conditionally if prometheus is on
+      address: "mastodon-prometheus-statsd-exporter.mastodon.svc.cluster.local:9125"
 
 ingress:
   enabled: true
@@ -231,6 +232,96 @@ elasticsearch:
   # @ignored
   image:
     tag: 7
+
+# https://github.com/prometheus-community/helm-charts/
+prometheus:
+  # `false` will disable the local prometheus store used for monitoring.
+  enabled: true
+  server:
+    probeHeaders:
+      # The value for Bearer should be base64-encoded "admin:PASSWORD"
+      # - name: "Authorization"
+      #   value: "Bearer XXXXXXXXXXXXXXXXXXXXXXXXXx"
+    service:
+      servicePort: 9090
+  extraScrapeConfigs: |
+    - job_name: 'mastodon-statsd'
+      static_configs:
+        - targets:
+          - 'mastodon-prometheus-statsd-exporter.mastodon.svc.cluster.local:9102'
+    - job_name: 'mastodon-postgres'
+      static_configs:
+        - targets:
+          - 'mastodon-prometheus-postgres-exporter.mastodon.svc.cluster.local:80'
+
+prometheus-statsd-exporter:
+  statsd:
+    mappingConfigMapName: "statsd-exporter-mappings"
+
+prometheus-postgres-exporter:
+  config:
+    datasource:
+      host: mastodon-postgresql.mastodon.svc.cluster.local
+      user: mastodon
+      password:
+      database: mastodon_production
+
+grafana:
+  # `false` will disable grafana observability
+  enabled: true
+  persistence:
+    enabled: true
+  service:
+    enabled: true
+  adminUser: admin
+  # Plaintext password
+  adminPassword:
+  admin:
+    ## Name of the secret. Can be templated.
+    existingSecret: ""
+    userKey: admin-user
+    passwordKey: admin-password
+  # this should only be here if prometheus is enabled -- we need to do some
+  # conditionals.
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://mastodon-prometheus-server.mastodon.svc.cluster.local:9090
+        access: proxy
+        basicAuth: true
+        basicAuthUser: admin
+        secureJsonData:
+          basicAuthPassword:
+        isDefault: true
+        editable: false
+      - name: Postgres
+        type: postgres
+        url: mastodon-postgresql.mastodon.svc.cluster.local:5432
+        # XXX this and below should take the value from postgresql.auth.database
+        database: mastodon_production
+        user: mastodon
+        secureJsonData:
+          password:
+        jsonData:
+          sslmode: 'disable' # disable/require/verify-ca/verify-full
+        editable: true
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+  dashboardsConfigMaps:
+    default: "grafana-dashboards"
 
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:

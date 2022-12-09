@@ -1,0 +1,1 @@
+Files added here must be noted in grafana-dashboard-configmap.yaml.
