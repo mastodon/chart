@@ -85,15 +85,15 @@ mastodon:
     # -- (Sidekiq Container) Security Context for all Pods, overwrites .Values.securityContext
     securityContext: {}
     # -- Resources for all Sidekiq Deployments unless overwritten
-    resources: {}
-    # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
-    affinity: {}
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
     # limits:
     #   cpu: "1"
     #   memory: 768Mi
-    # requests:
-    #   cpu: 250m
-    #   memory: 512Mi
+    # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
+    affinity: {}
     workers:
     - name: all-queues
       # -- Number of threads / parallel sidekiq jobs that are executed per Pod
@@ -165,13 +165,13 @@ mastodon:
     # -- (Streaming Container) Security Context for Streaming Pods, overwrites .Values.securityContext
     securityContext: {}
     # -- (Streaming Container) Resources for Streaming Pods, overwrites .Values.resources
-    resources: {}
+    resources:
+      requests:
+        cpu: 250m
+        memory: 128Mi
     # limits:
     #   cpu: "500m"
     #   memory: 512Mi
-    # requests:
-    #   cpu: 250m
-    #   memory: 128Mi
   web:
     port: 3000
     # -- Number of Web Pods running
@@ -183,13 +183,13 @@ mastodon:
     # -- (Web Container) Security Context for Web Pods, overwrites .Values.securityContext
     securityContext: {}
     # -- (Web Container) Resources for Web Pods, overwrites .Values.resources
-    resources: {}
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
     # limits:
     #   cpu: "1"
     #   memory: 1280Mi
-    # requests:
-    #   cpu: 250m
-    #   memory: 768Mi
     # -- Puma-specific options. Below values are based on default behavior in
     # config/puma.rb when no custom values are provided.
     minThreads: "5"
@@ -243,6 +243,18 @@ elasticsearch:
   # @ignored
   image:
     tag: 7
+  coordinating:
+    resources:
+      requests:
+        memory: 512Mi
+  ingest:
+    resources:
+      requests:
+        memory: 512Mi
+  master:
+    resources:
+      requests:
+        memory: 512Mi
 
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
@@ -265,6 +277,10 @@ postgresql:
     # you can also specify the name of an existing Secret
     # with a key of password set to the password you want
     existingSecret: ""
+  primary:
+    resources:
+      requests:
+        memory: 384Mi
 
 # https://github.com/bitnami/charts/tree/master/bitnami/redis#parameters
 redis:
@@ -280,6 +296,14 @@ redis:
     # you can also specify the name of an existing Secret
     # with a key of redis-password set to the password you want
     # existingSecret: ""
+  master:
+    resources:
+      requests:
+        memory: 56Mi
+  replica:
+    resources:
+      requests:
+        memory: 56Mi
 
 # @ignored
 service:
