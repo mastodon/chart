@@ -45,10 +45,26 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default (default $context.Values.affinity $context.Values.mastodon.sidekiq.affinity) .affinity) }}
       affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- if (not $context.Values.mastodon.s3.enabled) }}
+        {{- if not (default $context.Values.affinity $context.Values.mastodon.sidekiq.affinity).podAffinity }}
+        {{- if or (eq "ReadWriteOnce" $context.Values.mastodon.persistence.assets.accessMode) (eq "ReadWriteOnce" $context.Values.mastodon.persistence.system.accessMode) }}
+        # the pods need to end up to the same node for ReadWriteOnce
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/part-of
+                    operator: In
+                    values:
+                      - rails
+              topologyKey: kubernetes.io/hostname
+        {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- with (default $context.Values.affinity $context.Values.mastodon.sidekiq.affinity) }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- if (not $context.Values.mastodon.s3.enabled) }}
       volumes:
         - name: assets
