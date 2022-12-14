@@ -25,7 +25,7 @@ data:
   {{- with .Values.mastodon.web_domain }}
   WEB_DOMAIN: {{ . }}
   {{- end }}
-  {{- with .Values.mastodon.singleUserMode }}
+  {{- if .Values.mastodon.singleUserMode }}
   SINGLE_USER_MODE: "true"
   {{- end }}
   {{- with .Values.mastodon.authorizedFetch }}
@@ -51,7 +51,7 @@ data:
   S3_REGION: {{ . }}
   {{- end }}
   {{- with .Values.mastodon.s3.alias_host }}
-  S3_ALIAS_HOST: {{ .Values.mastodon.s3.alias_host}}
+  S3_ALIAS_HOST: {{ . }}
   {{- end }}
   {{- end }}
   {{- with .Values.mastodon.smtp.auth_method }}
