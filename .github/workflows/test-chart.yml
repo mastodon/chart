@@ -97,9 +97,9 @@ jobs:
       - run: helm dependency update
 
       # Validate rendered helm templates against the k8s api-server
-      - name: helm template --validate
+      - name: helm template --validate --render-subchart-notes
         run: |
-          helm template --validate mastodon . \
+          helm template --validate --render-subchart-notes mastodon . \
               --values dev-values.yaml
 
       - name: helm install
