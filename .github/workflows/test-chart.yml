@@ -72,11 +72,11 @@ jobs:
           # - EKS: https://endoflife.date/amazon-eks
           #
           # The helm client's version can influence what helper functions is
-          # available for use in the templates, currently we need v3.6.0 or
+          # available for use in the templates, currently we need v3.7.0 or
           # higher.
           #
           - k3s-channel: v1.21
-            helm-version: v3.6.0
+            helm-version: v3.7.0
 
     steps:
       - uses: actions/checkout@v3
@@ -97,9 +97,9 @@ jobs:
       - run: helm dependency update
 
       # Validate rendered helm templates against the k8s api-server
-      - name: helm template --validate --render-subchart-notes
+      - name: helm template --validate
         run: |
-          helm template --validate --render-subchart-notes mastodon . \
+          helm template --validate mastodon . \
               --values dev-values.yaml
 
       - name: helm install
