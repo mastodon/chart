@@ -8,5 +8,17 @@ dependencies:
 - name: redis
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 16.13.2
-digest: sha256:17ea58a3264aa22faff18215c4269f47dabae956d0df273c684972f356416193
-generated: "2022-08-08T21:44:18.0195364+02:00"
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 19.0.1
+- name: prometheus-statsd-exporter
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 0.7.0
+- name: prometheus-postgres-exporter
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 3.3.0
+- name: grafana
+  repository: https://grafana.github.io/helm-charts
+  version: 6.45.0
+digest: sha256:417cabb5ed5465754a8df235f3da6e668ddc54a52a79b0413ae83a72617c872e
+generated: "2022-12-09T13:55:56.053872134-05:00"
