@@ -126,7 +126,7 @@ spec:
               port: http
             failureThreshold: 30
             periodSeconds: 5
-          {{- with (default .Values.resources .Values.mastodon.web.resources) }}
+          {{- with .Values.mastodon.web.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
