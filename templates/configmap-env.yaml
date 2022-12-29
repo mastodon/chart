@@ -31,6 +31,9 @@ data:
   {{- with .Values.mastodon.authorizedFetch }}
   AUTHORIZED_FETCH: {{ . | quote }}
   {{- end }}
+  {{- with .Values.mastodon.limitedFederationMode }}
+  LIMITED_FEDERATION_MODE: {{ . | quote }}
+  {{- end }}
   # https://devcenter.heroku.com/articles/tuning-glibc-memory-behavior
   MALLOC_ARENA_MAX: "2"
   NODE_ENV: "production"
