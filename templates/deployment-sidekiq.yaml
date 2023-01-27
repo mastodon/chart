@@ -31,6 +31,7 @@ spec:
         {{- end }}
         # roll the pods to pick up any db migrations or other changes
         {{- include "mastodon.rollingPodAnnotations" $context | nindent 8 }}
+        checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
       labels:
         {{- include "mastodon.selectorLabels" $context | nindent 8 }}
         app.kubernetes.io/component: sidekiq-{{ .name }}
