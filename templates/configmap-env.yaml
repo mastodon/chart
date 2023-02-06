@@ -322,5 +322,5 @@ data:
   STATSD_ADDR: {{ . }}
   {{- end }}
   {{- with .Values.timezone }}
-  TZ: {{ . }}
+  TZ: {{ . | quote }}
   {{- end }}
