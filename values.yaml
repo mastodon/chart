@@ -423,3 +423,6 @@ tolerations: []
 
 # -- Affinity for all pods unless overwritten
 affinity: {}
+
+# -- Timezone for all pods unless overwritten
+timezone: UTC

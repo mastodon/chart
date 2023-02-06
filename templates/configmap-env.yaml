@@ -321,3 +321,6 @@ data:
   {{- with .Values.mastodon.metrics.statsd.address }}
   STATSD_ADDR: {{ . }}
   {{- end }}
+  {{- with .Values.timezone }}
+  TZ: {{ . }}
+  {{- end }}
