@@ -1,6 +1,7 @@
 apiVersion: v2
 name: mastodon
 description: Mastodon is a free, open-source social network server based on ActivityPub.
+icon: https://avatars.githubusercontent.com/u/24979032
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,12 +16,12 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 4.0.0
+version: 4.1.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: v4.0.2
+appVersion: v4.1.2
 
 dependencies:
   - name: elasticsearch
@@ -35,3 +36,11 @@ dependencies:
     version: 16.13.2
     repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
     condition: redis.enabled
+
+# https://blog.artifacthub.io/blog/changelogs/
+artifacthub.io/changes: |
+  - kind: changed
+    description: Update to Mastodon 4.1.2
+    links:
+        - name: Github Release
+          url: https://github.com/mastodon/mastodon/releases/tag/v4.1.2
