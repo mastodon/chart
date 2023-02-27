@@ -102,6 +102,7 @@ spec:
                 secretKeyRef:
                   name: {{ include "mastodon.smtp.secretName" $context }}
                   key: password
+                  optional: true
             {{- if (and $context.Values.mastodon.s3.enabled $context.Values.mastodon.s3.existingSecret) }}
             - name: "AWS_SECRET_ACCESS_KEY"
               valueFrom:
