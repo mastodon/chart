@@ -15,6 +15,7 @@ data:
   DB_NAME: {{ .Values.postgresql.auth.database }}
   DB_POOL: {{ include "mastodon.maxDbPool" . }}
   DB_USER: {{ .Values.postgresql.auth.username }}
+  PREPARED_STATEMENTS: {{ .Values.mastodon.preparedStatements | quote }}
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
   {{- if .Values.elasticsearch.enabled }}
   ES_ENABLED: "true"
@@ -34,6 +35,9 @@ data:
   {{- with .Values.mastodon.authorizedFetch }}
   AUTHORIZED_FETCH: {{ . | quote }}
   {{- end }}
+  {{- with .Values.mastodon.limitedFederationMode }}
+  LIMITED_FEDERATION_MODE: {{ . | quote }}
+  {{- end }}
   # https://devcenter.heroku.com/articles/tuning-glibc-memory-behavior
   MALLOC_ARENA_MAX: "2"
   NODE_ENV: "production"
@@ -50,11 +54,14 @@ data:
   S3_ENDPOINT: {{ .Values.mastodon.s3.endpoint }}
   S3_HOSTNAME: {{ .Values.mastodon.s3.hostname }}
   S3_PROTOCOL: "https"
+  {{- if .Values.mastodon.s3.permission }}
+  S3_PERMISSION: {{ .Values.mastodon.s3.permission }}
+  {{- end }}
   {{- with .Values.mastodon.s3.region }}
   S3_REGION: {{ . }}
   {{- end }}
   {{- with .Values.mastodon.s3.alias_host }}
-  S3_ALIAS_HOST: {{ .Values.mastodon.s3.alias_host}}
+  S3_ALIAS_HOST: {{ . }}
   {{- end }}
   {{- end }}
   {{- with .Values.mastodon.smtp.auth_method }}
@@ -78,14 +85,8 @@ data:
   {{- with .Values.mastodon.smtp.from_address }}
   SMTP_FROM_ADDRESS: {{ . }}
   {{- end }}
-  {{- with .Values.mastodon.smtp.login }}
-  SMTP_LOGIN: {{ . }}
-  {{- end }}
   {{- with .Values.mastodon.smtp.openssl_verify_mode }}
   SMTP_OPENSSL_VERIFY_MODE: {{ . }}
-  {{- end }}
-  {{- with .Values.mastodon.smtp.password }}
-  SMTP_PASSWORD: {{ . }}
   {{- end }}
   {{- with .Values.mastodon.smtp.port }}
   SMTP_PORT: {{ . | quote }}
@@ -291,13 +292,16 @@ data:
   {{- if .Values.externalAuth.ldap.enabled }}
   LDAP_ENABLED: {{ .Values.externalAuth.ldap.enabled | quote }}
   LDAP_HOST: {{ .Values.externalAuth.ldap.host }}
-  LDAP_PORT: {{ .Values.externalAuth.ldap.port }}
+  LDAP_PORT: {{ .Values.externalAuth.ldap.port | quote }}
   LDAP_METHOD: {{ .Values.externalAuth.ldap.method }}
-  {{- with .Values.externalAuth.ldap.base }}
-  LDAP_BASE: {{ . }}
+  {{- if .Values.externalAuth.ldap.tls_no_verify }}
+  LDAP_TLS_NO_VERIFY: {{ .Values.externalAuth.ldap.tls_no_verify | quote }}
   {{- end }}
-  {{- with .Values.externalAuth.ldap.bind_on }}
-  LDAP_BIND_ON: {{ . }}
+  {{- if .Values.externalAuth.ldap.base }}
+  LDAP_BASE: {{ .Values.externalAuth.ldap.base }}
+  {{- end }}
+  {{- if .Values.externalAuth.ldap.bind_dn }}
+  LDAP_BIND_DN: {{ .Values.externalAuth.ldap.bind_dn }}
   {{- end }}
   {{- with .Values.externalAuth.ldap.password }}
   LDAP_PASSWORD: {{ . }}
