@@ -1,0 +1,30 @@
+# Publish chart as OCI image to GitHub registry. Version is automatically gathered from the tag name.
+# For this workflow to work, GITHUB_TOKEN needs to be configured with write permissions.
+# Additionally, the repository must be granted access in the package settings.
+
+name: Publish chart
+
+on:
+  release:
+    types: [ released ]
+
+jobs:
+  release:
+    name: Publish chart to OCI registry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Helm login
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+          helm registry login ghcr.io \
+            --username "$GITHUB_REPOSITORY_OWNER" \
+            --password-stdin
+      - name: Helm package
+        run: |
+          helm package . -u --version "${GITHUB_REF_NAME#v}"
+      - name: Helm push
+        run: |
+          helm push \
+          "mastodon-${GITHUB_REF_NAME#v}.tgz" \
+          "oci://ghcr.io/$GITHUB_REPOSITORY_OWNER/charts"
