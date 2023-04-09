@@ -101,6 +101,11 @@ mastodon:
     # with keys SECRET_KEY_BASE and OTP_SECRET and
     # VAPID_PRIVATE_KEY and VAPID_PUBLIC_KEY
     existingSecret: ""
+
+  # -- The number of old revisions to keep for each Deployment in Kubernetes.
+  #    See https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#clean-up-policy
+  revisionHistoryLimit: 2
+
   sidekiq:
     # -- Pod security context for all Sidekiq Pods, overwrites .Values.podSecurityContext
     podSecurityContext: {}
