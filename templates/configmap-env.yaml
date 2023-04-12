@@ -82,6 +82,9 @@ data:
   {{- with .Values.mastodon.smtp.from_address }}
   SMTP_FROM_ADDRESS: {{ . }}
   {{- end }}
+  {{- with .Values.mastodon.smtp.return_path }}
+  SMTP_RETURN_PATH: {{ . }}
+  {{- end }}
   {{- with .Values.mastodon.smtp.openssl_verify_mode }}
   SMTP_OPENSSL_VERIFY_MODE: {{ . }}
   {{- end }}
