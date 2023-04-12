@@ -137,6 +137,7 @@ mastodon:
     domain:
     enable_starttls: 'auto'
     from_address: notifications@example.com
+    return_path:
     openssl_verify_mode: peer
     port: 587
     reply_to:
