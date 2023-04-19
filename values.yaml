@@ -408,6 +408,10 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+# Custom annotations to apply to all created deployment objects. These can be
+# used to help mastodon interact with other services in the cluster.
+deployAnnotations: {}
+
 # -- Kubernetes manages pods for jobs and pods for deployments differently, so you might
 # need to apply different annotations to the two different sets of pods. The annotations
 # set with podAnnotations will be added to all deployment-managed pods.

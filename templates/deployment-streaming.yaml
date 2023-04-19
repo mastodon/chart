@@ -4,6 +4,10 @@ metadata:
   name: {{ include "mastodon.fullname" . }}-streaming
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.deployAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: {{ .Values.mastodon.streaming.replicas }}
   selector:

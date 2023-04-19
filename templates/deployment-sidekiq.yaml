@@ -9,6 +9,10 @@ metadata:
     {{- include "mastodon.labels" $context | nindent 4 }}
     app.kubernetes.io/component: sidekiq-{{ .name }}
     app.kubernetes.io/part-of: rails
+  annotations:
+    {{- with $context.Values.deployAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   {{- if (has "scheduler" .queues) }}
     {{- if (gt (int .replicas) 1) }}
