@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
   annotations:
-    {{- with .Values.deployAnnotations }}
+    {{- with (default .Values.deploymentAnnotations .Values.mastodon.streaming.deploymentAnnotations) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
