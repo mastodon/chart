@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/component: sidekiq-{{ .name }}
     app.kubernetes.io/part-of: rails
   annotations:
-    {{- with $context.Values.deployAnnotations }}
+    {{- with $context.Values.deploymentAnnotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
