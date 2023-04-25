@@ -126,7 +126,7 @@ spec:
               mountPath: /opt/mastodon/public/system
           {{- end }}
           resources:
-            {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
+            {{- toYaml (default $context.Values.mastodon.sidekiq.resources .resources) | nindent 12 }}
       {{- with $context.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
