@@ -201,7 +201,8 @@ mastodon:
   metrics:
     statsd:
       # -- Enable statsd publishing via STATSD_ADDR environment variable
-      address: ""
+      # If prometheus is enabled it will be connected automatically and this value will not be used.
+      address:
 
   # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
   preparedStatements: true
@@ -244,6 +245,73 @@ elasticsearch:
   # @ignored
   image:
     tag: 7
+
+# https://github.com/prometheus-community/helm-charts/
+prometheus:
+  # `false` will disable the local prometheus store used for monitoring.
+  enabled: true
+  # Used for creating datasource for Grafana. Not an override.
+  basicAuthUser: admin
+  # Used for creating datasource for Grafana. Not an override.
+  basicAuthPassword:
+  server:
+    probeHeaders:
+      # The value for Bearer should be base64-encoded "[basicAuthUser]:[basicAuthPassword]"
+      # - name: "Authorization"
+      #   value: "Bearer XXXXXXXXXXXXXXXXXXXXXXXXXx"
+    service:
+      servicePort: 9090
+  extraScrapeConfigs: |
+    - job_name: 'mastodon-statsd'
+      static_configs:
+        - targets:
+          - 'mastodon-prometheus-statsd-exporter.mastodon.svc.cluster.local:9102'
+    - job_name: 'mastodon-postgres'
+      static_configs:
+        - targets:
+          - 'mastodon-prometheus-postgres-exporter.mastodon.svc.cluster.local:80'
+
+prometheus-statsd-exporter:
+  statsd:
+    mappingConfigMapName: "statsd-exporter-mappings"
+
+prometheus-postgres-exporter:
+  config:
+    datasource:
+      host: mastodon-postgresql.mastodon.svc.cluster.local
+      user: mastodon
+      password:
+      database: mastodon_production
+
+grafana:
+  # `false` will disable grafana observability
+  enabled: true
+  persistence:
+    enabled: true
+  service:
+    enabled: true
+  adminUser: admin
+  # Plaintext password
+  adminPassword:
+  admin:
+    ## Name of the secret. Can be templated.
+    existingSecret: ""
+    userKey: admin-user
+    passwordKey: admin-password
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+  dashboardsConfigMaps:
+    default: "grafana-dashboards"
 
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
