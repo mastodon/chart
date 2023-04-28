@@ -173,6 +173,24 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 128Mi
+    # -- (Streaming Deployment) liveness and readiness probes
+    livenessProbe:
+      tcpSocket:
+        port: streaming
+      failureThreshold: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /api/v1/streaming/health
+        port: streaming
+      failureThreshold: 3
+      periodSeconds: 10
+    startupProbe:
+      httpGet:
+        path: /api/v1/streaming/health
+        port: streaming
+      failureThreshold: 20
+      periodSeconds: 3
   web:
     port: 3000
     # -- Number of Web Pods running
@@ -191,6 +209,24 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 768Mi
+    # -- (Web Deployment) liveness and readiness probes
+    livenessProbe:
+      tcpSocket:
+        port: http
+      failureThreshold: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: http
+      failureThreshold: 3
+      periodSeconds: 10
+    startupProbe:
+      httpGet:
+        path: /health
+        port: http
+      failureThreshold: 20
+      periodSeconds: 3
     # -- Puma-specific options. Below values are based on default behavior in
     # config/puma.rb when no custom values are provided.
     minThreads: "5"
