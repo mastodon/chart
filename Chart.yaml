@@ -35,3 +35,6 @@ dependencies:
     version: 16.13.2
     repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
     condition: redis.enabled
+  - name: common
+    version: 2.2.4
+    repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
