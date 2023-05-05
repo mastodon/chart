@@ -78,6 +78,10 @@ mastodon:
     permission: ""
     # -- If you have a caching proxy, enter its base URL here.
     alias_host: ""
+    # When uploading data to S3, if the number of bytes to send exceedes
+    # multipart_threshold then a multi part session is automatically started
+    # and the data is sent up in chunks. Defaults to 16777216 (16MB).
+    multipart_threshold: ""
   deepl:
     enabled: false
     plan:
@@ -541,7 +545,8 @@ revisionPodAnnotation: true
 jobAnnotations: {}
 
 # -- Default resources for all Deployments and jobs unless overwritten
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
