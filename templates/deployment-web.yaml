@@ -4,6 +4,10 @@ metadata:
   name: {{ include "mastodon.fullname" . }}-web
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
+  annotations:
+    {{- with (default .Values.deploymentAnnotations .Values.mastodon.web.deploymentAnnotations) }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: {{ .Values.mastodon.web.replicas }}
   selector:
