@@ -49,6 +49,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "mastodon.fullname" . }}-env
+            {{- if .Values.mastodon.extraEnvironment }}
+            - configMapRef:
+                name: {{ .Values.mastodon.extraEnvironment }}
+            {{- end}}
           env:
             - name: "DB_PASS"
               valueFrom:
