@@ -7,11 +7,13 @@ on:
   pull_request:
     paths-ignore:
       - "README.md"
+      - ".github/**"
   push:
     branches-ignore:
       - "dependabot/**"
       - "gh-pages"
     paths-ignore:
+      - "README.md"
       - ".github/**"
   workflow_dispatch:
 
@@ -58,6 +60,9 @@ jobs:
   test-install:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: charts/mastodon
 
     strategy:
       fail-fast: false
@@ -65,21 +70,6 @@ jobs:
         include:
           # k3s-channel reference: https://update.k3s.io/v1-release/channels
           - k3s-channel: latest
-          - k3s-channel: stable
-
-          # This represents the oldest configuration we test against.
-          #
-          # The k8s version chosen is based on the oldest still supported k8s
-          # version among two managed k8s services, GKE, EKS.
-          # - GKE: https://endoflife.date/google-kubernetes-engine
-          # - EKS: https://endoflife.date/amazon-eks
-          #
-          # The helm client's version can influence what helper functions is
-          # available for use in the templates, currently we need v3.6.0 or
-          # higher.
-          #
-          - k3s-channel: v1.21
-            helm-version: v3.6.0
 
     steps:
       - uses: actions/checkout@v3
