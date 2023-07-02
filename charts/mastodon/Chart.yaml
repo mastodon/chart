@@ -28,8 +28,8 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: elasticsearch
-    version: 19.10.*
-    repository: https://charts.bitnami.com/elasticsearch
+    version: 19.10.1
+    repository: oci://registry-1.docker.io/bitnamicharts
     condition: elasticsearch.enabled
   - name: redis
     version: 16.12.*
