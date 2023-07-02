@@ -10,6 +10,9 @@ on:
   push:
     branches-ignore:
       - "dependabot/**"
+      - "gh-pages"
+    paths-ignore:
+      - ".github/**"
   workflow_dispatch:
 
 permissions:
