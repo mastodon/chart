@@ -23,6 +23,9 @@ permissions:
 jobs:
   lint-templates:
     runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: charts/mastodon
 
     steps:
       - uses: actions/checkout@v3
