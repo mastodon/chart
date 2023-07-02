@@ -40,7 +40,7 @@ jobs:
 
       - name: Add dependency chart repos
         run: |
-          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm dep update charts/mastodon
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
