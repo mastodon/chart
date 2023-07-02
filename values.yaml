@@ -4,7 +4,6 @@ image:
   #
   # alternatively, use `latest` for the latest release or `edge` for the image
   # built from the most recent commit
-  #
   # tag: latest
   tag: ""
   # use `Always` when using `latest` tag
