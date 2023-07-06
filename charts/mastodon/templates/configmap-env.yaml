@@ -4,6 +4,8 @@ metadata:
   name: {{ include "mastodon.fullname" . }}-env
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install
 data:
   {{- if .Values.postgresql.enabled }}
   DB_HOST: {{ template "mastodon.postgresql.fullname" . }}
