@@ -7,6 +7,7 @@ metadata:
   annotations:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "-3"
+    "helm.sh/resource-policy": keep
 data:
   {{- if .Values.postgresql.enabled }}
   DB_HOST: {{ template "mastodon.postgresql.fullname" . }}
