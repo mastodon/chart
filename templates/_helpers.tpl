@@ -55,7 +55,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Rolling pod annotations
 */}}
 {{- define "mastodon.rollingPodAnnotations" -}}
+{{- if .Values.revisionPodAnnotation }}
 rollme: {{ .Release.Revision | quote }}
+{{- end }}
 checksum/config-secrets: {{ include ( print $.Template.BasePath "/secrets.yaml" ) . | sha256sum | quote }}
 checksum/config-configmap: {{ include ( print $.Template.BasePath "/configmap-env.yaml" ) . | sha256sum | quote }}
 {{- end }}
@@ -95,6 +97,17 @@ Get the mastodon secret.
     {{- printf "%s" (tpl .Values.mastodon.secrets.existingSecret $) -}}
 {{- else -}}
     {{- printf "%s" (include "mastodon.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the smtp secret.
+*/}}
+{{- define "mastodon.smtp.secretName" -}}
+{{- if .Values.mastodon.smtp.existingSecret }}
+    {{- printf "%s" (tpl .Values.mastodon.smtp.existingSecret $) -}}
+{{- else -}}
+    {{- printf "%s-smtp" (include "common.names.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 

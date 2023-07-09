@@ -9,6 +9,10 @@ metadata:
     {{- include "mastodon.labels" $context | nindent 4 }}
     app.kubernetes.io/component: sidekiq-{{ .name }}
     app.kubernetes.io/part-of: rails
+  annotations:
+    {{- with $context.Values.deploymentAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   {{- if (has "scheduler" .queues) }}
     {{- if (gt (int .replicas) 1) }}
@@ -31,6 +35,7 @@ spec:
         {{- end }}
         # roll the pods to pick up any db migrations or other changes
         {{- include "mastodon.rollingPodAnnotations" $context | nindent 8 }}
+        checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
       labels:
         {{- include "mastodon.selectorLabels" $context | nindent 8 }}
         app.kubernetes.io/component: sidekiq-{{ .name }}
@@ -90,6 +95,17 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" $context }}
                   key: redis-password
+            - name: "SMTP_LOGIN"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mastodon.smtp.secretName" $context }}
+                  key: login
+                  optional: true
+            - name: "SMTP_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mastodon.smtp.secretName" $context }}
+                  key: password
             {{- if (and $context.Values.mastodon.s3.enabled $context.Values.mastodon.s3.existingSecret) }}
             - name: "AWS_SECRET_ACCESS_KEY"
               valueFrom:
@@ -101,19 +117,6 @@ spec:
                 secretKeyRef:
                   name: {{ $context.Values.mastodon.s3.existingSecret }}
                   key: AWS_ACCESS_KEY_ID
-            {{- end }}
-            {{- if $context.Values.mastodon.smtp.existingSecret }}
-            - name: "SMTP_LOGIN"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $context.Values.mastodon.smtp.existingSecret }}
-                  key: login
-                  optional: true
-            - name: "SMTP_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $context.Values.mastodon.smtp.existingSecret }}
-                  key: password
             {{- end }}
           {{- if (not $context.Values.mastodon.s3.enabled) }}
           volumeMounts:
