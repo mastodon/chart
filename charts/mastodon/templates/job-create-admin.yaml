@@ -47,15 +47,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
           command:
-            - bin/tootctl
-            - accounts
-            - create
-            - $ADMIN_USER
-            - --email
-            - $ADMIN_EMAIL 
-            - --confirmed
-            - --role
-            - Owner
+            - /bin/bash
+            - -c
+            - bin/tootctl accounts create "$ADMIN_USER" --email "$ADMIN_EMAIL" --confirmed --role Owner
           envFrom:
             - configMapRef:
                 name: {{ include "mastodon.fullname" . }}-env
