@@ -45,14 +45,14 @@ spec:
       containers:
         - name: {{ include "mastodon.fullname" . }}-create-admin
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
           command:
             - bin/tootctl
             - accounts
             - create
-            - {{ .Values.mastodon.createAdmin.username }}
+            - $ADMIN_USER
             - --email
-            - {{ .Values.mastodon.createAdmin.email }}
+            - $ADMIN_EMAIL 
             - --confirmed
             - --role
             - Owner
@@ -62,6 +62,33 @@ spec:
             - secretRef:
                 name: {{ template "mastodon.secretName" . }}
           env:
+            - name: "ADMIN_USER"
+              {{- if .Values.mastodon.createAdmin.existingSecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.createAdmin.existingSecret }}
+                  key: {{ .Values.mastodon.createAdmin.secretKeys.usernameKey }}
+              {{- else }}
+              value: {{ .Values.mastodon.createAdmin.username }}
+              {{- end }}
+            - name: "ADMIN_EMAIL"
+              {{- if .Values.mastodon.createAdmin.existingSecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.createAdmin.existingSecret }}
+                  key: {{ .Values.mastodon.createAdmin.secretKeys.emailKey }}
+              {{- else }}
+              value: {{ .Values.mastodon.createAdmin.username }}
+              {{- end }}
+            - name: "ADMIN_PASS"
+              {{- if .Values.mastodon.createAdmin.existingSecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.createAdmin.existingSecret }}
+                  key: {{ .Values.mastodon.createAdmin.secretKeys.passwordKey }}
+              {{- else }}
+              value: {{ .Values.mastodon.createAdmin.username }}
+              {{- end }}
             - name: "DB_PASS"
               valueFrom:
                 secretKeyRef:
