@@ -9,9 +9,8 @@ on:
       - "README.md"
       - ".github/**"
   push:
-    branches-ignore:
-      - "dependabot/**"
-      - "gh-pages"
+    branches:
+      - main
     paths-ignore:
       - "README.md"
       - ".github/**"
