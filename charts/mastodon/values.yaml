@@ -18,7 +18,12 @@ mastodon:
     # @ignored
     username: not_gargron
     # @ignored
-    email: not@example.com
+    email: not@example.commit
+    # existingSecret: mastodon-admin
+    # secretKeys:
+    #   usernameKey: username
+    #   passwordKey: password
+    #   emailKey: email
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
