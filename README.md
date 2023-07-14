@@ -9,7 +9,7 @@ The basic usage is:
 
 This chart is tested with k8s 1.26+ and helm 3.6.0+.
 
-Known caveats: Currently in chart version `4.0.8`, you need to run postgresql and redis helm charts independently of this one. This is because there's a helm hook job called db-migrate that I can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue here and let me know!
+Known caveats: Currently in chart version `4.0.8`, you need to run postgresql and redis helm charts independently of this one. This is because there's a helm hook job called db-migrate that I can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let me know!
 
 # Configuration
 
