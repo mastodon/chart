@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "mastodon.pvc.assets" . }}-precompile
+  name: {{ include "mastodon.fullname" . }}-assets-precompile
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
   annotations:
@@ -11,7 +11,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: {{ include "mastodon.pvc.assets" . }}-precompile
+      name: {{ include "mastodon.fullname" . }}-assets-precompile
       {{- with .Values.jobAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
@@ -42,7 +42,7 @@ spec:
             claimName: {{ template "mastodon.pvc.system" . }}
       {{- end }}
       containers:
-        - name: {{ include "mastodon.pvc.assets" . }}-precompile
+        - name: {{ include "mastodon.fullname" . }}-assets-precompile
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
