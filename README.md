@@ -1,7 +1,6 @@
 # Introduction
 
-This is a [Helm](https://helm.sh/) chart for installing Mastodon on a Kubernetes cluster. This is a fork of the official mastodon helm chart, as the upstream repo had some issues with security and order of operations.
-The basic usage is:
+This is a fork of the official mastodon helm chart for installing Mastodon on a Kubernetes cluster. I'll maintain this at least till some of the security features PRs are merged in the upstream repo. The basic usage is:
 
 1. edit `values.yaml` or create a separate yaml file for custom values
 2. `helm repo add https://jessebot.github.io/mastodon-helm-chart`
@@ -10,7 +9,7 @@ The basic usage is:
 This chart is tested with k8s 1.26+ and helm 3.6.0+.
 
 ## Known caveats
-Currently in chart version `4.0.9`, you need to run postgresql and redis helm charts independently of this one. This is because there's a helm hook job called db-migrate that I can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let me know!
+Currently in chart version `4.1.0`, you need to run postgresql and redis helm charts independently of this one. This is because there's a helm hook job called db-migrate that I can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let me know!
 
 # Configuration
 
