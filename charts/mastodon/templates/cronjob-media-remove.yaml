@@ -68,16 +68,36 @@ spec:
                 - name: "PORT"
                   value: {{ .Values.mastodon.web.port | quote }}
                 {{- if (and .Values.mastodon.s3.enabled .Values.mastodon.s3.existingSecret) }}
-                - name: "AWS_SECRET_ACCESS_KEY"
+                - name: "S3_HOSTNAME"
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mastodon.s3.existingSecret }}
-                      key: AWS_SECRET_ACCESS_KEY
+                      key: {{ .Values.mastodon.s3.secretKeys.s3Hostname }}
+                - name: "S3_ENDPOINT"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3Endpoint }}
+                - name: "S3_REGION"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3Region }}
+                - name: "S3_BUCKET"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3Bucket }}
                 - name: "AWS_ACCESS_KEY_ID"
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mastodon.s3.existingSecret }}
-                      key: AWS_ACCESS_KEY_ID
+                      key: {{ .Values.mastodon.s3.secretKeys.s3AccessKeyID }}
+                - name: "AWS_SECRET_ACCESS_KEY"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3AccessKey }}
                 {{- end }}
               {{- if (not .Values.mastodon.s3.enabled) }}
               volumeMounts:
