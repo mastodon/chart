@@ -52,33 +52,9 @@ spec:
               envFrom:
                 - configMapRef:
                     name: {{ include "mastodon.fullname" . }}-env
-                {{- if not .Values.mastodon.secrets.existingSecret }}
                 - secretRef:
                     name: {{ template "mastodon.secretName" . }}
-                {{- end }}
               env:
-                {{- if .Values.mastodon.secrets.existingSecret }}
-                - name: "SECRET_KEY_BASE"
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ .Values.mastodon.secrets.existingSecret }}
-                      key: {{ .Values.mastodon.secrets.secretKeys.secretKeyBase }}
-                - name: "OTP_SECRET"
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ .Values.mastodon.secrets.existingSecret }}
-                      key: {{ .Values.mastodon.secrets.secretKeys.optSecret }}
-                - name: "VAPID_PRIVATE_KEY"
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ .Values.mastodon.secrets.existingSecret }}
-                      key: {{ .Values.mastodon.secrets.secretKeys.vapidPrivateKey }}
-                - name: "VAPID_PUBLIC_KEY"
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ .Values.mastodon.secrets.existingSecret }}
-                      key: {{ .Values.mastodon.secrets.secretKeys.vapidPublicKey }}
-                {{- end }}
                 - name: "DB_PASS"
                   valueFrom:
                     secretKeyRef:

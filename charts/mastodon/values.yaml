@@ -1,3 +1,6 @@
+nameOverride: ""
+fullnameOverride: ""
+
 image:
   repository: ghcr.io/mastodon/mastodon
   # https://github.com/mastodon/mastodon/pkgs/container/mastodon
@@ -19,11 +22,11 @@ mastodon:
     username: not_gargron
     # @ignored
     email: not@example.commit
-    # existingSecret: mastodon-admin
-    # secretKeys:
-    #   usernameKey: username
-    #   passwordKey: password
-    #   emailKey: email
+    existingSecret: ""
+    secretKeys:
+      usernameKey: username
+      passwordKey: password
+      emailKey: email
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
@@ -88,12 +91,12 @@ mastodon:
       private_key: ""
       public_key: ""
     # -- you can also specify the name of an existing Secret
+    # keys must be:
+    # VAPID_PRIVATE_KEY
+    # VAPID_PUBLIC_KEY
+    # SECRET_KEY_BASE
+    # OTP_SECRET
     existingSecret: ""
-    secretKeys:
-      vapidPrivateKey: VAPID_PRIVATE_KEY
-      vapidPublicKey: VAPID_PUBLIC_KEY
-      secretKeyBase: SECRET_KEY_BASE
-      otpSecret: OTP_SECRET
 
   sidekiq:
     # -- Pod security context for all Sidekiq Pods, overwrites .Values.podSecurityContext
@@ -163,7 +166,7 @@ mastodon:
     password:
     # -- Instead of defining login/password above, you can specify the name of an existing secret here. Login and
     # password must be located in keys named `login` and `password` respectively.
-    existingSecret:
+    existingSecret: ""
   streaming:
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
@@ -296,7 +299,7 @@ redis:
     password: ""
     # you can also specify the name of an existing Secret
     # with a key of redis-password set to the password you want
-    # existingSecret: ""
+    existingSecret: ""
 
 # @ignored
 service:

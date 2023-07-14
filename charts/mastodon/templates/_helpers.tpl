@@ -58,7 +58,7 @@ Rolling pod annotations
 {{- if .Values.revisionPodAnnotation }}
 rollme: {{ .Release.Revision | quote }}
 {{- end }}
-checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret-mastodon.yaml" ) . | sha256sum | quote }}
+checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret.yaml" ) . | sha256sum | quote }}
 checksum/config-configmap: {{ include ( print $.Template.BasePath "/configmap-env.yaml" ) . | sha256sum | quote }}
 {{- end }}
 
@@ -89,16 +89,9 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/*
-Get the mastodon secret.
-*/}}
 {{- define "mastodon.secretName" -}}
-{{- if .Values.mastodon.secrets.existingSecret }}
-    {{- printf "%s" (tpl .Values.mastodon.secrets.existingSecret $) -}}
-{{- else -}}
-    {{- printf "%s" (include "common.names.fullname" .) -}}
-{{- end -}}
-{{- end -}}
+{{- default "secret" .Values.mastodon.secrets.existingSecret }}
+{{- end }}
 
 {{/*
 Get the smtp secret.
