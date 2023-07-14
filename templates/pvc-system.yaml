@@ -1,4 +1,4 @@
-{{- if (not .Values.mastodon.s3.enabled) -}}
+{{- if and (not .Values.mastodon.s3.enabled) (not .Values.mastodon.persistence.system.existingClaim)-}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

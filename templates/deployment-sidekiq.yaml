@@ -58,10 +58,10 @@ spec:
       volumes:
         - name: assets
           persistentVolumeClaim:
-            claimName: {{ template "mastodon.fullname" $context }}-assets
+            claimName: {{ template "mastodon.pvc.assets" $context }}
         - name: system
           persistentVolumeClaim:
-            claimName: {{ template "mastodon.fullname" $context }}-system
+            claimName: {{ template "mastodon.pvc.system" $context }}
       {{- end }}
       containers:
         - name: {{ $context.Chart.Name }}
