@@ -1,6 +1,6 @@
 # mastodon
 
-![Version: 4.0.9](https://img.shields.io/badge/Version-4.0.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.1.4](https://img.shields.io/badge/AppVersion-v4.1.4-informational?style=flat-square)
+![Version: 4.1.0](https://img.shields.io/badge/Version-4.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.1.4](https://img.shields.io/badge/AppVersion-v4.1.4-informational?style=flat-square)
 
 Mastodon is a free, open-source social network server based on ActivityPub.
 
@@ -45,8 +45,10 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 | mastodon.locale | string | `"en"` | available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71 |
 | mastodon.metrics.statsd.address | string | `""` | Enable statsd publishing via STATSD_ADDR environment variable |
 | mastodon.persistence.assets.accessMode | string | `"ReadWriteOnce"` | ReadWriteOnce is more widely supported than ReadWriteMany, but limits scalability, since it requires the Rails and Sidekiq pods to run on the same node. |
+| mastodon.persistence.assets.existingClaim | string | `nil` | name of existing persistent volume claim to use for assets |
 | mastodon.persistence.assets.resources.requests.storage | string | `"10Gi"` |  |
 | mastodon.persistence.system.accessMode | string | `"ReadWriteOnce"` |  |
+| mastodon.persistence.system.existingClaim | string | `nil` | name of existing persistent volume claim to use for system |
 | mastodon.persistence.system.resources.requests.storage | string | `"100Gi"` |  |
 | mastodon.preparedStatements | bool | `true` |  |
 | mastodon.s3.access_key | string | `""` |  |
