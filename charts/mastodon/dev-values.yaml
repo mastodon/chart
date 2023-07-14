@@ -95,7 +95,7 @@ mastodon:
     # -- you can also specify the name of an existing Secret
     # with keys SECRET_KEY_BASE and OTP_SECRET and
     # VAPID_PRIVATE_KEY and VAPID_PUBLIC_KEY
-    # existingSecret: ""
+    existingSecret: ""
 
   sidekiq:
     # -- Pod security context for all Sidekiq Pods, overwrites .Values.podSecurityContext

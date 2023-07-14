@@ -89,9 +89,16 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{/*
+Get the mastodon secret.
+*/}}
 {{- define "mastodon.secretName" -}}
-{{- default "secret" .Values.mastodon.secrets.existingSecret }}
-{{- end }}
+{{- if .Values.mastodon.secrets.existingSecret }}
+    {{- printf "%s" (tpl .Values.mastodon.secrets.existingSecret $) -}}
+{{- else -}}
+    {{- printf "%s" (include "common.names.fullname" .) -}}
+{{- end -}}
+{{- end -}}
 
 {{/*
 Get the smtp secret.
@@ -127,6 +134,19 @@ Get the redis secret.
     {{- printf "%s" (tpl .Values.redis.existingSecret $) -}}
 {{- else -}}
     {{- printf "%s-redis" (tpl .Release.Name $) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return true if a mastodon secret object should be created
+*/}}
+{{- define "mastodon.createSecret" -}}
+{{- if (or
+    (and .Values.mastodon.s3.enabled (not .Values.mastodon.s3.existingSecret))
+    (not .Values.mastodon.secrets.existingSecret )
+    (and (not .Values.postgresql.enabled) (not .Values.postgresql.auth.existingSecret))
+    ) -}}
+    {{- true -}}
 {{- end -}}
 {{- end -}}
 
