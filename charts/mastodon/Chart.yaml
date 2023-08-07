@@ -32,6 +32,6 @@ dependencies:
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: elasticsearch.enabled
   - name: redis
-    version: 17.11.6
+    version: 17.14.6
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: redis.enabled
