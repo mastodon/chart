@@ -1,7 +1,7 @@
 {
   "repositories": [
     "jessebot/mastodon-helm-chart"
-  ]
+  ],
   "regexManagers": [
     {
       "datasourceTemplate": "docker",
