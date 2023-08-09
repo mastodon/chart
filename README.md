@@ -9,7 +9,7 @@ This is a fork of the official mastodon helm chart for installing Mastodon on a 
 
 This chart is tested with k8s 1.26+ and helm 3.6.0+.
 
-[!Note]
+> [!Note]
 > I just became aware of the bitnami mastodon chart [here](https://github.com/bitnami/charts/tree/main/bitnami/mastodon) so I may publicly archive this repo in the near future. Feel free to take what you need though :)
 
 ## Known caveats for this chart
