@@ -59,6 +59,7 @@ mastodon:
         env: {}
   # Custom labels to add to kubernetes resources
   #labels:
+
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
@@ -66,7 +67,10 @@ mastodon:
       enabled: true
       # @ignored
       schedule: "0 0 * * 0"
-  # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
+
+      # Node(s) on which we will deploy this resource
+      nodeSelector: {}
+      # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
   locale: en
   local_domain: mastodon.local
   # -- Use of WEB_DOMAIN requires careful consideration: https://docs.joinmastodon.org/admin/config/#federation
@@ -216,6 +220,9 @@ mastodon:
       namePrefix:
       nameSeparator:
 
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
+
     workers:
       - name: all-queues
         # -- Number of threads / parallel sidekiq jobs that are executed per Pod
@@ -228,6 +235,9 @@ mastodon:
         affinity: {}
         # -- Topology spread constraints for this specific deployment, overwrites .Values.topologySpreadConstraints and .Values.mastodon.sidekiq.topologySpreadConstraints
         topologySpreadConstraints: {}
+        # -- Node(s) on which we will deploy this resource
+        nodeSelector: {}
+
         # -- Sidekiq queues for Mastodon that are handled by this worker. See https://docs.joinmastodon.org/admin/scaling/#concurrency
         # See https://github.com/mperham/sidekiq/wiki/Advanced-Options#queues for how to weight queues as argument
         queues:
@@ -351,6 +361,9 @@ mastodon:
     # Specify extra environment variables to be added to streaming pods.
     extraEnvVars: {}
 
+
+    # -- Node(s) on which we will deploy this resource
+    nodeSelector: {}
   web:
     port: 3000
     # -- Number of Web Pods running
@@ -395,8 +408,13 @@ mastodon:
       enable: false
     # minAvailable: 1
     # maxUnavailable: 1
+
+    # -- Node(s) on which we will deploy this resource
+    nodeSelector: {}
+
     # -- Puma-specific options. Below values are based on default behavior in
     # config/puma.rb when no custom values are provided.
+
     minThreads: "5"
     maxThreads: "5"
     workers: "2"
@@ -429,6 +447,18 @@ mastodon:
     authHeader:
     authToken:
       existingSecret:
+
+  assetsPrecompile:
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
+
+  chewyUpgrade:
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
+
+  dbMigrate:
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
 
   metrics:
     statsd:
@@ -547,6 +577,18 @@ elasticsearch:
   # Name of an existing secret with a password key
   # existingSecret:
 
+  # -- Node(s) on which we will deploy this resource
+  master:
+    nodeSelector: {}
+  data:
+    nodeSelector: {}
+  coordinating:
+    nodeSelector: {}
+  ingest:
+    nodeSelector: {}
+  metrics:
+    nodeSelector: {}
+
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
   # -- disable if you want to use an existing db; in which case the values below
@@ -595,6 +637,15 @@ postgresql:
       password:
       existingSecret:
 
+  # -- Node(s) on which we will deploy this resource
+  primary:
+    nodeSelector: {}
+  readReplicas:
+    nodeSelector: {}
+  backup:
+    cronjob:
+      nodeSelector: {}
+
 # https://github.com/bitnami/charts/tree/master/bitnami/redis#parameters
 redis:
   # disable if you want to use an existing redis instance; in which case the
@@ -640,6 +691,12 @@ redis:
       # you can also specify the name of an existing Secret
       # with a key of redis-password set to the password you want
       existingSecret: ""
+
+  # -- Node(s) on which we will deploy this resource
+  master:
+    nodeSelector: {}
+  replica:
+    nodeSelector: {}
 
 # @ignored
 service:
@@ -796,9 +853,6 @@ resources:
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
-# @ignored
-nodeSelector: {}
 
 # @ignored
 tolerations: []
