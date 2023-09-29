@@ -75,3 +75,7 @@ spec:
             - name: system
               mountPath: /opt/mastodon/public/system
           {{- end }}
+      {{- if .Values.mastodon.assetsPrecompile.nodeSelector }}
+      nodeSelector:
+        {{ .Values.mastodon.assetsPrecompile.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}

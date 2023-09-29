@@ -134,9 +134,9 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.nodeSelector }}
+      {{- if .Values.mastodon.web.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
+        {{ .Values.mastodon.web.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
       {{- with (default .Values.affinity .Values.mastodon.web.affinity) }}
       affinity:

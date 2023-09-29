@@ -78,9 +78,9 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.nodeSelector }}
+      {{- if .Values.mastodon.streaming.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
+        {{ .Values.mastodon.streaming.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
       {{- with (default .Values.affinity .Values.mastodon.streaming.affinity) }}
       affinity:
