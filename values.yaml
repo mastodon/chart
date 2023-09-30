@@ -20,6 +20,9 @@ mastodon:
     username: not_gargron
     # @ignored
     email: not@example.com
+
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
@@ -27,7 +30,10 @@ mastodon:
       enabled: true
       # @ignored
       schedule: "0 0 * * 0"
-  # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
+
+      # Node(s) on which we will deploy this resource
+      nodeSelector: {}
+      # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
   locale: en
   local_domain: mastodon.local
   # -- Use of WEB_DOMAIN requires careful consideration: https://docs.joinmastodon.org/admin/config/#federation
@@ -94,25 +100,30 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 512Mi
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
     workers:
-    - name: all-queues
-      # -- Number of threads / parallel sidekiq jobs that are executed per Pod
-      concurrency: 25
-      # -- Number of Pod replicas deployed by the Deployment
-      replicas: 1
-      # -- Resources for this specific deployment to allow optimised scaling, overwrites .Values.mastodon.sidekiq.resources
-      resources: {}
-      # -- Affinity for this specific deployment, overwrites .Values.affinity and .Values.mastodon.sidekiq.affinity
-      affinity: {}
-      # -- Sidekiq queues for Mastodon that are handled by this worker. See https://docs.joinmastodon.org/admin/scaling/#concurrency
-      # See https://github.com/mperham/sidekiq/wiki/Advanced-Options#queues for how to weight queues as argument
-      queues:
-        - default,8
-        - push,6
-        - ingress,4
-        - mailers,2
-        - pull
-        - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
+      - name: all-queues
+        # -- Number of threads / parallel sidekiq jobs that are executed per Pod
+        concurrency: 25
+        # -- Number of Pod replicas deployed by the Deployment
+        replicas: 1
+        # -- Resources for this specific deployment to allow optimised scaling, overwrites .Values.mastodon.sidekiq.resources
+        resources: {}
+        # -- Affinity for this specific deployment, overwrites .Values.affinity and .Values.mastodon.sidekiq.affinity
+        affinity: {}
+
+        # -- Node(s) on which we will deploy this resource
+        nodeSelector: {}
+        # -- Sidekiq queues for Mastodon that are handled by this worker. See https://docs.joinmastodon.org/admin/scaling/#concurrency
+        # See https://github.com/mperham/sidekiq/wiki/Advanced-Options#queues for how to weight queues as argument
+        queues:
+          - default,8
+          - push,6
+          - ingress,4
+          - mailers,2
+          - pull
+          - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
     #- name: push-pull
     #  concurrency: 50
     #  resources: {}
@@ -135,7 +146,7 @@ mastodon:
     ca_file: /etc/ssl/certs/ca-certificates.crt
     delivery_method: smtp
     domain:
-    enable_starttls: 'auto'
+    enable_starttls: "auto"
     from_address: notifications@example.com
     return_path:
     openssl_verify_mode: peer
@@ -173,6 +184,9 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 128Mi
+
+    # -- Node(s) on which we will deploy this resource
+    nodeSelector: {}
   web:
     port: 3000
     # -- Number of Web Pods running
@@ -191,12 +205,29 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 768Mi
+
+    # -- Node(s) on which we will deploy this resource
+    nodeSelector: {}
+
     # -- Puma-specific options. Below values are based on default behavior in
     # config/puma.rb when no custom values are provided.
+
     minThreads: "5"
     maxThreads: "5"
     workers: "2"
     persistentTimeout: "20"
+
+  assetsPrecompile:
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
+
+  chewyUpgrade:
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
+
+  dbMigrate:
+    # Node(s) on which we will deploy this resource
+    nodeSelector: {}
 
   metrics:
     statsd:
@@ -226,7 +257,7 @@ ingress:
   hosts:
     - host: mastodon.local
       paths:
-        - path: '/'
+        - path: "/"
   tls:
     - secretName: mastodon-tls
       hosts:
@@ -244,6 +275,18 @@ elasticsearch:
   # @ignored
   image:
     tag: 7
+
+  # -- Node(s) on which we will deploy this resource
+  master:
+    nodeSelector: {}
+  data:
+    nodeSelector: {}
+  coordinating:
+    nodeSelector: {}
+  ingest:
+    nodeSelector: {}
+  metrics:
+    nodeSelector: {}
 
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
@@ -267,6 +310,15 @@ postgresql:
     # with a key of password set to the password you want
     existingSecret: ""
 
+  # -- Node(s) on which we will deploy this resource
+  primary:
+    nodeSelector: {}
+  readReplicas:
+    nodeSelector: {}
+  backup:
+    cronjob:
+      nodeSelector: {}
+
 # https://github.com/bitnami/charts/tree/master/bitnami/redis#parameters
 redis:
   # disable if you want to use an existing redis instance; in which case the
@@ -281,6 +333,12 @@ redis:
     # you can also specify the name of an existing Secret
     # with a key of redis-password set to the password you want
     # existingSecret: ""
+
+  # -- Node(s) on which we will deploy this resource
+  master:
+    nodeSelector: {}
+  replica:
+    nodeSelector: {}
 
 # @ignored
 service:
@@ -425,7 +483,8 @@ revisionPodAnnotation: true
 jobAnnotations: {}
 
 # -- Default resources for all Deployments and jobs unless overwritten
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -436,9 +495,6 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
-# @ignored
-nodeSelector: {}
 
 # @ignored
 tolerations: []

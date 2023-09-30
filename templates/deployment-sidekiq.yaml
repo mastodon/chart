@@ -35,7 +35,7 @@ spec:
         {{- end }}
         # roll the pods to pick up any db migrations or other changes
         {{- include "mastodon.rollingPodAnnotations" $context | nindent 8 }}
-        checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
+        checksum/config-secrets-smtp: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
       labels:
         {{- include "mastodon.selectorLabels" $context | nindent 8 }}
         app.kubernetes.io/component: sidekiq-{{ .name }}
@@ -127,9 +127,9 @@ spec:
           {{- end }}
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
-      {{- with $context.Values.nodeSelector }}
+      {{- if $context.Values.mastodon.sidekiq.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
+        {{- $context.Values.mastodon.sidekiq.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
       {{- with $context.Values.tolerations }}
       tolerations:

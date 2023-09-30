@@ -75,3 +75,8 @@ spec:
             - name: system
               mountPath: /opt/mastodon/public/system
           {{- end }}
+
+      {{ if .Values.mastodon.dbMigrate.nodeSelector }}
+      nodeSelector:
+        {{ .Values.mastodon.dbMigrate.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
