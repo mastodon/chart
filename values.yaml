@@ -213,6 +213,14 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 128Mi
+    # -- Self-signed certificate(s) the (Node.js) needs to trust to connect to e.g. the database
+    extraCerts: {}
+    # -- Secret containing a key "ca.crt" holding one or more root certificates in PEM format
+    #  existingSecret:
+    # -- Optional volume name for mounting the .crt file, defaults to "extra-certs"
+    #  name:
+    # -- Optional sslMode setting. See nodejs's SSL_MODE. Consider "no-verify"
+    #  sslMode:
   web:
     port: 3000
     # -- Number of Web Pods running
