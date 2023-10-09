@@ -59,6 +59,7 @@ spec:
             - node
             - ./streaming
           {{- with .Values.mastodon.streaming.extraCerts }}
+          {{- $name := .name | default "extra-certs" }}
           volumeMounts:
           - name: {{ $name }}
             mountPath: "/usr/local/share/ca-certificates"
