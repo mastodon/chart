@@ -20,6 +20,11 @@ mastodon:
     username: not_gargron
     # @ignored
     email: not@example.com
+  # -- deploy search to elastsicsearch. Requires .elasticsearch.enabled = true
+  deploySearch:
+    enabled: false
+    concurrency: 5
+    resetChewy: true
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
