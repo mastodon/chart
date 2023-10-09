@@ -59,6 +59,11 @@ mastodon:
         env: {}
   # Custom labels to add to kubernetes resources
   #labels:
+  # -- deploy search to elastsicsearch. Requires .elasticsearch.enabled = true
+  deploySearch:
+    enabled: false
+    concurrency: 5
+    resetChewy: true
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
