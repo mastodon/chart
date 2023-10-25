@@ -1,6 +1,6 @@
 # mastodon
 
-![Version: 4.1.0](https://img.shields.io/badge/Version-4.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.1.4](https://img.shields.io/badge/AppVersion-v4.1.4-informational?style=flat-square)
+![Version: 4.2.0](https://img.shields.io/badge/Version-4.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.1.4](https://img.shields.io/badge/AppVersion-v4.1.4-informational?style=flat-square)
 
 Mastodon is a free, open-source social network server based on ActivityPub.
 
@@ -8,7 +8,7 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://registry-1.docker.io/bitnamicharts | elasticsearch | 19.10.1 |
+| oci://registry-1.docker.io/bitnamicharts | elasticsearch | 19.10.6 |
 | oci://registry-1.docker.io/bitnamicharts | postgresql | 12.6.0 |
 | oci://registry-1.docker.io/bitnamicharts | redis | 17.11.6 |
 
