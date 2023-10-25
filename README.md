@@ -1,4 +1,5 @@
-# Introduction
+# Mastodon Helm Chart
+<a href="https://github.com/jessebot/mastodon-helm-chart/releases"><img src="https://img.shields.io/github/v/release/jessebot/mastodon-helm-chart?style=plastic&labelColor=blue&color=green&logo=GitHub&logoColor=white"></a>
 
 This is a fork of the official mastodon helm chart for installing Mastodon on a Kubernetes cluster. I'll maintain this at least till some of the security features PRs are merged in the upstream repo. The basic usage is:
 
@@ -8,7 +9,8 @@ This is a fork of the official mastodon helm chart for installing Mastodon on a 
 
 This chart is tested with k8s 1.26+ and helm 3.6.0+.
 
-⚠️ I just became aware of the bitnami mastodon chart [here](https://github.com/bitnami/charts/tree/main/bitnami/mastodon) so I may publicly archive this repo in the near future. Feel free to take what you need though :)
+> [!Note]
+> I just became aware of the bitnami mastodon chart [here](https://github.com/bitnami/charts/tree/main/bitnami/mastodon) so I may publicly archive this repo in the near future. Feel free to take what you need though :)
 
 ## Known caveats for this chart
 Currently in chart version `4.1.0`, you need to run postgresql and redis helm charts independently of this one. This is because there's a helm hook job called db-migrate that I can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let me know!
