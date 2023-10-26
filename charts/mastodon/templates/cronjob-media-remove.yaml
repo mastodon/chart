@@ -68,23 +68,25 @@ spec:
                 - name: "PORT"
                   value: {{ .Values.mastodon.web.port | quote }}
                 {{- if (and .Values.mastodon.s3.enabled .Values.mastodon.s3.existingSecret) }}
+                {{- if .Values.mastodon.s3.secretKeys.s3Hostname }}
                 - name: "S3_HOSTNAME"
-                  optional: true
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mastodon.s3.existingSecret }}
                       key: {{ .Values.mastodon.s3.secretKeys.s3Hostname }}
+                {{- end }}
                 - name: "S3_ENDPOINT"
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mastodon.s3.existingSecret }}
                       key: {{ .Values.mastodon.s3.secretKeys.s3Endpoint }}
+                {{- if .Values.mastodon.s3.secretKeys.s3Region }}
                 - name: "S3_REGION"
-                  optional: true
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mastodon.s3.existingSecret }}
                       key: {{ .Values.mastodon.s3.secretKeys.s3Region }}
+                {{- end }}
                 - name: "S3_BUCKET"
                   valueFrom:
                     secretKeyRef:
