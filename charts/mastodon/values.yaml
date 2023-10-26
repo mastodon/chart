@@ -153,16 +153,16 @@ mastodon:
     domain:
     enable_starttls: 'auto'
     from_address: notifications@example.com
-    return_path:
+    return_path: ""
     openssl_verify_mode: peer
     port: 587
-    reply_to:
-    server: smtp.mailgun.org
+    reply_to: ""
+    server: ""
     tls: false
-    login:
-    password:
-    # -- Instead of defining login/password above, you can specify the name of an existing secret here. Login and
-    # password must be located in keys named `login` and `password` respectively.
+    login: ""
+    password: ""
+    # -- Instead of defining server/login/password above, you can specify the name of an existing secret here. Login and
+    # keys must be named `login`, `server`, `password` respectively.
     existingSecret: ""
   streaming:
     port: 4000

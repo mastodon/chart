@@ -1,6 +1,6 @@
 # mastodon
 
-![Version: 4.4.0](https://img.shields.io/badge/Version-4.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.2.1](https://img.shields.io/badge/AppVersion-v4.2.1-informational?style=flat-square)
+![Version: 4.4.1](https://img.shields.io/badge/Version-4.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.2.1](https://img.shields.io/badge/AppVersion-v4.2.1-informational?style=flat-square)
 
 Mastodon is a free, open-source social network server based on ActivityPub.
 
@@ -88,15 +88,15 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 | mastodon.smtp.delivery_method | string | `"smtp"` |  |
 | mastodon.smtp.domain | string | `nil` |  |
 | mastodon.smtp.enable_starttls | string | `"auto"` |  |
-| mastodon.smtp.existingSecret | string | `""` | Instead of defining login/password above, you can specify the name of an existing secret here. Login and password must be located in keys named `login` and `password` respectively. |
+| mastodon.smtp.existingSecret | string | `""` | Instead of defining server/login/password above, you can specify the name of an existing secret here. Login and keys must be named `login`, `server`, `password` respectively. |
 | mastodon.smtp.from_address | string | `"notifications@example.com"` |  |
-| mastodon.smtp.login | string | `nil` |  |
+| mastodon.smtp.login | string | `""` |  |
 | mastodon.smtp.openssl_verify_mode | string | `"peer"` |  |
-| mastodon.smtp.password | string | `nil` |  |
+| mastodon.smtp.password | string | `""` |  |
 | mastodon.smtp.port | int | `587` |  |
-| mastodon.smtp.reply_to | string | `nil` |  |
-| mastodon.smtp.return_path | string | `nil` |  |
-| mastodon.smtp.server | string | `"smtp.mailgun.org"` |  |
+| mastodon.smtp.reply_to | string | `""` |  |
+| mastodon.smtp.return_path | string | `""` |  |
+| mastodon.smtp.server | string | `""` |  |
 | mastodon.smtp.tls | bool | `false` |  |
 | mastodon.streaming.affinity | object | `{}` | Affinity for Streaming Pods, overwrites .Values.affinity |
 | mastodon.streaming.base_url | string | `nil` | The base url for streaming can be set if the streaming API is deployed to a different domain/subdomain. |
