@@ -113,23 +113,25 @@ spec:
                   name: {{ include "mastodon.smtp.secretName" $context }}
                   key: password
             {{- if (and $context.Values.mastodon.s3.enabled $context.Values.mastodon.s3.existingSecret) }}
+            {{- if .Values.mastodon.s3.secretKeys.s3Hostname }}
             - name: "S3_HOSTNAME"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: {{ .Values.mastodon.s3.secretKeys.s3Hostname }}
-                  optional: true
+            {{- end }}
             - name: "S3_ENDPOINT"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: {{ .Values.mastodon.s3.secretKeys.s3Endpoint }}
+            {{- if .Values.mastodon.s3.secretKeys.s3Region }}
             - name: "S3_REGION"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: {{ .Values.mastodon.s3.secretKeys.s3Region }}
-                  optional: true
+            {{- end }}
             - name: "S3_BUCKET"
               valueFrom:
                 secretKeyRef:
