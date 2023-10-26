@@ -117,36 +117,36 @@ spec:
             - name: "S3_HOSTNAME"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.mastodon.s3.existingSecret }}
-                  key: {{ .Values.mastodon.s3.secretKeys.s3Hostname }}
+                  name: {{ $context.Values.mastodon.s3.existingSecret }}
+                  key: {{ $context.Values.mastodon.s3.secretKeys.s3Hostname }}
             {{- end }}
             - name: "S3_ENDPOINT"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.mastodon.s3.existingSecret }}
-                  key: {{ .Values.mastodon.s3.secretKeys.s3Endpoint }}
+                  name: {{ $context.Values.mastodon.s3.existingSecret }}
+                  key: {{ $context.Values.mastodon.s3.secretKeys.s3Endpoint }}
             {{- if $context.Values.mastodon.s3.secretKeys.s3Region }}
             - name: "S3_REGION"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.mastodon.s3.existingSecret }}
-                  key: {{ .Values.mastodon.s3.secretKeys.s3Region }}
+                  name: {{ $context.Values.mastodon.s3.existingSecret }}
+                  key: {{ $context.Values.mastodon.s3.secretKeys.s3Region }}
             {{- end }}
             - name: "S3_BUCKET"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.mastodon.s3.existingSecret }}
-                  key: {{ .Values.mastodon.s3.secretKeys.s3Bucket }}
+                  name: {{ $context.Values.mastodon.s3.existingSecret }}
+                  key: {{ $context.Values.mastodon.s3.secretKeys.s3Bucket }}
             - name: "AWS_ACCESS_KEY_ID"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.mastodon.s3.existingSecret }}
-                  key: {{ .Values.mastodon.s3.secretKeys.s3AccessKeyID }}
+                  name: {{ $context.Values.mastodon.s3.existingSecret }}
+                  key: {{ $context.Values.mastodon.s3.secretKeys.s3AccessKeyID }}
             - name: "AWS_SECRET_ACCESS_KEY"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.mastodon.s3.existingSecret }}
-                  key: {{ .Values.mastodon.s3.secretKeys.s3AccessKey }}
+                  name: {{ $context.Values.mastodon.s3.existingSecret }}
+                  key: {{ $context.Values.mastodon.s3.secretKeys.s3AccessKey }}
             {{- end }}
           {{- if (not $context.Values.mastodon.s3.enabled) }}
           volumeMounts:
