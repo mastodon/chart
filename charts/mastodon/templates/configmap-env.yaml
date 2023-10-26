@@ -92,9 +92,6 @@ data:
   {{- with .Values.mastodon.smtp.reply_to }}
   SMTP_REPLY_TO: {{ . }}
   {{- end }}
-  {{- with .Values.mastodon.smtp.server }}
-  SMTP_SERVER: {{ . }}
-  {{- end }}
   {{- with .Values.mastodon.smtp.tls }}
   SMTP_TLS: {{ . | quote }}
   {{- end }}

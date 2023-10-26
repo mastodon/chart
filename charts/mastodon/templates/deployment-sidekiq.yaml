@@ -95,6 +95,12 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" $context }}
                   key: redis-password
+            - name: "SMTP_SERVER"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mastodon.smtp.secretName" $context }}
+                  key: server
+                  optional: true
             - name: "SMTP_LOGIN"
               valueFrom:
                 secretKeyRef:
