@@ -69,6 +69,7 @@ spec:
                   value: {{ .Values.mastodon.web.port | quote }}
                 {{- if (and .Values.mastodon.s3.enabled .Values.mastodon.s3.existingSecret) }}
                 - name: "S3_HOSTNAME"
+                  optional: true
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mastodon.s3.existingSecret }}
@@ -79,6 +80,7 @@ spec:
                       name: {{ .Values.mastodon.s3.existingSecret }}
                       key: {{ .Values.mastodon.s3.secretKeys.s3Endpoint }}
                 - name: "S3_REGION"
+                  optional: true
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.mastodon.s3.existingSecret }}
