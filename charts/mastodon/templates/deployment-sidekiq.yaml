@@ -118,6 +118,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: {{ .Values.mastodon.s3.secretKeys.s3Hostname }}
+                  optional: true
             - name: "S3_ENDPOINT"
               valueFrom:
                 secretKeyRef:
@@ -128,6 +129,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: {{ .Values.mastodon.s3.secretKeys.s3Region }}
+                  optional: true
             - name: "S3_BUCKET"
               valueFrom:
                 secretKeyRef:
