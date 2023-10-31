@@ -1,7 +1,7 @@
 # Mastodon Helm Chart
 <a href="https://github.com/small-hack/mastodon-helm-chart/releases"><img src="https://img.shields.io/github/v/release/small-hack/mastodon-helm-chart?style=plastic&labelColor=blue&color=green&logo=GitHub&logoColor=white"></a>
 
-This is a fork of the official mastodon helm chart for installing Mastodon on a Kubernetes cluster. We'll maintain this at least till some of the security features PRs are merged in the upstream repo. The basic usage is:
+[small-hack/mastodon-helm-chart](https://github.com/small-hack/mastodon-helm-chart) is a fork of the official mastodon helm chart for installing Mastodon on a Kubernetes cluster. We'll maintain this at least till some of the security features PRs are merged in the upstream repo. The basic usage is:
 
 ```bash
 # add the chart repo to your helm repos
