@@ -20,7 +20,7 @@ jobs:
         working-directory: charts/mastodon
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
@@ -67,7 +67,7 @@ jobs:
           - k3s-channel: latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # This action starts a k8s cluster with NetworkPolicy enforcement and
       # installs both kubectl and helm.
