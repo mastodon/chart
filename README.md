@@ -1,19 +1,26 @@
 # Mastodon Helm Chart
-<a href="https://github.com/jessebot/mastodon-helm-chart/releases"><img src="https://img.shields.io/github/v/release/jessebot/mastodon-helm-chart?style=plastic&labelColor=blue&color=green&logo=GitHub&logoColor=white"></a>
+<a href="https://github.com/small-hack/mastodon-helm-chart/releases"><img src="https://img.shields.io/github/v/release/small-hack/mastodon-helm-chart?style=plastic&labelColor=blue&color=green&logo=GitHub&logoColor=white"></a>
 
-This is a fork of the official mastodon helm chart for installing Mastodon on a Kubernetes cluster. I'll maintain this at least till some of the security features PRs are merged in the upstream repo. The basic usage is:
+This is a fork of the official mastodon helm chart for installing Mastodon on a Kubernetes cluster. We'll maintain this at least till some of the security features PRs are merged in the upstream repo. The basic usage is:
 
-1. edit `values.yaml` or create a separate yaml file for custom values
-2. `helm repo add https://jessebot.github.io/mastodon-helm-chart`
-3. `helm install --namespace mastodon --create-namespace mastodon -f path/to/values.yaml`
+```bash
+# add the chart repo to your helm repos
+helm repo add mastodon https://small-hack.github.io/mastodon-helm-chart
+
+# download the values.yaml and edit it with your own values such as YOUR hostname
+helm show values mastodon/mastodon > values.yaml
+
+# install the chart
+helm install --namespace mastodon --create-namespace mastodon/mastodon --values values.yaml
+```
 
 This chart is tested with k8s 1.27+ and helm 3.6.0+.
 
 > [!Note]
-> I just became aware of the bitnami mastodon chart [here](https://github.com/bitnami/charts/tree/main/bitnami/mastodon) so I may publicly archive this repo in the near future if [bitnami/charts#19179](https://github.com/bitnami/charts/pull/19179) is merged. Feel free to take what you need though :)
+> We may publicly archive this repo in the near future if [bitnami/charts#19179](https://github.com/bitnami/charts/pull/19179) is merged and the chart works. Feel free to take what you need though :)
 
 ## Known caveats for this chart
-Currently in chart version `4.3.0`, you need to run postgresql and redis helm charts independently of this one. This is because there's a helm hook job called db-migrate that I can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let me know!
+Currently, you need to run PostgreSQL and Redis helm charts independently of this one, because there's a helm hook job called db-migrate that we can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let us know!
 
 # Configuration
 
@@ -65,62 +72,4 @@ Currently this chart does _not_ support:
 
 # Upgrading
 
-Because database migrations are managed as a Job separate from the Rails and
-Sidekiq deployments, it’s possible they will occur in the wrong order.  After
-upgrading Mastodon versions, it may sometimes be necessary to manually delete
-the Rails and Sidekiq pods so that they are recreated against the latest
-migration.
-
-# Upgrades in 2.1.0
-
-## ingressClassName and tls-acme changes
-The annotations previously defaulting to nginx have been removed and support
- for ingressClassName has been added.
-```yaml
-ingress:
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-```
-
-To restore the old functionality simply add the above snippet to your `values.yaml`,
-but the recommendation is to replace these with `ingress.ingressClassName` and use
-cert-manager's issuer/cluster-issuer instead of tls-acme.
-If you're uncertain about your current setup leave `ingressClassName` empty and add
-`kubernetes.io/tls-acme` to `ingress.annotations` in your `values.yaml`.
-
-# Upgrades in 2.0.0
-
-## Fixed labels
-Because of the changes in [#19706](https://github.com/mastodon/mastodon/pull/19706) the upgrade may fail with the following error:
-```Error: UPGRADE FAILED: cannot patch "mastodon-sidekiq"```
-
-If you want an easy upgrade and you're comfortable with some downtime then
-simply delete the -sidekiq, -web, and -streaming Deployments manually.
-
-If you require a no-downtime upgrade then:
-1. run `helm template` instead of `helm upgrade`
-2. Copy the new -web and -streaming services into `services.yml`
-3. Copy the new -web and -streaming deployments into `deployments.yml`
-4. Append -temp to the name of each deployment in `deployments.yml`
-5. `kubectl apply -f deployments.yml` then wait until all pods are ready
-6. `kubectl apply -f services.yml`
-7. Delete the old -sidekiq, -web, and -streaming deployments manually
-8. `helm upgrade` like normal
-9. `kubectl delete -f deployments.yml` to clear out the temporary deployments
-
-## PostgreSQL passwords
-If you've previously installed the chart and you're having problems with 
-postgres not accepting your password then make sure to set `username` to
-`postgres` and `password` and `postgresPassword` to the same passwords.
-```yaml
-postgresql:
-  auth:
-    username: postgres
-    password: <same password>
-    postgresPassword: <same password>
-```
-
-And make sure to set `password` to the same value as `postgres-password`
-in your `mastodon-postgresql` secret:
-```kubectl edit secret mastodon-postgresql```
+Because database migrations are managed as a Job separate from the Rails and Sidekiq deployments, it’s possible they will occur in the wrong order. After upgrading Mastodon versions, it may sometimes be necessary to manually delete the Rails and Sidekiq pods so that they are recreated against the latest migration. If you're upgrading from a version before 3.x to a version before 4.x, please see the upstream mastodon chart as that is before our fork.
