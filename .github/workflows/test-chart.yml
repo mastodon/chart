@@ -5,15 +5,8 @@ name: Test chart
 
 on:
   pull_request:
-    paths-ignore:
-      - "README.md"
-      - ".github/**"
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - "README.md"
-      - ".github/**"
+    paths:
+      - "charts/**"
   workflow_dispatch:
 
 permissions:
