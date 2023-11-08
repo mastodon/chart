@@ -3,6 +3,7 @@
   "extends": [
     "config:base"
   ],
+  "forkProcessing": "enabled",
   "regexManagers": [
         {
             "fileMatch": ["(^|/)Chart\\.yaml$"],
