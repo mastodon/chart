@@ -26,7 +26,7 @@ data:
   PGSSLMODE: {{ .Values.externalDatabase.sslmode }}
   PGSSLCERT: {{ .Values.externalDatabase.sslcert }}
   PGSSLKEY: {{ .Values.externalDatabase.sslkey }}
-  PGSSLROOTCERT:: {{ .Values.externalDatabase.sslrootcert }}
+  PGSSLROOTCERT: {{ .Values.externalDatabase.sslrootcert }}
   {{- end }}
   PREPARED_STATEMENTS: {{ .Values.mastodon.preparedStatements | quote }}
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
