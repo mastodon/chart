@@ -33,6 +33,10 @@ spec:
               topologyKey: kubernetes.io/hostname
       {{- end }}
       {{- end }}
+      {{- with (default .Values.podSecurityContext .Values.mastodon.web.podSecurityContext) }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if or .Values.mastodon.extraVolumes (not .Values.mastodon.s3.enabled) }}
       volumes:
         {{- if gt (len .Values.mastodon.extraVolumes) 0 }}
