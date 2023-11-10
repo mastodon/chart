@@ -37,14 +37,19 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if (not .Values.mastodon.s3.enabled) }}
+      {{- if or .Values.mastodon.extraVolumes (not .Values.mastodon.s3.enabled) }}
       volumes:
+        {{- if not .Values.mastodon.s3.enabled }}
         - name: assets
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.assets" . }}
         - name: system
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.system" . }}
+        {{- end }}
+        {{- if gt (len .Values.mastodon.extraVolumes) 0 }}
+        {{ toYaml .Values.mastodon.extraVolumes | nindent 8}}
+        {{- end }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}-web
@@ -71,6 +76,18 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.postgresql.secretName" . }}
                   key: password
+            {{- if and .Values.externalDatabase.enabled (.Values.externalDatabase.sslmode) }}
+            - name: "DB_SSLMODE"
+              value: {{ .Values.externalDatabase.sslmode }}
+            - name: PGSSLMODE
+              value: {{ .Values.externalDatabase.sslmode }}
+            - name: PGSSLCERT
+              value: {{ .Values.externalDatabase.sslcert }}
+            - name: PGSSLKEY
+              value: {{ .Values.externalDatabase.sslkey }}
+            - name: PGSSLROOTCERT
+              value: {{ .Values.externalDatabase.sslrootcert }}
+            {{- end }}
             - name: "REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -130,12 +147,17 @@ spec:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: {{ .Values.mastodon.s3.secretKeys.s3AccessKey }}
             {{- end }}
-          {{- if (not .Values.mastodon.s3.enabled) }}
+          {{- if or .Values.mastodon.extraVolumeMounts (not .Values.mastodon.s3.enabled)}}
           volumeMounts:
+          {{- if not .Values.mastodon.s3.enabled }}
             - name: assets
               mountPath: /opt/mastodon/public/assets
             - name: system
               mountPath: /opt/mastodon/public/system
+          {{- end }}
+          {{- if gt (len .Values.mastodon.extraVolumeMounts) 0 }}
+          {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 12 }}
+          {{- end }}
           {{- end }}
           ports:
             - name: http
