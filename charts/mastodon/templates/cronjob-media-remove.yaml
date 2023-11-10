@@ -119,7 +119,7 @@ spec:
                   mountPath: /opt/mastodon/public/system
               {{- end }}
               {{- if gt (len .Values.mastodon.extraVolumeMounts) 0 }}
-              {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 12 }}
+              {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 16 }}
               {{- end }}
               {{- end }}
 {{- end }}
