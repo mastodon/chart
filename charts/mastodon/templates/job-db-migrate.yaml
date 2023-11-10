@@ -52,15 +52,10 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - "sh"
-            - "-c"
-            - |
-              whoami && \
-              ls -hal /etc/secrets
-            # - bundle
-            # - exec
-            # - rake
-            # - db:migrate
+            - bundle
+            - exec
+            - rake
+            - db:migrate
           envFrom:
             - configMapRef:
                 name: {{ include "mastodon.fullname" . }}-env
