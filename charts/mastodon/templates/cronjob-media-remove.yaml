@@ -36,6 +36,9 @@ spec:
           {{- end }}
           {{- if or .Values.mastodon.extraVolumes (not .Values.mastodon.s3.enabled) }}
           volumes:
+          {{- if .Values.mastodon.extraVolumes }}
+          {{- toYaml .Values.mastodon.extraVolumes | nindent 12}}
+          {{- end }}
           {{- if not .Values.mastodon.s3.enabled }}
             - name: assets
               persistentVolumeClaim:
@@ -43,9 +46,6 @@ spec:
             - name: system
               persistentVolumeClaim:
                 claimName: {{ template "mastodon.pvc.system" . }}
-          {{- end }}
-          {{- if .Values.mastodon.extraVolumes }}
-          {{ toYaml .Values.mastodon.extraVolumes | nindent 12}}
           {{- end }}
           {{- end }}
           containers:
