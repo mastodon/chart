@@ -58,11 +58,13 @@ mastodon:
       resources:
         requests:
           storage: 10Gi
+      existingClaim: ""
     system:
       accessMode: ReadWriteOnce
       resources:
         requests:
           storage: 100Gi
+      existingClaim: ""
   s3:
     enabled: false
     access_key: ""

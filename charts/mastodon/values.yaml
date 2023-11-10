@@ -57,6 +57,7 @@ mastodon:
           storage: 10Gi
       # -- name of existing persistent volume claim to use for assets
       existingClaim: ""
+
     system:
       accessMode: ReadWriteOnce
       resources:
