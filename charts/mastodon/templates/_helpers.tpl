@@ -140,7 +140,7 @@ Get the postgresql secret.
     {{- printf "%s" (tpl .Values.postgresql.auth.existingSecret $) -}}
 {{- else if and .Values.postgresql.enabled (not .Values.postgresql.auth.existingSecret) -}}
     {{- printf "%s-postgresql" (tpl .Release.Name $) -}}
-{{- else if and .Values.externalDatabase.enabled (not .Values.externalDatabase.existingSecret) -}}
+{{- else if and .Values.externalDatabase.enabled .Values.externalDatabase.existingSecret -}}
     {{- printf "%s" (tpl .Values.externalDatabase.existingSecret $) -}}
 {{- else -}}
     {{- printf "%s" (include "common.names.fullname" .) -}}
