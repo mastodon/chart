@@ -52,8 +52,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - whoami
-            - ls -hal /etc/secrets
+            - |
+              whoami
+              ls -hal /etc/secrets
             # - bundle
             # - exec
             # - rake
