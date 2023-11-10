@@ -18,25 +18,9 @@ spec:
           {{- end }}
         spec:
           restartPolicy: OnFailure
-          {{- if not .Values.mastodon.s3.enabled }}
-          # ensure we run on the same node as the other rails components; only
-          # required when using PVCs that are ReadWriteOnce
-          {{- if or (eq "ReadWriteOnce" .Values.mastodon.persistence.assets.accessMode) (eq "ReadWriteOnce" .Values.mastodon.persistence.system.accessMode) }}
-          affinity:
-            podAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/part-of
-                        operator: In
-                        values:
-                          - rails
-                  topologyKey: kubernetes.io/hostname
-          {{- end }}
-          {{- end }}
           {{- if or .Values.mastodon.extraVolumes (not .Values.mastodon.s3.enabled) }}
           volumes:
-          {{- if (not .Values.mastodon.s3.enabled) }}
+          {{- if not .Values.mastodon.s3.enabled }}
             - name: assets
               persistentVolumeClaim:
                 claimName: {{ template "mastodon.pvc.assets" . }}
@@ -122,4 +106,20 @@ spec:
               {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 12 }}
               {{- end }}
               {{- end }}
+          {{- if not .Values.mastodon.s3.enabled }}
+          # ensure we run on the same node as the other rails components; only
+          # required when using PVCs that are ReadWriteOnce
+          {{- if or (eq "ReadWriteOnce" .Values.mastodon.persistence.assets.accessMode) (eq "ReadWriteOnce" .Values.mastodon.persistence.system.accessMode) }}
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/part-of
+                        operator: In
+                        values:
+                          - rails
+                  topologyKey: kubernetes.io/hostname
+          {{- end }}
+          {{- end }}
 {{- end }}
