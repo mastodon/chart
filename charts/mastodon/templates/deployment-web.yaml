@@ -76,18 +76,6 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.postgresql.secretName" . }}
                   key: password
-            {{- if and .Values.externalDatabase.enabled (.Values.externalDatabase.sslmode) }}
-            - name: "DB_SSLMODE"
-              value: {{ .Values.externalDatabase.sslmode }}
-            - name: PGSSLMODE
-              value: {{ .Values.externalDatabase.sslmode }}
-            - name: PGSSLCERT
-              value: {{ .Values.externalDatabase.sslcert }}
-            - name: PGSSLKEY
-              value: {{ .Values.externalDatabase.sslkey }}
-            - name: PGSSLROOTCERT
-              value: {{ .Values.externalDatabase.sslrootcert }}
-            {{- end }}
             - name: "REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
