@@ -16,9 +16,6 @@ helm install --namespace mastodon --create-namespace mastodon/mastodon --values 
 
 This chart is tested with k8s 1.27+ and helm 3.6.0+.
 
-> [!Note]
-> We may publicly archive this repo in the near future if [bitnami/charts#19179](https://github.com/bitnami/charts/pull/19179) is merged and the chart works. Feel free to take what you need though :)
-
 ## Known caveats for this chart
 Currently, you need to run PostgreSQL and Redis helm charts independently of this one, because there's a helm hook job called db-migrate that we can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let us know!
 
@@ -73,3 +70,6 @@ Currently this chart does _not_ support:
 # Upgrading
 
 Because database migrations are managed as a Job separate from the Rails and Sidekiq deployments, it’s possible they will occur in the wrong order. After upgrading Mastodon versions, it may sometimes be necessary to manually delete the Rails and Sidekiq pods so that they are recreated against the latest migration. If you're upgrading from a version before 3.x to a version before 4.x, please see the upstream mastodon chart as that is before our fork.
+
+> [!Note]
+> If bitnami merges in our [volumeMount fix](https://github.com/bitnami/charts/pull/20901) and fixes [#20904](https://github.com/bitnami/charts/issues/20904) and [#20902](https://github.com/bitnami/charts/issues/20902) and everything else works, we may be less active on this helm chart. Feel free to take what you need and we'll still eventually get around to issues and pull requests regardless :)
