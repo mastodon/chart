@@ -267,9 +267,6 @@ elasticsearch:
   # (https://docs.joinmastodon.org/admin/optional/elasticsearch/)
   # @ignored
   enabled: true
-  # @ignored
-  image:
-    tag: 7
 
 externalDatabase:
   # -- enable to use an external database instead of the included bitnami postgresql subchart
