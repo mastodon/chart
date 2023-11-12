@@ -45,6 +45,7 @@ mastodon:
   authorizedFetch: false
   # -- Enables "Limited Federation Mode" for more detauls see: https://docs.joinmastodon.org/admin/config/#limited_federation_mode
   limitedFederationMode: false
+
   persistence:
     assets:
       # -- ReadWriteOnce is more widely supported than ReadWriteMany, but limits
@@ -55,15 +56,24 @@ mastodon:
         requests:
           storage: 10Gi
       # -- name of existing persistent volume claim to use for assets
-      existingClaim:
+      existingClaim: ""
+
     system:
       accessMode: ReadWriteOnce
       resources:
         requests:
           storage: 100Gi
       # -- name of existing persistent volume claim to use for system
-      existingClaim:
+      existingClaim: ""
+
+  # -- optional extra volumes for the mastodon web pod
+  extraVolumes: []
+
+  # -- optional extra volume mounts for the mastodon web pod
+  extraVolumeMounts: []
+
   s3:
+    # -- enable using s3 instead of local persistence
     enabled: false
     access_key: ""
     access_secret: ""
@@ -257,17 +267,38 @@ elasticsearch:
   # (https://docs.joinmastodon.org/admin/optional/elasticsearch/)
   # @ignored
   enabled: true
-  # @ignored
-  image:
-    tag: 7
+
+externalDatabase:
+  # -- enable to use an external database instead of the included bitnami postgresql subchart
+  # if externalDatabase.enabled is true, postgresql.enabled must be false
+  enabled: false
+  # hostname of the database server
+  hostname: ""
+  # port to connect to the database over
+  port: "5432"
+  # name of the database on the server
+  database: "mastodon"
+  # -- user to connect to the database as
+  user: "mastodon"
+  # -- optional ssl mode, leave blank for no ssl, set to verify-full for ssl
+  sslmode: ""
+  # -- path of your optional ssl cert 
+  sslcert: ""
+  # -- path of your optional ssl key
+  sslkey: ""
+  # -- path of your optional ssl root cert
+  sslrootcert: ""
+  # -- existingSecret for your postgresql credentials
+  existingSecret: ""
+  # secret keys in the existing secret to use
+  secretKeys:
+    password: "password"
 
 # https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters
 postgresql:
-  # -- disable if you want to use an existing db; in which case the values below
-  # must match those of that external postgres instance
+  # -- disable if you want to use an existing db; in which case
+  # -- if externalDatabase.enabled is true, postgresql.enabled must be false
   enabled: true
-  # postgresqlHostname: preexisting-postgresql
-  # postgresqlPort: 5432
   auth:
     database: mastodon_production
     username: mastodon

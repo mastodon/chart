@@ -18,7 +18,7 @@ spec:
           {{- end }}
         spec:
           restartPolicy: OnFailure
-          {{- if (not .Values.mastodon.s3.enabled) }}
+          {{- if not .Values.mastodon.s3.enabled }}
           # ensure we run on the same node as the other rails components; only
           # required when using PVCs that are ReadWriteOnce
           {{- if or (eq "ReadWriteOnce" .Values.mastodon.persistence.assets.accessMode) (eq "ReadWriteOnce" .Values.mastodon.persistence.system.accessMode) }}
@@ -33,13 +33,25 @@ spec:
                           - rails
                   topologyKey: kubernetes.io/hostname
           {{- end }}
+          {{- end }}
+          {{- with (default .Values.podSecurityContext .Values.mastodon.web.podSecurityContext) }}
+          # hello
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.mastodon.extraVolumes (not .Values.mastodon.s3.enabled) }}
           volumes:
+          {{- if .Values.mastodon.extraVolumes }}
+          {{- toYaml .Values.mastodon.extraVolumes | nindent 12}}
+          {{- end }}
+          {{- if not .Values.mastodon.s3.enabled }}
             - name: assets
               persistentVolumeClaim:
                 claimName: {{ template "mastodon.pvc.assets" . }}
             - name: system
               persistentVolumeClaim:
                 claimName: {{ template "mastodon.pvc.system" . }}
+          {{- end }}
           {{- end }}
           containers:
             - name: {{ include "mastodon.fullname" . }}-media-remove
@@ -103,11 +115,16 @@ spec:
                       name: {{ .Values.mastodon.s3.existingSecret }}
                       key: {{ .Values.mastodon.s3.secretKeys.s3AccessKey }}
                 {{- end }}
-              {{- if (not .Values.mastodon.s3.enabled) }}
+              {{- if or .Values.mastodon.extraVolumeMounts (not .Values.mastodon.s3.enabled) }}
               volumeMounts:
+              {{- if not .Values.mastodon.s3.enabled }}
                 - name: assets
                   mountPath: /opt/mastodon/public/assets
                 - name: system
                   mountPath: /opt/mastodon/public/system
+              {{- end }}
+              {{- if .Values.mastodon.extraVolumeMounts }}
+              {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 16 }}
+              {{- end }}
               {{- end }}
 {{- end }}

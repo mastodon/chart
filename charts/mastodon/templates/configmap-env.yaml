@@ -12,13 +12,22 @@ data:
   {{- if .Values.postgresql.enabled }}
   DB_HOST: {{ template "mastodon.postgresql.fullname" . }}
   DB_PORT: "5432"
-  {{- else }}
-  DB_HOST: {{ .Values.postgresql.postgresqlHostname }}
-  DB_PORT: {{ .Values.postgresql.postgresqlPort | default "5432" | quote }}
-  {{- end }}
   DB_NAME: {{ .Values.postgresql.auth.database }}
-  DB_POOL: {{ include "mastodon.maxDbPool" . }}
   DB_USER: {{ .Values.postgresql.auth.username }}
+  {{- else }}
+  DB_HOST: {{ .Values.externalDatabase.hostname }}
+  DB_PORT: {{ .Values.externalDatabase.postgresqlPort | default "5432" | quote }}
+  DB_NAME: {{ .Values.externalDatabase.database }}
+  DB_USER: {{ .Values.externalDatabase.username }}
+  {{- end }}
+  DB_POOL: {{ include "mastodon.maxDbPool" . }}
+  {{- if and .Values.externalDatabase.enabled (.Values.externalDatabase.sslmode) }}
+  DB_SSLMODE: {{ .Values.externalDatabase.sslmode }}
+  PGSSLMODE: {{ .Values.externalDatabase.sslmode }}
+  PGSSLCERT: {{ .Values.externalDatabase.sslcert }}
+  PGSSLKEY: {{ .Values.externalDatabase.sslkey }}
+  PGSSLROOTCERT: {{ .Values.externalDatabase.sslrootcert }}
+  {{- end }}
   PREPARED_STATEMENTS: {{ .Values.mastodon.preparedStatements | quote }}
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
   {{- if .Values.elasticsearch.enabled }}

@@ -54,14 +54,19 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if (not $context.Values.mastodon.s3.enabled) }}
+      {{- if or $context.Values.mastodon.extraVolumes (not $context.Values.mastodon.s3.enabled) }}
       volumes:
+        {{- if not $context.Values.mastodon.s3.enabled }}
         - name: assets
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.assets" $context }}
         - name: system
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.system" $context }}
+        {{- end }}
+        {{- if gt (len $context.Values.mastodon.extraVolumes) 0 }}
+        {{ toYaml $context.Values.mastodon.extraVolumes | nindent 8}}
+        {{- end }}
       {{- end }}
       containers:
         - name: {{ $context.Chart.Name }}
@@ -148,12 +153,17 @@ spec:
                   name: {{ $context.Values.mastodon.s3.existingSecret }}
                   key: {{ $context.Values.mastodon.s3.secretKeys.s3AccessKey }}
             {{- end }}
-          {{- if (not $context.Values.mastodon.s3.enabled) }}
+          {{- if or $context.Values.mastodon.extraVolumeMounts (not $context.Values.mastodon.s3.enabled)}}
           volumeMounts:
+          {{- if not $context.Values.mastodon.s3.enabled }}
             - name: assets
               mountPath: /opt/mastodon/public/assets
             - name: system
               mountPath: /opt/mastodon/public/system
+          {{- end }}
+          {{- if gt (len $context.Values.mastodon.extraVolumeMounts) 0 }}
+          {{- toYaml $context.Values.mastodon.extraVolumeMounts | nindent 12 }}
+          {{- end }}
           {{- end }}
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}

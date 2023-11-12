@@ -34,13 +34,24 @@ spec:
                       - rails
               topologyKey: kubernetes.io/hostname
       {{- end }}
+      {{- end }}
+      {{- with (default .Values.podSecurityContext .Values.mastodon.web.podSecurityContext) }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if or .Values.mastodon.extraVolumes (not .Values.mastodon.s3.enabled) }}
       volumes:
+      {{- if (not .Values.mastodon.s3.enabled) }}
         - name: assets
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.assets" . }}
         - name: system
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.system" . }}
+      {{- end }}
+      {{- if gt (len .Values.mastodon.extraVolumes) 0 }}
+      {{- toYaml .Values.mastodon.extraVolumes | nindent 8 }}
+      {{- end }}
       {{- end }}
       containers:
         - name: {{ include "mastodon.fullname" . }}-chewy-setup
@@ -69,11 +80,16 @@ spec:
                   key: redis-password
             - name: "PORT"
               value: {{ .Values.mastodon.web.port | quote }}
-          {{- if (not .Values.mastodon.s3.enabled) }}
+          {{- if or .Values.mastodon.extraVolumeMounts (not .Values.mastodon.s3.enabled) }}
           volumeMounts:
+          {{- if (not .Values.mastodon.s3.enabled) }}
             - name: assets
               mountPath: /opt/mastodon/public/assets
             - name: system
               mountPath: /opt/mastodon/public/system
+          {{- end }}
+          {{- if gt (len .Values.mastodon.extraVolumeMounts) 0 }}
+          {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 12 }}
+          {{- end }}
           {{- end }}
 {{- end }}
