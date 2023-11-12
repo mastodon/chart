@@ -8,8 +8,8 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://registry-1.docker.io/bitnamicharts | elasticsearch | 19.13.8 |
-| oci://registry-1.docker.io/bitnamicharts | postgresql | 13.2.4 |
+| oci://registry-1.docker.io/bitnamicharts | elasticsearch | 19.13.9 |
+| oci://registry-1.docker.io/bitnamicharts | postgresql | 13.2.5 |
 | oci://registry-1.docker.io/bitnamicharts | redis | 18.3.2 |
 
 ## Values
