@@ -20,6 +20,11 @@ mastodon:
     username: not_gargron
     # @ignored
     email: not@example.com
+  hooks:
+    dbMigrate:
+      enabled: false
+    assetsPrecompile:
+      enabled: false
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
