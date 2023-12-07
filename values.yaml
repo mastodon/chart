@@ -202,6 +202,11 @@ mastodon:
     statsd:
       # -- Enable statsd publishing via STATSD_ADDR environment variable
       address: ""
+      # -- Alternatively, you can use this to have a statsd_exporter sidecar container running along all Mastodon containers and exposing metrics in OpenMetric/Prometheus format on each pod
+      #   Please note the exporter will not be enabled if metrics.statsd.address is not empty
+      exporter:
+        enabled: false
+        port: 9102
 
   # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
   preparedStatements: true

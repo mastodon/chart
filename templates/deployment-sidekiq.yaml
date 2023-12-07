@@ -38,6 +38,7 @@ spec:
         checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
       labels:
         {{- include "mastodon.selectorLabels" $context | nindent 8 }}
+        {{- include "mastodon.statsdExporterLabels" $context | nindent 8 }}
         app.kubernetes.io/component: sidekiq-{{ .name }}
         app.kubernetes.io/part-of: rails
     spec:
@@ -63,6 +64,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "mastodon.fullname" $context }}-system
       {{- end }}
+      {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
       containers:
         - name: {{ $context.Chart.Name }}
           securityContext:
@@ -127,6 +129,7 @@ spec:
           {{- end }}
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
+      {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
       {{- with $context.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
