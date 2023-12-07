@@ -25,6 +25,7 @@ spec:
         {{- include "mastodon.rollingPodAnnotations" . | nindent 8 }}
       labels:
         {{- include "mastodon.selectorLabels" . | nindent 8 }}
+        {{- include "mastodon.statsdExporterLabels" . | nindent 8 }}
         app.kubernetes.io/component: web
         app.kubernetes.io/part-of: rails
     spec:
@@ -45,6 +46,7 @@ spec:
         - name: system
           persistentVolumeClaim:
             claimName: {{ template "mastodon.fullname" . }}-system
+      {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}-web
@@ -134,6 +136,7 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+        {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

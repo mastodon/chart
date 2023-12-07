@@ -325,8 +325,10 @@ data:
   LDAP_UID_CONVERSION_REPLACE: {{ . }}
   {{- end }}
   {{- end }}
-  {{- with .Values.mastodon.metrics.statsd.address }}
-  STATSD_ADDR: {{ . }}
+  {{- if .Values.mastodon.metrics.statsd.address }}
+  STATSD_ADDR: {{ .Values.mastodon.metrics.statsd.address }}
+  {{- else if .Values.mastodon.metrics.statsd.exporter.enabled }}
+  STATSD_ADDR: localhost:9125
   {{- end }}
   {{- range $k, $v := .Values.mastodon.extraEnvVars }}
   {{ $k }}: {{ quote $v }}
