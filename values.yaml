@@ -259,7 +259,8 @@ elasticsearch:
   image:
     tag: 7
 
-  # If you are using an external ES cluster, use `enabled: false` and set the hostname and port
+  # If you are using an external ES cluster, use `enabled: false` and set the hostname and port.
+  # When using a cluster with TLS enabled, the hostname must begin with https://
   # hostname:
   # port: 9200
 
