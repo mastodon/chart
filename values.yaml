@@ -22,9 +22,9 @@ mastodon:
     email: not@example.com
   hooks:
     dbMigrate:
-      enabled: false
+      enabled: true
     assetsPrecompile:
-      enabled: false
+      enabled: true
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
