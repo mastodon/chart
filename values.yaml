@@ -206,6 +206,9 @@ mastodon:
   # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
   preparedStatements: true
 
+  # Additional env vars defined in all pods
+  extraEnvVars: {}
+
 ingress:
   enabled: true
   annotations:
