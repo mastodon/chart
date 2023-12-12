@@ -247,16 +247,26 @@ ingress:
 
 # -- https://github.com/bitnami/charts/tree/master/bitnami/elasticsearch#parameters
 elasticsearch:
-  # `false` will disable full-text search
+  # Elasticsearch is powering full-text search. It is optional.
+
+  # `false` will not install Elasticsearch as part of this chart
   #
   # if you enable ES after the initial install, you will need to manually run
   # RAILS_ENV=production bundle exec rake chewy:sync
   # (https://docs.joinmastodon.org/admin/optional/elasticsearch/)
-  # @ignored
   enabled: true
   # @ignored
   image:
     tag: 7
+
+  # If you are using an external ES cluster, use `enabled: false` and set the hostname and port
+  # hostname:
+  # port: 9200
+
+  # This is optional, use it if you ES cluster requires authentication
+  # user:
+  # Name of an existing secret with a password key
+  # existingSecret:
 
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
