@@ -37,6 +37,7 @@ spec:
         {{- include "mastodon.rollingPodAnnotations" $context | nindent 8 }}
         checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
       labels:
+        {{- include "mastodon.globalLabels" $context | nindent 8 }}
         {{- include "mastodon.selectorLabels" $context | nindent 8 }}
         {{- include "mastodon.statsdExporterLabels" $context | nindent 8 }}
         app.kubernetes.io/component: sidekiq-{{ .name }}
