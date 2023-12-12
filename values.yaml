@@ -25,6 +25,8 @@ mastodon:
       enabled: true
     assetsPrecompile:
       enabled: true
+  # Custom labels to add to kubernetes resources
+  #labels:
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
