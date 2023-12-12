@@ -32,11 +32,21 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Labels added on every Mastodon resource
+*/}}
+{{- define "mastodon.globalLabels" -}}
+{{- range $k, $v := .Values.mastodon.labels }}
+{{ $k }}: {{ quote $v }}
+{{- end -}}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "mastodon.labels" -}}
 helm.sh/chart: {{ include "mastodon.chart" . }}
 {{ include "mastodon.selectorLabels" . }}
+{{ include "mastodon.globalLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

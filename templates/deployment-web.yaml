@@ -24,6 +24,7 @@ spec:
         # roll the pods to pick up any db migrations or other changes
         {{- include "mastodon.rollingPodAnnotations" . | nindent 8 }}
       labels:
+        {{- include "mastodon.globalLabels" . | nindent 8 }}
         {{- include "mastodon.selectorLabels" . | nindent 8 }}
         {{- include "mastodon.statsdExporterLabels" . | nindent 8 }}
         app.kubernetes.io/component: web
