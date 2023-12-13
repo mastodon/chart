@@ -23,7 +23,7 @@ data:
   ES_PORT: "9200"
   {{- else if .Values.elasticsearch.hostname }}
   ES_ENABLED: "true"
-  ES_HOST: {{ .Values.elasticsearch.hostname }}
+  ES_HOST: {{ include "mastodon.elasticsearch.fullHostname" .}}
   ES_PORT: {{ .Values.elasticsearch.port | default "9200" | quote }}
   {{- end }}
   {{- with .Values.elasticsearch.user }}
