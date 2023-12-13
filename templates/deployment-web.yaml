@@ -108,6 +108,13 @@ spec:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: AWS_ACCESS_KEY_ID
             {{- end }}
+            {{- if .Values.mastodon.deepl.enabled }}
+            - name: "DEEPL_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.deepl.apiKeySecretRef.name }}
+                  key: {{ .Values.mastodon.deepl.apiKeySecretRef.key }}
+            {{- end }}
           {{- if (not .Values.mastodon.s3.enabled) }}
           volumeMounts:
             - name: assets
