@@ -333,3 +333,7 @@ data:
   {{- range $k, $v := .Values.mastodon.extraEnvVars }}
   {{ $k }}: {{ quote $v }}
   {{- end }}
+
+  {{- if .Values.mastodon.deepl.enabled }}
+  DEEPL_PLAN: {{ .Values.mastodon.deepl.plan }}
+  {{- end }}
