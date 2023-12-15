@@ -126,15 +126,15 @@ mastodon:
         - mailers,2
         - pull
         - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
-        image:
-          repository:
-          tag:
-        # allows you to mount a custom database.yml from a configmap
-        # please note that we do not advise using a read-only replica for sidekiq workers
-        customDatabaseConfigYml:
-          configMapRef:
-            name:
-            key:
+      image:
+        repository:
+        tag:
+      # allows you to mount a custom database.yml from a configmap
+      # please note that we do not advise using a read-only replica for sidekiq workers
+      customDatabaseConfigYml:
+        configMapRef:
+          name:
+          key:
     #- name: push-pull
     #  concurrency: 50
     #  resources: {}
