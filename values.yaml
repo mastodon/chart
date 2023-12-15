@@ -261,6 +261,22 @@ ingress:
       hosts:
         - mastodon.local
 
+  # This allows you to have a separate ingress for streaming
+  # When enabled, the main ingress will no longer handle streaming requests.
+  # You will also need to configure mastodon.streaming.base_url accordingly
+  streaming:
+    enabled: false
+    annotations:
+    ingressClassName:
+    hosts:
+      - host: streaming.mastodon.local
+        paths:
+          - path: "/"
+    tls:
+      - secretName: mastodon-tls
+        hosts:
+          - streaming.mastodon.local
+
 # -- https://github.com/bitnami/charts/tree/master/bitnami/elasticsearch#parameters
 elasticsearch:
   # Elasticsearch is powering full-text search. It is optional.
