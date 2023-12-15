@@ -130,7 +130,6 @@ mastodon:
         repository:
         tag:
       # allows you to mount a custom database.yml from a configmap
-      # please note that we do not advise using a read-only replica for sidekiq workers
       customDatabaseConfigYml:
         configMapRef:
           name:
