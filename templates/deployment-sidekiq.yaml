@@ -98,6 +98,13 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" $context }}
                   key: redis-password
+            {{- if and $context.Values.elasticsearch.existingSecret (or $context.Values.elasticsearch.enabled $context.Values.elasticsearch.hostname) }}
+            - name: "ES_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $context.Values.elasticsearch.existingSecret }}
+                  key: password
+            {{- end }}
             - name: "SMTP_LOGIN"
               valueFrom:
                 secretKeyRef:

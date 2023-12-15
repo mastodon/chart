@@ -79,6 +79,13 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" . }}
                   key: redis-password
+            {{- if and .Values.elasticsearch.existingSecret (or .Values.elasticsearch.enabled .Values.elasticsearch.hostname) }}
+            - name: "ES_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.elasticsearch.existingSecret }}
+                  key: password
+            {{- end }}
             - name: "PORT"
               value: {{ .Values.mastodon.web.port | quote }}
             {{- if .Values.mastodon.web.minThreads }}

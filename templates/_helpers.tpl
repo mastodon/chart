@@ -171,3 +171,16 @@ Find highest number of needed database connections to set DB_POOL variable
 {{- end }}
 {{- $poolSize | quote }}
 {{- end }}
+
+{{/*
+Full hostname for a custom Elasticsearch cluster
+*/}}
+{{- define "mastodon.elasticsearch.fullHostname" -}}
+{{- if not .Values.elasticsearch.enabled }}
+    {{- if .Values.elasticsearch.tls }}
+        {{- printf "https://%s" (tpl .Values.elasticsearch.hostname $) -}}
+    {{- else -}}
+        {{- printf "%s" (tpl .Values.elasticsearch.hostname $) -}}
+    {{- end }}
+{{- end -}}
+{{- end -}}
