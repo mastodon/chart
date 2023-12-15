@@ -351,12 +351,12 @@ data:
 
   {{- if .Values.mastodon.cacheBuster.enabled }}
   CACHE_BUSTER_ENABLED: "true"
+    {{- if .Values.mastodon.cacheBuster.httpMethod }}
+  CACHE_BUSTER_HTTP_METHOD: {{ .Values.mastodon.cacheBuster.httpMethod }}
+    {{- end }}
+    {{- if .Values.mastodon.cacheBuster.authHeader }}
+  CACHE_BUSTER_SECRET_HEADER: {{ .Values.mastodon.cacheBuster.authHeader }}
+    {{- end }}
   {{- else }}
   CACHE_BUSTER_ENABLED: "false"
-  {{- end }}
-  {{- if .Values.mastodon.cacheBuster.httpMethod }}
-  CACHE_BUSTER_HTTP_METHOD: {{ .Values.mastodon.cacheBuster.httpMethod }}
-  {{- end }}
-  {{- if .Values.mastodon.cacheBuster.authHeader }}
-  CACHE_BUSTER_SECRET_HEADER: {{ .Values.mastodon.cacheBuster.authHeader }}
   {{- end }}

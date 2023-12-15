@@ -135,7 +135,7 @@ spec:
                   name: {{ $context.Values.mastodon.deepl.apiKeySecretRef.name }}
                   key: {{ $context.Values.mastodon.deepl.apiKeySecretRef.key }}
             {{- end }}
-            {{- if $context.Values.mastodon.cacheBuster.authToken.existingSecret }}
+            {{- if and $context.Values.mastodon.cacheBuster.enabled $context.Values.mastodon.cacheBuster.authToken.existingSecret }}
             - name: CACHE_BUSTER_SECRET
               valueFrom:
                 secretKeyRef:

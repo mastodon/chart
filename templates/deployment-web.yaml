@@ -130,7 +130,7 @@ spec:
                   name: {{ .Values.mastodon.hcaptcha.secretKeySecretRef.name }}
                   key: {{ .Values.mastodon.hcaptcha.secretKeySecretRef.key }}
             {{- end }}
-            {{- if .Values.mastodon.cacheBuster.authToken.existingSecret }}
+            {{- if and .Values.mastodon.cacheBuster.enabled .Values.mastodon.cacheBuster.authToken.existingSecret }}
             - name: CACHE_BUSTER_SECRET
               valueFrom:
                 secretKeyRef:
