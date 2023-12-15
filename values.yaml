@@ -126,6 +126,15 @@ mastodon:
         - mailers,2
         - pull
         - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
+        image:
+          repository:
+          tag:
+        # allows you to mount a custom database.yml from a configmap
+        # please note that we do not advise using a read-only replica for sidekiq workers
+        customDatabaseConfigYml:
+          configMapRef:
+            name:
+            key:
     #- name: push-pull
     #  concurrency: 50
     #  resources: {}
@@ -162,6 +171,9 @@ mastodon:
     # password must be located in keys named `login` and `password` respectively.
     existingSecret:
   streaming:
+    image:
+      repository:
+      tag:
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
     # the node running the pod, which is unrelated to the resources allocated to
@@ -210,6 +222,15 @@ mastodon:
     maxThreads: "5"
     workers: "2"
     persistentTimeout: "20"
+    image:
+      repository:
+      tag:
+    # allows you to mount a custom database.yml from a configmap
+    # for example if you want to use a read-only replica
+    customDatabaseConfigYml:
+      configMapRef:
+        name:
+        key:
 
   metrics:
     statsd:

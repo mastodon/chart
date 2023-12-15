@@ -66,11 +66,16 @@ spec:
             claimName: {{ template "mastodon.fullname" $context }}-system
       {{- end }}
       {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
+      {{- if dig "customDatabaseConfigYml" "configMapRef" "name" false . }}
+        - name: config-database-yml
+          configMap:
+            name: {{ .customDatabaseConfigYml.configMapRef.name }}
+      {{- end }}
       containers:
         - name: {{ $context.Chart.Name }}
           securityContext:
             {{- toYaml $context.Values.mastodon.sidekiq.securityContext | nindent 12 }}
-          image: "{{ $context.Values.image.repository }}:{{ $context.Values.image.tag | default $context.Chart.AppVersion }}"
+          image: "{{ coalesce (dig "image" "repository" false .) $context.Values.image.repository }}:{{ coalesce (dig "image" "tag" false .) $context.Values.image.tag $context.Chart.AppVersion }}"
           imagePullPolicy: {{ $context.Values.image.pullPolicy }}
           command:
             - bundle
@@ -141,6 +146,11 @@ spec:
               mountPath: /opt/mastodon/public/assets
             - name: system
               mountPath: /opt/mastodon/public/system
+          {{- end }}
+          {{- if dig "customDatabaseConfigYml" "configMapRef" "name" false . }}
+            - name: config-database-yml
+              mountPath: /opt/mastodon/config/database.yml
+              subPath: {{ .customDatabaseConfigYml.configMapRef.key }}
           {{- end }}
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}

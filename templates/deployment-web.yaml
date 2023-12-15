@@ -48,6 +48,11 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "mastodon.fullname" . }}-system
       {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
+      {{- if .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
+        - name: config-database-yml
+          configMap:
+            name: {{ .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
+      {{- end }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}-web
@@ -55,7 +60,7 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ coalesce .Values.mastodon.web.image.repository .Values.image.repository }}:{{ coalesce .Values.mastodon.web.image.tag .Values.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - bundle
@@ -129,6 +134,11 @@ spec:
               mountPath: /opt/mastodon/public/assets
             - name: system
               mountPath: /opt/mastodon/public/system
+          {{- end }}
+          {{- if .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
+            - name: config-database-yml
+              mountPath: /opt/mastodon/config/database.yml
+              subPath: {{ .Values.mastodon.web.customDatabaseConfigYml.configMapRef.key }}
           {{- end }}
           ports:
             - name: http
