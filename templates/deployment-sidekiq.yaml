@@ -56,6 +56,10 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with (default (default $context.Values.topologySpreadConstraints $context.Values.mastodon.sidekiq.topologySpreadConstraints) .topologySpreadConstraints) }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if (not $context.Values.mastodon.s3.enabled) }}
       volumes:
         - name: assets
