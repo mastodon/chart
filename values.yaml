@@ -101,6 +101,8 @@ mastodon:
     resources: {}
     # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
     affinity: {}
+    # -- Topology spread constraints for Sidekiq Pods, overwrites .Values.topologySpreadConstraints
+    topologySpreadConstraints: {}
     # limits:
     #   cpu: "1"
     #   memory: 768Mi
@@ -117,6 +119,8 @@ mastodon:
       resources: {}
       # -- Affinity for this specific deployment, overwrites .Values.affinity and .Values.mastodon.sidekiq.affinity
       affinity: {}
+      # -- Topology spread constraints for this specific deployment, overwrites .Values.topologySpreadConstraints and .Values.mastodon.sidekiq.topologySpreadConstraints
+      topologySpreadConstraints: {}
       # -- Sidekiq queues for Mastodon that are handled by this worker. See https://docs.joinmastodon.org/admin/scaling/#concurrency
       # See https://github.com/mperham/sidekiq/wiki/Advanced-Options#queues for how to weight queues as argument
       queues:
@@ -174,6 +178,8 @@ mastodon:
     replicas: 1
     # -- Affinity for Streaming Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Topology spread constraints for Streaming Pods, overwrites .Values.topologySpreadConstraints
+    topologySpreadConstraints: {}
     # -- Pod Security Context for Streaming Pods, overwrites .Values.podSecurityContext
     podSecurityContext: {}
     # -- (Streaming Container) Security Context for Streaming Pods, overwrites .Values.securityContext
@@ -192,6 +198,8 @@ mastodon:
     replicas: 1
     # -- Affinity for Web Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Topology spread constraints for Web Pods, overwrites .Values.topologySpreadConstraints
+    topologySpreadConstraints: {}
     # -- Pod Security Context for Web Pods, overwrites .Values.podSecurityContext
     podSecurityContext: {}
     # -- (Web Container) Security Context for Web Pods, overwrites .Values.securityContext
@@ -478,3 +486,9 @@ tolerations: []
 
 # -- Affinity for all pods unless overwritten
 affinity: {}
+
+# -- Topology Spread Constraints for all pods unless overwritten
+# Please note that you need to use `matchLabelKeys` (Kubernetes 1.25+) if you
+# want to spread each deployment independently, or override topologySpreadConstraints
+# for each deployment
+topologySpreadConstraints: {}
