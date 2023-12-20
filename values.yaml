@@ -249,9 +249,9 @@ ingress:
     #
     # ensure that NGINX's upload size matches Mastodon's
     #   for the K8s ingress controller:
-    # nginx.ingress.kubernetes.io/proxy-body-size: 40m
+    nginx.ingress.kubernetes.io/proxy-body-size: 90m
     #   for the NGINX ingress controller:
-    # nginx.org/client-max-body-size: 40m
+    nginx.org/client-max-body-size: 90m
   # -- you can specify the ingressClassName if it differs from the default
   ingressClassName:
   hosts:
