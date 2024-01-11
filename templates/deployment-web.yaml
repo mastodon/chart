@@ -128,6 +128,20 @@ spec:
                   name: {{ .Values.mastodon.deepl.apiKeySecretRef.name }}
                   key: {{ .Values.mastodon.deepl.apiKeySecretRef.key }}
             {{- end }}
+            {{- if .Values.mastodon.hcaptcha.enabled }}
+            - name: "HCAPTCHA_SECRET_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.hcaptcha.secretKeySecretRef.name }}
+                  key: {{ .Values.mastodon.hcaptcha.secretKeySecretRef.key }}
+            {{- end }}
+            {{- if and .Values.mastodon.cacheBuster.enabled .Values.mastodon.cacheBuster.authToken.existingSecret }}
+            - name: CACHE_BUSTER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.cacheBuster.authToken.existingSecret }}
+                  key: password
+            {{- end }}
           {{- if (not .Values.mastodon.s3.enabled) }}
           volumeMounts:
             - name: assets
