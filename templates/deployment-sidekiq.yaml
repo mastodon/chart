@@ -37,7 +37,9 @@ spec:
         {{- include "mastodon.rollingPodAnnotations" $context | nindent 8 }}
         checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
       labels:
+        {{- include "mastodon.globalLabels" $context | nindent 8 }}
         {{- include "mastodon.selectorLabels" $context | nindent 8 }}
+        {{- include "mastodon.statsdExporterLabels" $context | nindent 8 }}
         app.kubernetes.io/component: sidekiq-{{ .name }}
         app.kubernetes.io/part-of: rails
     spec:
@@ -54,6 +56,10 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with (default (default $context.Values.topologySpreadConstraints $context.Values.mastodon.sidekiq.topologySpreadConstraints) .topologySpreadConstraints) }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if (not $context.Values.mastodon.s3.enabled) }}
       volumes:
         - name: assets
@@ -63,11 +69,17 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "mastodon.fullname" $context }}-system
       {{- end }}
+      {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
+      {{- if dig "customDatabaseConfigYml" "configMapRef" "name" false . }}
+        - name: config-database-yml
+          configMap:
+            name: {{ .customDatabaseConfigYml.configMapRef.name }}
+      {{- end }}
       containers:
         - name: {{ $context.Chart.Name }}
           securityContext:
             {{- toYaml $context.Values.mastodon.sidekiq.securityContext | nindent 12 }}
-          image: "{{ $context.Values.image.repository }}:{{ $context.Values.image.tag | default $context.Chart.AppVersion }}"
+          image: "{{ coalesce (dig "image" "repository" false .) $context.Values.image.repository }}:{{ coalesce (dig "image" "tag" false .) $context.Values.image.tag $context.Chart.AppVersion }}"
           imagePullPolicy: {{ $context.Values.image.pullPolicy }}
           command:
             - bundle
@@ -90,11 +102,25 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.postgresql.secretName" $context }}
                   key: password
+            {{- if $context.Values.postgresql.readReplica.auth.existingSecret }}
+            - name: "REPLICA_DB_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $context.Values.postgresql.readReplica.auth.existingSecret }}
+                  key: password
+            {{- end }}
             - name: "REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" $context }}
                   key: redis-password
+            {{- if and $context.Values.elasticsearch.existingSecret (or $context.Values.elasticsearch.enabled $context.Values.elasticsearch.hostname) }}
+            - name: "ES_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $context.Values.elasticsearch.existingSecret }}
+                  key: password
+            {{- end }}
             - name: "SMTP_LOGIN"
               valueFrom:
                 secretKeyRef:
@@ -118,6 +144,20 @@ spec:
                   name: {{ $context.Values.mastodon.s3.existingSecret }}
                   key: AWS_ACCESS_KEY_ID
             {{- end }}
+            {{- if and $context.Values.mastodon.deepl.enabled }}
+            - name: "DEEPL_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $context.Values.mastodon.deepl.apiKeySecretRef.name }}
+                  key: {{ $context.Values.mastodon.deepl.apiKeySecretRef.key }}
+            {{- end }}
+            {{- if and $context.Values.mastodon.cacheBuster.enabled $context.Values.mastodon.cacheBuster.authToken.existingSecret }}
+            - name: CACHE_BUSTER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $context.Values.mastodon.cacheBuster.authToken.existingSecret }}
+                  key: password
+            {{- end }}
           {{- if (not $context.Values.mastodon.s3.enabled) }}
           volumeMounts:
             - name: assets
@@ -125,8 +165,14 @@ spec:
             - name: system
               mountPath: /opt/mastodon/public/system
           {{- end }}
+          {{- if dig "customDatabaseConfigYml" "configMapRef" "name" false . }}
+            - name: config-database-yml
+              mountPath: /opt/mastodon/config/database.yml
+              subPath: {{ .customDatabaseConfigYml.configMapRef.key }}
+          {{- end }}
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
+      {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
       {{- with $context.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

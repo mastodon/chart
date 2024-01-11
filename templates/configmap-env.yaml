@@ -15,13 +15,31 @@ data:
   DB_NAME: {{ .Values.postgresql.auth.database }}
   DB_POOL: {{ include "mastodon.maxDbPool" . }}
   DB_USER: {{ .Values.postgresql.auth.username }}
+  {{- if .Values.postgresql.readReplica.hostname }}
+  REPLICA_DB_HOST: {{ .Values.postgresql.readReplica.hostname }}
+  {{- end }}
+  {{- if .Values.postgresql.readReplica.port }}
+  REPLICA_DB_PORT: {{ .Values.postgresql.readReplica.port }}
+  {{- end }}
+  {{- if .Values.postgresql.readReplica.auth.database }}
+  REPLICA_DB_NAME: {{ .Values.postgresql.readReplica.auth.database }}
+  {{- end }}
+  {{- if .Values.postgresql.readReplica.auth.username }}
+  REPLICA_DB_USER: {{ .Values.postgresql.readReplica.auth.username }}
+  {{- end }}
+  {{- if .Values.postgresql.readReplica.auth.password }}
+  REPLICA_DB_PASS: {{ .Values.postgresql.readReplica.auth.password }}
+  {{- end }}
   PREPARED_STATEMENTS: {{ .Values.mastodon.preparedStatements | quote }}
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
   {{- if .Values.elasticsearch.enabled }}
   ES_ENABLED: "true"
-  ES_HOST: {{ template "mastodon.elasticsearch.fullname" . }}-master-hl
-  ES_PORT: "9200"
   ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
+  ES_HOST: {{ include "mastodon.elasticsearch.fullHostname" .}}
+  ES_PORT: {{ .Values.elasticsearch.port | default "9200" | quote }}
+  {{- end }}
+  {{- with .Values.elasticsearch.user }}
+  ES_USER: {{ . }}
   {{- end }}
   LOCAL_DOMAIN: {{ .Values.mastodon.local_domain }}
   {{- with .Values.mastodon.web_domain }}
@@ -326,6 +344,31 @@ data:
   LDAP_UID_CONVERSION_REPLACE: {{ . }}
   {{- end }}
   {{- end }}
-  {{- with .Values.mastodon.metrics.statsd.address }}
-  STATSD_ADDR: {{ . }}
+  {{- if .Values.mastodon.metrics.statsd.address }}
+  STATSD_ADDR: {{ .Values.mastodon.metrics.statsd.address }}
+  {{- else if .Values.mastodon.metrics.statsd.exporter.enabled }}
+  STATSD_ADDR: localhost:9125
+  {{- end }}
+  {{- range $k, $v := .Values.mastodon.extraEnvVars }}
+  {{ $k }}: {{ quote $v }}
+  {{- end }}
+
+  {{- if .Values.mastodon.deepl.enabled }}
+  DEEPL_PLAN: {{ .Values.mastodon.deepl.plan }}
+  {{- end }}
+
+  {{- if .Values.mastodon.hcaptcha.enabled }}
+  HCAPTCHA_SITE_KEY: {{ .Values.mastodon.hcaptcha.siteId }}
+  {{- end }}
+
+  {{- if .Values.mastodon.cacheBuster.enabled }}
+  CACHE_BUSTER_ENABLED: "true"
+    {{- if .Values.mastodon.cacheBuster.httpMethod }}
+  CACHE_BUSTER_HTTP_METHOD: {{ .Values.mastodon.cacheBuster.httpMethod }}
+    {{- end }}
+    {{- if .Values.mastodon.cacheBuster.authHeader }}
+  CACHE_BUSTER_SECRET_HEADER: {{ .Values.mastodon.cacheBuster.authHeader }}
+    {{- end }}
+  {{- else }}
+  CACHE_BUSTER_ENABLED: "false"
   {{- end }}
