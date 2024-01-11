@@ -282,6 +282,8 @@ postgresql:
 
   # Options for a read-only replica.
   # If enabled, mastodon uses existing defaults for postgres for these values as well.
+  # Documentation for more information on this feature:
+  # https://docs.joinmastodon.org/admin/scaling/#read-replicas
   readReplica:
     hostname:
     port:
