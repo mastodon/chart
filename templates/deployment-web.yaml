@@ -10,6 +10,7 @@ metadata:
     {{- end }}
 spec:
   replicas: {{ .Values.mastodon.web.replicas }}
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" . | nindent 6 }}
@@ -39,20 +40,23 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if (not .Values.mastodon.s3.enabled) }}
       volumes:
+      {{- if (not .Values.mastodon.s3.enabled) }}
         - name: assets
           persistentVolumeClaim:
             claimName: {{ template "mastodon.fullname" . }}-assets
         - name: system
           persistentVolumeClaim:
             claimName: {{ template "mastodon.fullname" . }}-system
+      {{- end }}
       {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
       {{- if .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
         - name: config-database-yml
           configMap:
             name: {{ .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
       {{- end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}-web
@@ -149,8 +153,8 @@ spec:
                   name: {{ .Values.mastodon.cacheBuster.authToken.existingSecret }}
                   key: password
             {{- end }}
-          {{- if (not .Values.mastodon.s3.enabled) }}
           volumeMounts:
+          {{- if (not .Values.mastodon.s3.enabled) }}
             - name: assets
               mountPath: /opt/mastodon/public/assets
             - name: system
@@ -160,6 +164,9 @@ spec:
             - name: config-database-yml
               mountPath: /opt/mastodon/config/database.yml
               subPath: {{ .Values.mastodon.web.customDatabaseConfigYml.configMapRef.key }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: http
