@@ -217,7 +217,9 @@ mastodon:
     workers: "2"
     persistentTimeout: "20"
 
-  # Additional settings for the cache buster.
+  # HTTP cache buster configuration.
+  # See the documentation for more information about this feature:
+  # https://docs.joinmastodon.org/admin/config/#http-cache-buster
   cacheBuster:
     enabled: false
     httpMethod: "GET"
