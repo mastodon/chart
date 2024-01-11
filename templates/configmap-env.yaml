@@ -35,8 +35,15 @@ data:
   {{- if .Values.elasticsearch.enabled }}
   ES_ENABLED: "true"
   ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
+  ES_HOST: {{ template "mastodon.elasticsearch.fullname" . }}-master-hl
+  ES_PORT: "9200"
+  {{- else if .Values.elasticsearch.hostname }}
+  ES_ENABLED: "true"
   ES_HOST: {{ include "mastodon.elasticsearch.fullHostname" .}}
   ES_PORT: {{ .Values.elasticsearch.port | default "9200" | quote }}
+  {{- end }}
+  {{- with .Values.elasticsearch.user }}
+  ES_USER: {{ . }}
   {{- end }}
   {{- with .Values.elasticsearch.user }}
   ES_USER: {{ . }}
