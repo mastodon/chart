@@ -22,6 +22,7 @@ spec:
     type: Recreate
   {{- end }}
   replicas: {{ .replicas }}
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" $context | nindent 6 }}
@@ -60,8 +61,8 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if (not $context.Values.mastodon.s3.enabled) }}
       volumes:
+      {{- if (not $context.Values.mastodon.s3.enabled) }}
         - name: assets
           persistentVolumeClaim:
             claimName: {{ template "mastodon.fullname" $context }}-assets
@@ -74,6 +75,9 @@ spec:
         - name: config-database-yml
           configMap:
             name: {{ .customDatabaseConfigYml.configMapRef.name }}
+      {{- end }}
+      {{- with $context.Values.volumes }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ $context.Chart.Name }}
@@ -158,8 +162,8 @@ spec:
                   name: {{ $context.Values.mastodon.cacheBuster.authToken.existingSecret }}
                   key: password
             {{- end }}
-          {{- if (not $context.Values.mastodon.s3.enabled) }}
           volumeMounts:
+          {{- if (not $context.Values.mastodon.s3.enabled) }}
             - name: assets
               mountPath: /opt/mastodon/public/assets
             - name: system
@@ -169,6 +173,9 @@ spec:
             - name: config-database-yml
               mountPath: /opt/mastodon/config/database.yml
               subPath: {{ .customDatabaseConfigYml.configMapRef.key }}
+          {{- end }}
+          {{- with $context.Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}

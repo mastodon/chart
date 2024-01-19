@@ -10,6 +10,7 @@ metadata:
     {{- end }}
 spec:
   replicas: {{ .Values.mastodon.streaming.replicas }}
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" . | nindent 6 }}
