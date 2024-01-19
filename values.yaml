@@ -6,7 +6,7 @@ image:
   # built from the most recent commit
   #
   # tag: latest
-  tag: ""
+  tag: "v4.2"
   # use `Always` when using `latest` tag
   pullPolicy: IfNotPresent
 
@@ -368,6 +368,7 @@ postgresql:
 
   # Options for a read-only replica.
   # If enabled, mastodon uses existing defaults for postgres for these values as well.
+  # NOTE: This feature is only available on Mastodon v4.2+
   # Documentation for more information on this feature:
   # https://docs.joinmastodon.org/admin/scaling/#read-replicas
   readReplica:
