@@ -338,6 +338,7 @@ elasticsearch:
   # hostname:
   # port: 9200
   # tls: true
+  # preset: single_node_cluster
 
   # This is optional, use it if you ES cluster requires authentication
   # user:
