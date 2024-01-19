@@ -34,6 +34,7 @@ data:
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
   {{- if .Values.elasticsearch.enabled }}
   ES_ENABLED: "true"
+  ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
   ES_HOST: {{ template "mastodon.elasticsearch.fullname" . }}-master-hl
   ES_PORT: "9200"
   {{- else if .Values.elasticsearch.hostname }}
