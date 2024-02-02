@@ -10,6 +10,7 @@ metadata:
     {{- end }}
 spec:
   replicas: {{ .Values.mastodon.streaming.replicas }}
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" . | nindent 6 }}
@@ -23,6 +24,7 @@ spec:
         # roll the pods to pick up any db migrations or other changes
         {{- include "mastodon.rollingPodAnnotations" . | nindent 8 }}
       labels:
+        {{- include "mastodon.globalLabels" . | nindent 8 }}
         {{- include "mastodon.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: streaming
     spec:
@@ -41,7 +43,7 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ coalesce .Values.mastodon.streaming.image.repository .Values.image.repository }}:{{ coalesce .Values.mastodon.streaming.image.tag .Values.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - node
@@ -55,6 +57,13 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.postgresql.secretName" . }}
                   key: password
+            {{- if .Values.postgresql.readReplica.auth.existingSecret }}
+            - name: "REPLICA_DB_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.readReplica.auth.existingSecret }}
+                  key: password
+            {{- end }}
             - name: "REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -84,6 +93,10 @@ spec:
       {{- end }}
       {{- with (default .Values.affinity .Values.mastodon.streaming.affinity) }}
       affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.topologySpreadConstraints .Values.mastodon.streaming.topologySpreadConstraints) }}
+      topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
