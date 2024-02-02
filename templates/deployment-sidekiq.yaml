@@ -44,6 +44,10 @@ spec:
         app.kubernetes.io/component: sidekiq-{{ .name }}
         app.kubernetes.io/part-of: rails
     spec:
+      {{- with $context.Values.hostAliases }}
+      hostAliases:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with $context.Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

@@ -562,6 +562,10 @@ tolerations: []
 # -- Affinity for all pods unless overwritten
 affinity: {}
 
+# Any aliases to add to pod's /etc/hosts file.
+# https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+hostAliases: []
+
 # -- Topology Spread Constraints for all pods unless overwritten
 # Please note that you need to use `matchLabelKeys` (Kubernetes 1.25+) if you
 # want to spread each deployment independently, or override topologySpreadConstraints
