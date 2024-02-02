@@ -202,7 +202,7 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with (default .Values.tolerations .Values.mastodon.web.tolerations) }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
