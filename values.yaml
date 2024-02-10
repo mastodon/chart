@@ -48,7 +48,7 @@ mastodon:
   singleUserMode: false
   # -- Enables "Secure Mode" for more details see: https://docs.joinmastodon.org/admin/config/#authorized_fetch
   authorizedFetch: false
-  # -- Enables "Limited Federation Mode" for more detauls see: https://docs.joinmastodon.org/admin/config/#limited_federation_mode
+  # -- Enables "Limited Federation Mode" for more details see: https://docs.joinmastodon.org/admin/config/#limited_federation_mode
   limitedFederationMode: false
   persistence:
     assets:
