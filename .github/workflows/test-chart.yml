@@ -78,6 +78,9 @@ jobs:
           - k3s-channel: v1.21
             helm-version: v3.6.0
 
+    env:
+      HELM_EXPERIMENTAL_OCI: "1"
+
     steps:
       - uses: actions/checkout@v3
 
