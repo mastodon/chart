@@ -274,8 +274,15 @@ mastodon:
   # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
   preparedStatements: true
 
-  # Additional env vars defined in all pods
+
+  # Specify extra environment variables to be added to all Mastodon pods.
+  # These can be used for configuration not included in this chart (including configuration for Mastodon varietals.)
   extraEnvVars: {}
+  
+  # Alternatively specify extra environment variables stored in a ConfigMap.
+  # The specified ConfigMap should contain the additional environment variables in key-value format.
+  # extraEnvFrom: <config-map-name>
+
 
 ingress:
   enabled: true
