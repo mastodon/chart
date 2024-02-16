@@ -32,11 +32,21 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Labels added on every Mastodon resource
+*/}}
+{{- define "mastodon.globalLabels" -}}
+{{- range $k, $v := .Values.mastodon.labels }}
+{{ $k }}: {{ quote $v }}
+{{- end -}}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "mastodon.labels" -}}
 helm.sh/chart: {{ include "mastodon.chart" . }}
 {{ include "mastodon.selectorLabels" . }}
+{{ include "mastodon.globalLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -161,3 +171,16 @@ Find highest number of needed database connections to set DB_POOL variable
 {{- end }}
 {{- $poolSize | quote }}
 {{- end }}
+
+{{/*
+Full hostname for a custom Elasticsearch cluster
+*/}}
+{{- define "mastodon.elasticsearch.fullHostname" -}}
+{{- if not .Values.elasticsearch.enabled }}
+    {{- if .Values.elasticsearch.tls }}
+        {{- printf "https://%s" (tpl .Values.elasticsearch.hostname $) -}}
+    {{- else -}}
+        {{- printf "%s" (tpl .Values.elasticsearch.hostname $) -}}
+    {{- end }}
+{{- end -}}
+{{- end -}}
