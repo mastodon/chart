@@ -209,7 +209,7 @@ mastodon:
   # Specify extra environment variables to be added to all Mastodon pods.
   # These can be used for configuration not included in this chart (including configuration for Mastodon varietals.)
   # The specified ConfigMap should contain the additional environment variables in key-value format.
-  # extraEnvironment: <config-map-name>
+  # extraEnvFrom: <config-map-name>
 
 ingress:
   enabled: true

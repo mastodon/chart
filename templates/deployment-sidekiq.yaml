@@ -84,9 +84,9 @@ spec:
                 name: {{ include "mastodon.fullname" $context }}-env
             - secretRef:
                 name: {{ template "mastodon.secretName" $context }}
-            {{- if $context.Values.mastodon.extraEnvironment }}
+            {{- if $context.Values.mastodon.extraEnvFrom }}
             - configMapRef:
-                name: {{ $context.Values.mastodon.extraEnvironment }}
+                name: {{ $context.Values.mastodon.extraEnvFrom }}
             {{- end}}
           env:
             - name: "DB_PASS"
