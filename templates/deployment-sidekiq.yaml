@@ -22,7 +22,9 @@ spec:
     type: Recreate
   {{- end }}
   replicas: {{ .replicas }}
-  revisionHistoryLimit: 2
+  {{- if (ne (toString $context.Values.mastodon.revisionHistoryLimit) "<nil>") }}
+  revisionHistoryLimit: {{ $context.Values.mastodon.revisionHistoryLimit }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" $context | nindent 6 }}
