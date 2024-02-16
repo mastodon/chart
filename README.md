@@ -9,6 +9,23 @@ Kubernetes cluster.  The basic usage is:
 
 This chart is tested with k8s 1.21+ and helm 3.6.0+.
 
+# Installation
+
+This chart is [released as an OCI image](https://helm.sh/docs/topics/registries/) to `ghcr.io/mastodon/charts/mastodon`. You can install it without the need to add any repository to your helm installation using:
+
+```shell
+helm install mastodon oci://ghcr.io/mastodon/charts/mastodon --values your-values-file.yaml
+```
+
+You can also add it as a dependency to another chart in your Chart.yaml:
+
+```yaml
+dependencies:
+  - name: mastodon
+    version: 4.0.0
+    repository: oci://ghcr.io/mastodon/charts
+```
+
 # Configuration
 
 The variables that _must_ be configured are:
