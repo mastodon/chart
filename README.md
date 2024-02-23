@@ -9,6 +9,12 @@ Kubernetes cluster.  The basic usage is:
 
 This chart is tested with k8s 1.21+ and helm 3.8.0+.
 
+# NOTICE: Future Deprecation
+
+We have plans in the very near future to deprecate this chart in favor of a [new git repo](https://github.com/mastodon/helm-charts), which has proper helm repository support (e.g. `helm repo add`), and will contain multiple charts, both for mastodon and for supplementary components that we make use of.
+
+We still encourage suggestions and PRs to help make this chart better, and this repository will remain available after the new charts are ready to give users time to migrate. However, we will not be approving large PRs, or PRs that change fundamental chart functions, as those changes should be directed to the new charts.
+
 # Configuration
 
 The variables that _must_ be configured are:
