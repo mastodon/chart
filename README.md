@@ -15,6 +15,8 @@ We have plans in the very near future to deprecate this chart in favor of a [new
 
 We still encourage suggestions and PRs to help make this chart better, and this repository will remain available after the new charts are ready to give users time to migrate. However, we will not be approving large PRs, or PRs that change fundamental chart functions, as those changes should be directed to the new charts.
 
+Please see the pinned [GitHub issue](https://github.com/mastodon/chart/issues/129) for more info & discussion.
+
 # Configuration
 
 The variables that _must_ be configured are:
