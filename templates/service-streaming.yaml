@@ -11,6 +11,7 @@ spec:
       targetPort: streaming
       protocol: TCP
       name: streaming
+  ipFamilyPolicy: PreferDualStack
   selector:
     {{- include "mastodon.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: streaming
