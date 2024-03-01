@@ -67,10 +67,10 @@ spec:
       {{- if (not $context.Values.mastodon.s3.enabled) }}
         - name: assets
           persistentVolumeClaim:
-            claimName: {{ template "mastodon.fullname" $context }}-assets
+            claimName: {{ template "mastodon.pvc.assets" $context }}
         - name: system
           persistentVolumeClaim:
-            claimName: {{ template "mastodon.fullname" $context }}-system
+            claimName: {{ template "mastodon.pvc.system" $context }}
       {{- end }}
       {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
       {{- if dig "customDatabaseConfigYml" "configMapRef" "name" false . }}
