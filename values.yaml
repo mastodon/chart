@@ -78,6 +78,8 @@ mastodon:
     permission: ""
     # -- If you have a caching proxy, enter its base URL here.
     alias_host: ""
+    # -- Set this to true if the storage provider uses domain style 'bucket.endpoint' naming 
+    # override_path_style: "true"
   deepl:
     enabled: false
     plan:
