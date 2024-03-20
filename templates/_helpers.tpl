@@ -142,8 +142,10 @@ Get the redis secret.
     {{- printf "%s" (tpl .Values.redis.auth.existingSecret $) -}}
 {{- else if .Values.redis.existingSecret }}
     {{- printf "%s" (tpl .Values.redis.existingSecret $) -}}
-{{- else -}}
+{{- else if .Values.redis.enabled -}}
     {{- printf "%s-redis" (tpl .Release.Name $) -}}
+{{- else -}}
+    {{- printf "%s-redis" (include "mastodon.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
