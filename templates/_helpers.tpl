@@ -106,7 +106,7 @@ Get the mastodon secret.
 {{- if .Values.mastodon.secrets.existingSecret }}
     {{- printf "%s" (tpl .Values.mastodon.secrets.existingSecret $) -}}
 {{- else -}}
-    {{- printf "%s" (include "common.names.fullname" .) -}}
+    {{- printf "%s" (include "mastodon.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
@@ -117,7 +117,7 @@ Get the smtp secret.
 {{- if .Values.mastodon.smtp.existingSecret }}
     {{- printf "%s" (tpl .Values.mastodon.smtp.existingSecret $) -}}
 {{- else -}}
-    {{- printf "%s-smtp" (include "common.names.fullname" .) -}}
+    {{- printf "%s-smtp" (include "mastodon.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
@@ -130,7 +130,7 @@ Get the postgresql secret.
 {{- else if .Values.postgresql.enabled -}}
     {{- printf "%s-postgresql" (tpl .Release.Name $) -}}
 {{- else -}}
-    {{- printf "%s" (include "common.names.fullname" .) -}}
+    {{- printf "%s" (include "mastodon.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
