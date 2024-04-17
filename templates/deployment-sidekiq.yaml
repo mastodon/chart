@@ -22,7 +22,9 @@ spec:
     type: Recreate
   {{- end }}
   replicas: {{ .replicas }}
-  revisionHistoryLimit: 2
+  {{- if (ne (toString $context.Values.mastodon.revisionHistoryLimit) "<nil>") }}
+  revisionHistoryLimit: {{ $context.Values.mastodon.revisionHistoryLimit }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" $context | nindent 6 }}
@@ -36,7 +38,7 @@ spec:
         {{- end }}
         # roll the pods to pick up any db migrations or other changes
         {{- include "mastodon.rollingPodAnnotations" $context | nindent 8 }}
-        checksum/config-secrets: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
+        checksum/config-secrets-smtp: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
       labels:
         {{- include "mastodon.globalLabels" $context | nindent 8 }}
         {{- include "mastodon.selectorLabels" $context | nindent 8 }}
@@ -100,6 +102,10 @@ spec:
                 name: {{ include "mastodon.fullname" $context }}-env
             - secretRef:
                 name: {{ template "mastodon.secretName" $context }}
+            {{- if $context.Values.mastodon.extraEnvFrom }}
+            - configMapRef:
+                name: {{ $context.Values.mastodon.extraEnvFrom }}
+            {{- end}}
           env:
             - name: "DB_PASS"
               valueFrom:
