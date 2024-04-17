@@ -78,7 +78,7 @@ mastodon:
     permission: ""
     # -- If you have a caching proxy, enter its base URL here.
     alias_host: ""
-    # -- Set this to true if the storage provider uses domain style 'bucket.endpoint' naming 
+    # -- Set this to true if the storage provider uses domain style 'bucket.endpoint' naming
     # override_path_style: "true"
   deepl:
     enabled: false
@@ -99,9 +99,19 @@ mastodon:
     vapid:
       private_key: ""
       public_key: ""
+    activeRecordEncryption:
+      primaryKey: ""
+      deterministicKey: ""
+      keyDerivationSalt: ""
     # -- you can also specify the name of an existing Secret
-    # with keys SECRET_KEY_BASE and OTP_SECRET and
-    # VAPID_PRIVATE_KEY and VAPID_PUBLIC_KEY
+    # with keys:
+    # - SECRET_KEY_BASE
+    # - OTP_SECRET
+    # - VAPID_PRIVATE_KEY
+    # - VAPID_PUBLIC_KEY
+    # - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+    # - ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+    # - ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
     existingSecret: ""
 
   # -- The number of old revisions to keep for each Deployment in Kubernetes.
@@ -285,7 +295,7 @@ mastodon:
   # Specify extra environment variables to be added to all Mastodon pods.
   # These can be used for configuration not included in this chart (including configuration for Mastodon varietals.)
   extraEnvVars: {}
-  
+
   # Alternatively specify extra environment variables stored in a ConfigMap.
   # The specified ConfigMap should contain the additional environment variables in key-value format.
   # extraEnvFrom: <config-map-name>
