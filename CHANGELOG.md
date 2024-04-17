@@ -1,3 +1,21 @@
+# 5.1.0
+
+- Added values for Active Record Encryption in Redis:
+    ```yaml
+    mastodon:
+      secrets:
+        activeRecordEncryption:
+          primaryKey:
+          deterministicKey:
+          keyDerivationSalt:
+    ```
+
+- Small bugfix related to automatic secret generation
+
+# [5.0.0](https://github.com/mastodon/chart/commit/63a052b6a5c19dabd172c15c1fd74298dcc544b2)
+
+- Updated major versions of chart dependencies (postgres, redis, elasticsearch)
+
 # [4.0.0](https://github.com/mastodon/chart/compare/920cf37..ae892d5)
 
 - adds support for multiple Sidekiq deployments to be configured to manage
