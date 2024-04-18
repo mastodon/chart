@@ -87,6 +87,9 @@ data:
   {{- with .Values.mastodon.s3.multipart_threshold }}
   S3_MULTIPART_THRESHOLD: "{{ . }}"
   {{- end }}
+  {{- with .Values.mastodon.s3.override_path_style }}
+  S3_OVERRIDE_PATH_STYLE: "{{ . }}"
+  {{- end }}
   {{- end }}
   {{- with .Values.mastodon.smtp.auth_method }}
   SMTP_AUTH_METHOD: {{ . }}

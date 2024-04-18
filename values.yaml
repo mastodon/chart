@@ -6,7 +6,7 @@ image:
   # built from the most recent commit
   #
   # tag: latest
-  tag: "v4.2.5"
+  tag: "v4.2.8"
   # use `Always` when using `latest` tag
   pullPolicy: IfNotPresent
 
@@ -48,7 +48,7 @@ mastodon:
   singleUserMode: false
   # -- Enables "Secure Mode" for more details see: https://docs.joinmastodon.org/admin/config/#authorized_fetch
   authorizedFetch: false
-  # -- Enables "Limited Federation Mode" for more detauls see: https://docs.joinmastodon.org/admin/config/#limited_federation_mode
+  # -- Enables "Limited Federation Mode" for more details see: https://docs.joinmastodon.org/admin/config/#limited_federation_mode
   limitedFederationMode: false
   persistence:
     assets:
@@ -82,6 +82,8 @@ mastodon:
     # multipart_threshold then a multi part session is automatically started
     # and the data is sent up in chunks. Defaults to 16777216 (16MB).
     multipart_threshold: ""
+    # -- Set this to true if the storage provider uses domain style 'bucket.endpoint' naming
+    # override_path_style: "true"
   deepl:
     enabled: false
     plan:
@@ -101,10 +103,25 @@ mastodon:
     vapid:
       private_key: ""
       public_key: ""
+    activeRecordEncryption:
+      primaryKey: ""
+      deterministicKey: ""
+      keyDerivationSalt: ""
     # -- you can also specify the name of an existing Secret
-    # with keys SECRET_KEY_BASE and OTP_SECRET and
-    # VAPID_PRIVATE_KEY and VAPID_PUBLIC_KEY
+    # with keys:
+    # - SECRET_KEY_BASE
+    # - OTP_SECRET
+    # - VAPID_PRIVATE_KEY
+    # - VAPID_PUBLIC_KEY
+    # - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+    # - ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+    # - ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
     existingSecret: ""
+
+  # -- The number of old revisions to keep for each Deployment in Kubernetes.
+  #    See https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#clean-up-policy
+  revisionHistoryLimit: 2
+
   sidekiq:
     # -- Pod security context for all Sidekiq Pods, overwrites .Values.podSecurityContext
     podSecurityContext: {}
@@ -217,6 +234,14 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 128Mi
+    # -- Self-signed certificate(s) the (Node.js) needs to trust to connect to e.g. the database
+    extraCerts: {}
+    # -- Secret containing a key "ca.crt" holding one or more root certificates in PEM format
+    #  existingSecret:
+    # -- Optional volume name for mounting the .crt file, defaults to "extra-certs"
+    #  name:
+    # -- Optional sslMode setting. See nodejs's SSL_MODE. Consider "no-verify"
+    #  sslMode:
   web:
     port: 3000
     # -- Number of Web Pods running
@@ -278,8 +303,15 @@ mastodon:
   # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
   preparedStatements: true
 
-  # Additional env vars defined in all pods
+
+  # Specify extra environment variables to be added to all Mastodon pods.
+  # These can be used for configuration not included in this chart (including configuration for Mastodon varietals.)
   extraEnvVars: {}
+
+  # Alternatively specify extra environment variables stored in a ConfigMap.
+  # The specified ConfigMap should contain the additional environment variables in key-value format.
+  # extraEnvFrom: <config-map-name>
+
 
 ingress:
   enabled: true

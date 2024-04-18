@@ -10,7 +10,9 @@ metadata:
     {{- end }}
 spec:
   replicas: {{ .Values.mastodon.web.replicas }}
-  revisionHistoryLimit: 2
+  {{- if (ne (toString .Values.mastodon.revisionHistoryLimit) "<nil>") }}
+  revisionHistoryLimit: {{ .Values.mastodon.revisionHistoryLimit }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" . | nindent 6 }}
@@ -77,6 +79,10 @@ spec:
                 name: {{ include "mastodon.fullname" . }}-env
             - secretRef:
                 name: {{ template "mastodon.secretName" . }}
+            {{- if .Values.mastodon.extraEnvFrom }}
+            - configMapRef:
+                name: {{ .Values.mastodon.extraEnvFrom }}
+            {{- end}}
           env:
             - name: "DB_PASS"
               valueFrom:
