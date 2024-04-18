@@ -84,6 +84,9 @@ data:
   {{- with .Values.mastodon.s3.alias_host }}
   S3_ALIAS_HOST: {{ . }}
   {{- end }}
+  {{- with .Values.mastodon.s3.multipart_threshold }}
+  S3_MULTIPART_THRESHOLD: "{{ . }}"
+  {{- end }}
   {{- with .Values.mastodon.s3.override_path_style }}
   S3_OVERRIDE_PATH_STYLE: "{{ . }}"
   {{- end }}
