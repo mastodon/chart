@@ -32,11 +32,21 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Labels added on every Mastodon resource
+*/}}
+{{- define "mastodon.globalLabels" -}}
+{{- range $k, $v := .Values.mastodon.labels }}
+{{ $k }}: {{ quote $v }}
+{{- end -}}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "mastodon.labels" -}}
 helm.sh/chart: {{ include "mastodon.chart" . }}
 {{ include "mastodon.selectorLabels" . }}
+{{ include "mastodon.globalLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -55,7 +65,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Rolling pod annotations
 */}}
 {{- define "mastodon.rollingPodAnnotations" -}}
+{{- if .Values.revisionPodAnnotation }}
 rollme: {{ .Release.Revision | quote }}
+{{- end }}
 checksum/config-secrets: {{ include ( print $.Template.BasePath "/secrets.yaml" ) . | sha256sum | quote }}
 checksum/config-configmap: {{ include ( print $.Template.BasePath "/configmap-env.yaml" ) . | sha256sum | quote }}
 {{- end }}
@@ -94,7 +106,18 @@ Get the mastodon secret.
 {{- if .Values.mastodon.secrets.existingSecret }}
     {{- printf "%s" (tpl .Values.mastodon.secrets.existingSecret $) -}}
 {{- else -}}
-    {{- printf "%s" (include "common.names.fullname" .) -}}
+    {{- printf "%s" (include "mastodon.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the smtp secret.
+*/}}
+{{- define "mastodon.smtp.secretName" -}}
+{{- if .Values.mastodon.smtp.existingSecret }}
+    {{- printf "%s" (tpl .Values.mastodon.smtp.existingSecret $) -}}
+{{- else -}}
+    {{- printf "%s-smtp" (include "mastodon.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
@@ -107,7 +130,7 @@ Get the postgresql secret.
 {{- else if .Values.postgresql.enabled -}}
     {{- printf "%s-postgresql" (tpl .Release.Name $) -}}
 {{- else -}}
-    {{- printf "%s" (include "common.names.fullname" .) -}}
+    {{- printf "%s" (include "mastodon.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
@@ -148,3 +171,16 @@ Find highest number of needed database connections to set DB_POOL variable
 {{- end }}
 {{- $poolSize | quote }}
 {{- end }}
+
+{{/*
+Full hostname for a custom Elasticsearch cluster
+*/}}
+{{- define "mastodon.elasticsearch.fullHostname" -}}
+{{- if not .Values.elasticsearch.enabled }}
+    {{- if .Values.elasticsearch.tls }}
+        {{- printf "https://%s" (tpl .Values.elasticsearch.hostname $) -}}
+    {{- else -}}
+        {{- printf "%s" (tpl .Values.elasticsearch.hostname $) -}}
+    {{- end }}
+{{- end -}}
+{{- end -}}

@@ -4,10 +4,18 @@ This is a [Helm](https://helm.sh/) chart for installing Mastodon into a
 Kubernetes cluster.  The basic usage is:
 
 1. edit `values.yaml` or create a separate yaml file for custom values
-1. `helm dep update`
+1. `helm dep install`
 1. `helm install --namespace mastodon --create-namespace my-mastodon ./ -f path/to/additional/values.yaml`
 
-This chart is tested with k8s 1.21+ and helm 3.6.0+.
+This chart is tested with k8s 1.21+ and helm 3.8.0+.
+
+# NOTICE: Future Deprecation
+
+We have plans in the very near future to deprecate this chart in favor of a [new git repo](https://github.com/mastodon/helm-charts), which has proper helm repository support (e.g. `helm repo add`), and will contain multiple charts, both for mastodon and for supplementary components that we make use of.
+
+We still encourage suggestions and PRs to help make this chart better, and this repository will remain available after the new charts are ready to give users time to migrate. However, we will not be approving large PRs, or PRs that change fundamental chart functions, as those changes should be directed to the new charts.
+
+Please see the pinned [GitHub issue](https://github.com/mastodon/chart/issues/129) for more info & discussion.
 
 # Configuration
 
@@ -64,57 +72,3 @@ Sidekiq deployments, it’s possible they will occur in the wrong order.  After
 upgrading Mastodon versions, it may sometimes be necessary to manually delete
 the Rails and Sidekiq pods so that they are recreated against the latest
 migration.
-
-# Upgrades in 2.1.0
-
-## ingressClassName and tls-acme changes
-The annotations previously defaulting to nginx have been removed and support
- for ingressClassName has been added.
-```yaml
-ingress:
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-```
-
-To restore the old functionality simply add the above snippet to your `values.yaml`,
-but the recommendation is to replace these with `ingress.ingressClassName` and use
-cert-manager's issuer/cluster-issuer instead of tls-acme.
-If you're uncertain about your current setup leave `ingressClassName` empty and add
-`kubernetes.io/tls-acme` to `ingress.annotations` in your `values.yaml`.
-
-# Upgrades in 2.0.0
-
-## Fixed labels
-Because of the changes in [#19706](https://github.com/mastodon/mastodon/pull/19706) the upgrade may fail with the following error:
-```Error: UPGRADE FAILED: cannot patch "mastodon-sidekiq"```
-
-If you want an easy upgrade and you're comfortable with some downtime then
-simply delete the -sidekiq, -web, and -streaming Deployments manually.
-
-If you require a no-downtime upgrade then:
-1. run `helm template` instead of `helm upgrade`
-2. Copy the new -web and -streaming services into `services.yml`
-3. Copy the new -web and -streaming deployments into `deployments.yml`
-4. Append -temp to the name of each deployment in `deployments.yml`
-5. `kubectl apply -f deployments.yml` then wait until all pods are ready
-6. `kubectl apply -f services.yml`
-7. Delete the old -sidekiq, -web, and -streaming deployments manually
-8. `helm upgrade` like normal
-9. `kubectl delete -f deployments.yml` to clear out the temporary deployments
-
-## PostgreSQL passwords
-If you've previously installed the chart and you're having problems with 
-postgres not accepting your password then make sure to set `username` to
-`postgres` and `password` and `postgresPassword` to the same passwords.
-```yaml
-postgresql:
-  auth:
-    username: postgres
-    password: <same password>
-    postgresPassword: <same password>
-```
-
-And make sure to set `password` to the same value as `postgres-password`
-in your `mastodon-postgresql` secret:
-```kubectl edit secret mastodon-postgresql```
