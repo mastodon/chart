@@ -599,6 +599,9 @@ tolerations: []
 # -- Affinity for all pods unless overwritten
 affinity: {}
 
+# -- Timezone for all pods unless overwritten
+timezone: UTC
+
 # -- Topology Spread Constraints for all pods unless overwritten
 # Please note that you need to use `matchLabelKeys` (Kubernetes 1.25+) if you
 # want to spread each deployment independently, or override topologySpreadConstraints

@@ -28,3 +28,6 @@ elasticsearch:
     replicaCount: 1
   ingest:
     replicaCount: 1
+
+# -- Timezone for all pods unless overwritten
+timezone: UTC

@@ -383,3 +383,7 @@ data:
   {{- else }}
   CACHE_BUSTER_ENABLED: "false"
   {{- end }}
+  {{- with .Values.timezone }}
+  TZ: {{ . | quote }}
+  {{- end }}
+  
