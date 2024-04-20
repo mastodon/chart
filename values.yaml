@@ -237,6 +237,13 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 128Mi
+    # -- PodDisruptionBudget configuration - See https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+    pdb:
+      enable: false
+    # minAvailable: 1
+    # maxUnavailable: 1
+    # -- Puma-specific options. Below values are based on default behavior in
+    # config/puma.rb when no custom values are provided.
     # -- Self-signed certificate(s) the (Node.js) needs to trust to connect to e.g. the database
     extraCerts: {}
     # -- Secret containing a key "ca.crt" holding one or more root certificates in PEM format
@@ -265,6 +272,11 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 768Mi
+    # -- PodDisruptionBudget configuration - See https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+    pdb:
+      enable: false
+    # minAvailable: 1
+    # maxUnavailable: 1
     # -- Puma-specific options. Below values are based on default behavior in
     # config/puma.rb when no custom values are provided.
     minThreads: "5"
