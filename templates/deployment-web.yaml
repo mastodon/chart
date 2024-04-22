@@ -10,6 +10,9 @@ metadata:
     {{- end }}
 spec:
   replicas: {{ .Values.mastodon.web.replicas }}
+  {{- if (ne (toString .Values.mastodon.revisionHistoryLimit) "<nil>") }}
+  revisionHistoryLimit: {{ .Values.mastodon.revisionHistoryLimit }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" . | nindent 6 }}
@@ -24,7 +27,9 @@ spec:
         # roll the pods to pick up any db migrations or other changes
         {{- include "mastodon.rollingPodAnnotations" . | nindent 8 }}
       labels:
+        {{- include "mastodon.globalLabels" . | nindent 8 }}
         {{- include "mastodon.selectorLabels" . | nindent 8 }}
+        {{- include "mastodon.statsdExporterLabels" . | nindent 8 }}
         app.kubernetes.io/component: web
         app.kubernetes.io/part-of: rails
     spec:
@@ -37,8 +42,8 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if (not .Values.mastodon.s3.enabled) }}
       volumes:
+      {{- if (not .Values.mastodon.s3.enabled) }}
         - name: assets
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.assets" . }}
@@ -46,13 +51,22 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.system" . }}
       {{- end }}
+      {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
+      {{- if .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
+        - name: config-database-yml
+          configMap:
+            name: {{ .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
+      {{- end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-web
           {{- with (default .Values.securityContext .Values.mastodon.web.securityContext) }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ coalesce .Values.mastodon.web.image.repository .Values.image.repository }}:{{ coalesce .Values.mastodon.web.image.tag .Values.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - bundle
@@ -65,17 +79,35 @@ spec:
                 name: {{ include "mastodon.fullname" . }}-env
             - secretRef:
                 name: {{ template "mastodon.secretName" . }}
+            {{- if .Values.mastodon.extraEnvFrom }}
+            - configMapRef:
+                name: {{ .Values.mastodon.extraEnvFrom }}
+            {{- end}}
           env:
             - name: "DB_PASS"
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.postgresql.secretName" . }}
                   key: password
+            {{- if .Values.postgresql.readReplica.auth.existingSecret }}
+            - name: "REPLICA_DB_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.readReplica.auth.existingSecret}}
+                  key: password
+            {{- end }}
             - name: "REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" . }}
                   key: redis-password
+            {{- if and .Values.elasticsearch.existingSecret (or .Values.elasticsearch.enabled .Values.elasticsearch.hostname) }}
+            - name: "ES_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.elasticsearch.existingSecret }}
+                  key: password
+            {{- end }}
             - name: "PORT"
               value: {{ .Values.mastodon.web.port | quote }}
             {{- if .Values.mastodon.web.minThreads }}
@@ -106,12 +138,41 @@ spec:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: AWS_ACCESS_KEY_ID
             {{- end }}
-          {{- if (not .Values.mastodon.s3.enabled) }}
+            {{- if .Values.mastodon.deepl.enabled }}
+            - name: "DEEPL_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.deepl.apiKeySecretRef.name }}
+                  key: {{ .Values.mastodon.deepl.apiKeySecretRef.key }}
+            {{- end }}
+            {{- if .Values.mastodon.hcaptcha.enabled }}
+            - name: "HCAPTCHA_SECRET_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.hcaptcha.secretKeySecretRef.name }}
+                  key: {{ .Values.mastodon.hcaptcha.secretKeySecretRef.key }}
+            {{- end }}
+            {{- if and .Values.mastodon.cacheBuster.enabled .Values.mastodon.cacheBuster.authToken.existingSecret }}
+            - name: CACHE_BUSTER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mastodon.cacheBuster.authToken.existingSecret }}
+                  key: password
+            {{- end }}
           volumeMounts:
+          {{- if (not .Values.mastodon.s3.enabled) }}
             - name: assets
               mountPath: /opt/mastodon/public/assets
             - name: system
               mountPath: /opt/mastodon/public/system
+          {{- end }}
+          {{- if .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
+            - name: config-database-yml
+              mountPath: /opt/mastodon/config/database.yml
+              subPath: {{ .Values.mastodon.web.customDatabaseConfigYml.configMapRef.key }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: http
@@ -134,6 +195,7 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+        {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -142,7 +204,11 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with (default .Values.topologySpreadConstraints .Values.mastodon.web.topologySpreadConstraints) }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default .Values.tolerations .Values.mastodon.web.tolerations) }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
