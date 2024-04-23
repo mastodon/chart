@@ -37,10 +37,10 @@ spec:
       volumes:
         - name: assets
           persistentVolumeClaim:
-            claimName: {{ template "mastodon.fullname" . }}-assets
+            claimName: {{ template "mastodon.pvc.assets" . }}
         - name: system
           persistentVolumeClaim:
-            claimName: {{ template "mastodon.fullname" . }}-system
+            claimName: {{ template "mastodon.pvc.system" . }}
       {{- end }}
       containers:
         - name: {{ include "mastodon.fullname" . }}-chewy-setup

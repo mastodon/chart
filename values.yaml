@@ -62,11 +62,15 @@ mastodon:
       resources:
         requests:
           storage: 10Gi
+      # -- name of existing persistent volume claim to use for assets
+      existingClaim:
     system:
       accessMode: ReadWriteOnce
       resources:
         requests:
           storage: 100Gi
+      # -- name of existing persistent volume claim to use for system
+      existingClaim:
   s3:
     enabled: false
     access_key: ""

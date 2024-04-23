@@ -84,6 +84,28 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
+Create the name of the assets persistent volume to use
+*/}}
+{{- define "mastodon.pvc.assets" -}}
+{{- if .Values.mastodon.persistence.assets.existingClaim }}
+    {{- printf "%s" (tpl .Values.mastodon.persistence.assets.existingClaim $) -}}
+{{- else -}}
+    {{- printf "%s-assets" (include "common.names.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create the name of the system persistent volume to use
+*/}}
+{{- define "mastodon.pvc.system" -}}
+{{- if .Values.mastodon.persistence.system.existingClaim }}
+    {{- printf "%s" (tpl .Values.mastodon.persistence.system.existingClaim $) -}}
+{{- else -}}
+    {{- printf "%s-system" (include "common.names.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create a default fully qualified name for dependent services.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
