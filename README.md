@@ -17,6 +17,23 @@ We still encourage suggestions and PRs to help make this chart better, and this 
 
 Please see the pinned [GitHub issue](https://github.com/mastodon/chart/issues/129) for more info & discussion.
 
+# Installation
+
+This chart is [released as an OCI image](https://helm.sh/docs/topics/registries/) to `ghcr.io/mastodon/charts/mastodon`. You can install it without the need to add any repository to your helm installation using:
+
+```shell
+helm install mastodon oci://ghcr.io/mastodon/charts/mastodon --values your-values-file.yaml
+```
+
+You can also add it as a dependency to another chart in your Chart.yaml:
+
+```yaml
+dependencies:
+  - name: mastodon
+    version: 4.0.0
+    repository: oci://ghcr.io/mastodon/charts
+```
+
 # Configuration
 
 The variables that _must_ be configured are:
