@@ -4,6 +4,7 @@
     "username": "renovate-release",
     "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
     "platform": "github",
+    "includeForks": true,
     "repositories": [
         "small-hack/mastodon-helm-chart"
     ]
