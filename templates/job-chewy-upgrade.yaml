@@ -75,7 +75,7 @@ spec:
                   key: redis-password
             {{- end }}
             {{- if and .Values.redis.cache.enabled .Values.redis.cache.auth.existingSecret }}
-            - name: "SIDEKIQ_REDIS_PASSWORD"
+            - name: "CACHE_REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.cache.secretName" . }}
