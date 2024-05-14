@@ -72,6 +72,30 @@ data:
   REDIS_HOST: {{ required "When the redis chart is disabled .Values.redis.hostname is required" .Values.redis.hostname }}
   {{- end }}
   REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
+  {{- if .Values.redis.sidekiq.enabled }}
+  {{- if .Values.redis.sidekiq.hostname }}
+  SIDEKIQ_REDIS_HOST: {{ .Values.redis.sidekiq.hostname }}
+  {{- else }}
+  SIDEKIQ_REDIS_HOST: {{ .Values.redis.hostname }}
+  {{- end }}
+  {{- if .Values.redis.sidekiq.port }}
+  SIDEKIQ_REDIS_PORT: {{ .Values.redis.sidekiq.port | quote }}
+  {{- else }}
+  SIDEKIQ_REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.redis.cache.enabled }}
+  {{- if .Values.redis.cache.hostname }}
+  CACHE_REDIS_HOST: {{ .Values.redis.cache.hostname }}
+  {{- else }}
+  CACHE_REDIS_HOST: {{ .Values.redis.hostname}}
+  {{- end }}
+  {{- if .Values.redis.cache.port }}
+  CACHE_REDIS_PORT: {{ .Values.redis.cache.port | quote }}
+  {{- else }}
+  CACHE_REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
+  {{- end }}
+  {{- end }}
   {{- if .Values.mastodon.s3.enabled }}
   S3_BUCKET: {{ .Values.mastodon.s3.bucket }}
   S3_ENABLED: "true"
@@ -389,4 +413,3 @@ data:
   {{- with .Values.timezone }}
   TZ: {{ . | quote }}
   {{- end }}
-  

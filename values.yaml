@@ -454,6 +454,34 @@ redis:
   replica:
     replicaCount: 0
 
+  # Configuration for a separate redis instance only for sidekiq processing.
+  # If enabled, any values not specified will be copied from the base config.
+  # If set to false, the main redis instance will be used, and all values will
+  # be ignored.
+  sidekiq:
+    enabled: false
+    hostname: ""
+    port: 6379
+    auth:
+      password: ""
+      # you can also specify the name of an existing Secret
+      # with a key of redis-password set to the password you want
+      existingSecret: ""
+
+  # Configuration for a separate redis instance only for cache.
+  # If enabled, any values not specified will be copied from the base config.
+  # If set to false, the main redis instance will be used, and all values will
+  # be ignored.
+  cache:
+    enabled: false
+    hostname: ""
+    port: 6379
+    auth:
+      password: ""
+      # you can also specify the name of an existing Secret
+      # with a key of redis-password set to the password you want
+      existingSecret: ""
+
 # @ignored
 service:
   type: ClusterIP
