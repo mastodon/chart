@@ -17,20 +17,17 @@ mastodon:
 redis:
   replica:
     replicaCount: 1
-  auth:
-    existingSecret: secret-one
+
 
   sidekiq:
     enabled: true
     hostname: new-hostname
-    auth:
-      existingSecret: secret-two
+    port: 6380
 
   cache:
     enabled: true
     hostname: newer-hostname
-    auth:
-      existingSecret: secret-three
+    port: 6381
 
 # ref: https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch#parameters
 elasticsearch:
