@@ -124,6 +124,20 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" $context }}
                   key: redis-password
+            {{- if and $context.Values.redis.sidekiq.enabled $context.Values.redis.sidekiq.auth.existingSecret }}
+            - name: "SIDEKIQ_REDIS_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "mastodon.redis.sidekiq.secretName" . }}
+                  key: redis-password
+            {{- end }}
+            {{- if and $context.Values.redis.cache.enabled $context.Values.redis.cache.auth.existingSecret }}
+            - name: "SIDEKIQ_REDIS_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "mastodon.redis.cache.secretName" . }}
+                  key: redis-password
+            {{- end }}
             {{- if and $context.Values.elasticsearch.existingSecret (or $context.Values.elasticsearch.enabled $context.Values.elasticsearch.hostname) }}
             - name: "ES_PASS"
               valueFrom:

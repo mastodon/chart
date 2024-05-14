@@ -148,6 +148,36 @@ Get the redis secret.
 {{- end -}}
 
 {{/*
+Get the redis secret (sidekiq).
+*/}}
+{{- define "mastodon.redis.sidekiq.secretName" -}}
+{{- if .Values.redis.sidekiq.auth.existingSecret }}
+    {{- printf "%s" (tpl .Values.redis.sidekiq.auth.existingSecret $) -}}
+{{- else if .Values.redis.auth.existingSecret }}
+    {{- printf "%s" (tpl .Values.redis.auth.existingSecret $) -}}
+{{- else if .Values.redis.existingSecret }}
+    {{- printf "%s" (tpl .Values.redis.existingSecret $) -}}
+{{- else -}}
+    {{- printf "%s-redis" (tpl .Release.Name $) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the redis secret (cache).
+*/}}
+{{- define "mastodon.redis.cache.secretName" -}}
+{{- if .Values.redis.cache.auth.existingSecret }}
+    {{- printf "%s" (tpl .Values.redis.cache.auth.existingSecret $) -}}
+{{- else if .Values.redis.auth.existingSecret }}
+    {{- printf "%s" (tpl .Values.redis.auth.existingSecret $) -}}
+{{- else if .Values.redis.existingSecret }}
+    {{- printf "%s" (tpl .Values.redis.existingSecret $) -}}
+{{- else -}}
+    {{- printf "%s-redis" (tpl .Release.Name $) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Return true if a mastodon secret object should be created
 */}}
 {{- define "mastodon.createSecret" -}}
