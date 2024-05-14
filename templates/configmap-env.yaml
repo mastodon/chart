@@ -73,10 +73,10 @@ data:
   {{- end }}
   REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
   {{- if .Values.redis.sidekiq.enabled }}
-  {{- if .Values.redis.sidekiq.host }}
-  SIDEKIQ_REDIS_HOST: {{ .Values.redis.sidekiq.host }}
+  {{- if .Values.redis.sidekiq.hostname }}
+  SIDEKIQ_REDIS_HOST: {{ .Values.redis.sidekiq.hostname }}
   {{- else }}
-  SIDEKIQ_REDIS_HOST: {{ .Values.redis.host }}
+  SIDEKIQ_REDIS_HOST: {{ .Values.redis.hostname }}
   {{- end }}
   {{- if .Values.redis.sidekiq.port }}
   SIDEKIQ_REDIS_PORT: {{ .Values.redis.sidekiq.port }}
@@ -85,10 +85,10 @@ data:
   {{- end }}
   {{- end }}
   {{- if .Values.redis.cache.enabled }}
-  {{- if .Values.redis.cache.host }}
-  CACHE_REDIS_HOST: {{ .Values.redis.cache.host }}
+  {{- if .Values.redis.cache.hostname }}
+  CACHE_REDIS_HOST: {{ .Values.redis.cache.hostname }}
   {{- else }}
-  CACHE_REDIS_HOST: {{ .Values.redis.host}}
+  CACHE_REDIS_HOST: {{ .Values.redis.hostname}}
   {{- end }}
   {{- if .Values.redis.cache.port }}
   CACHE_REDIS_PORT: {{ .Values.redis.cache.port }}
