@@ -79,9 +79,9 @@ data:
   SIDEKIQ_REDIS_HOST: {{ .Values.redis.hostname }}
   {{- end }}
   {{- if .Values.redis.sidekiq.port }}
-  SIDEKIQ_REDIS_PORT: {{ .Values.redis.sidekiq.port }}
+  SIDEKIQ_REDIS_PORT: {{ .Values.redis.sidekiq.port | quote }}
   {{- else }}
-  SIDEKIQ_REDIS_PORT: {{ .Values.redis.port }}
+  SIDEKIQ_REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
   {{- end }}
   {{- end }}
   {{- if .Values.redis.cache.enabled }}
@@ -91,9 +91,9 @@ data:
   CACHE_REDIS_HOST: {{ .Values.redis.hostname}}
   {{- end }}
   {{- if .Values.redis.cache.port }}
-  CACHE_REDIS_PORT: {{ .Values.redis.cache.port }}
+  CACHE_REDIS_PORT: {{ .Values.redis.cache.port | quote }}
   {{- else }}
-  CACHE_REDIS_PORT: {{ .Values.redis.port }}
+  CACHE_REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
   {{- end }}
   {{- end }}
   {{- if .Values.mastodon.s3.enabled }}
