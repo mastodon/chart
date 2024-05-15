@@ -256,6 +256,10 @@ mastodon:
     #  name:
     # -- Optional sslMode setting. See nodejs's SSL_MODE. Consider "no-verify"
     #  sslMode:
+
+    # Specify extra environment variables to be added to streaming pods.
+    extraEnvVars: {}
+
   web:
     port: 3000
     # -- Number of Web Pods running
