@@ -13,6 +13,11 @@ spec:
   {{- if (ne (toString .Values.mastodon.revisionHistoryLimit) "<nil>") }}
   revisionHistoryLimit: {{ .Values.mastodon.revisionHistoryLimit }}
   {{- end }}
+  strategy:
+   type: RollingUpdate
+   rollingUpdate:
+     maxSurge: 2
+     maxUnavailable: 25%
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" . | nindent 6 }}
@@ -203,6 +208,7 @@ spec:
             httpGet:
               path: /health
               port: http
+            initialDelaySeconds: 15
             failureThreshold: 30
             periodSeconds: 5
           {{- with (default .Values.resources .Values.mastodon.web.resources) }}
