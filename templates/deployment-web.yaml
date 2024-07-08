@@ -14,10 +14,10 @@ spec:
   revisionHistoryLimit: {{ .Values.mastodon.revisionHistoryLimit }}
   {{- end }}
   strategy:
-   type: RollingUpdate
-   rollingUpdate:
-     maxSurge: 2
-     maxUnavailable: 25%
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 25%
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" . | nindent 6 }}
