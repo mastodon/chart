@@ -19,7 +19,10 @@ spec:
       {{ fail "The scheduler queue should never have more than 1 replicas" }}
     {{- end }}
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 10%
+      maxUnavailable: 25%
   {{- end }}
   replicas: {{ .replicas }}
   {{- if (ne (toString $context.Values.mastodon.revisionHistoryLimit) "<nil>") }}
