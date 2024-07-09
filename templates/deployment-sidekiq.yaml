@@ -214,7 +214,7 @@ spec:
           #  periodSeconds: 2
           #  successThreshold: 2
           #  timeoutSeconds: 1
-          #resources:
+          resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
       {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
       {{- with $context.Values.nodeSelector }}
