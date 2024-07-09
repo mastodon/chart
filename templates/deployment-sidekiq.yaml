@@ -18,8 +18,9 @@ spec:
     {{- if (gt (int .replicas) 1) }}
       {{ fail "The scheduler queue should never have more than 1 replicas" }}
     {{- end }}
-  strategy:
-    type: Recreate
+  {{- end }}
+  {{- if $context.Values.mastodon.sidekiq.updateStrategy }}
+  strategy: {{- toYaml $context.Values.mastodon.sidekiq.updateStrategy | nindent 4 }}
   {{- end }}
   replicas: {{ .replicas }}
   {{- if (ne (toString $context.Values.mastodon.revisionHistoryLimit) "<nil>") }}

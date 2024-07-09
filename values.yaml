@@ -138,6 +138,10 @@ mastodon:
     resources: {}
     # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
     affinity: {}
+    # Rollout strategy to use when updating pods
+    # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+    updateStrategy:
+      type: Recreate
     # -- Topology spread constraints for Sidekiq Pods, overwrites .Values.topologySpreadConstraints
     topologySpreadConstraints: {}
     # limits:
@@ -227,6 +231,13 @@ mastodon:
     replicas: 1
     # -- Affinity for Streaming Pods, overwrites .Values.affinity
     affinity: {}
+    # Rollout strategy to use when updating pods
+    # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+    updateStrategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 10%
+        maxUnavailable: 25%
     # -- Topology spread constraints for Streaming Pods, overwrites .Values.topologySpreadConstraints
     topologySpreadConstraints: {}
     # -- Pod Security Context for Streaming Pods, overwrites .Values.podSecurityContext
@@ -266,6 +277,13 @@ mastodon:
     replicas: 1
     # -- Affinity for Web Pods, overwrites .Values.affinity
     affinity: {}
+    # Rollout strategy to use when updating pods
+    # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+    updateStrategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 10%
+        maxUnavailable: 25%
     # -- Topology spread constraints for Web Pods, overwrites .Values.topologySpreadConstraints
     topologySpreadConstraints: {}
     # -- Pod Security Context for Web Pods, overwrites .Values.podSecurityContext
