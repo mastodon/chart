@@ -201,7 +201,20 @@ spec:
           {{- with $context.Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          resources:
+          # NOTE: Readiness probe will only work on versions of Mastodon built after 2024-07-10.
+          # Will be un-commented once this is in an official release.
+          #
+          #readinessProbe:
+          #  failureThreshold: 10
+          #  exec:
+          #    command:
+          #    - cat
+          #    - /var/www/tmp/sidekiq_process_has_started_and_will_begin_processing_jobs
+          #  initialDelaySeconds: 10
+          #  periodSeconds: 2
+          #  successThreshold: 2
+          #  timeoutSeconds: 1
+          #resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
       {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
       {{- with $context.Values.nodeSelector }}
