@@ -143,7 +143,7 @@ spec:
           startupProbe:
             httpGet:
               path: /api/v1/streaming/health
-              port: http
+              port: streaming
             initialDelaySeconds: 5
             failureThreshold: 15
             periodSeconds: 5
