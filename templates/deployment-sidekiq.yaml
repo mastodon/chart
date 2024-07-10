@@ -18,8 +18,9 @@ spec:
     {{- if (gt (int .replicas) 1) }}
       {{ fail "The scheduler queue should never have more than 1 replicas" }}
     {{- end }}
-  strategy:
-    type: Recreate
+  {{- end }}
+  {{- if $context.Values.mastodon.sidekiq.updateStrategy }}
+  strategy: {{- toYaml $context.Values.mastodon.sidekiq.updateStrategy | nindent 4 }}
   {{- end }}
   replicas: {{ .replicas }}
   {{- if (ne (toString $context.Values.mastodon.revisionHistoryLimit) "<nil>") }}
@@ -199,6 +200,18 @@ spec:
           {{- end }}
           {{- with $context.Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $context.Values.mastodon.sidekiq.readinessProbe.enabled }}
+          readinessProbe:
+            failureThreshold: {{ default 10 $context.Values.mastodon.sidekiq.readinessProbe.failureThreshold }}
+            exec:
+              command:
+              - cat
+              - {{ required "A valid sidekiq readiness path is required." $context.Values.mastodon.sidekiq.readinessProbe.path }}
+            initialDelaySeconds: {{ default 10 $context.Values.mastodon.sidekiq.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ default 2 $context.Values.mastodon.sidekiq.readinessProbe.periodSeconds }}
+            successThreshold: {{ default 1 $context.Values.mastodon.sidekiq.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ default 1 $context.Values.mastodon.sidekiq.readinessProbe.timeoutSeconds }}
           {{- end }}
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
