@@ -210,7 +210,7 @@ spec:
               - {{ required "A valid sidekiq readiness path is required." $context.Values.mastodon.sidekiq.readinessProbe.path }}
             initialDelaySeconds: {{ default 10 $context.Values.mastodon.sidekiq.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ default 2 $context.Values.mastodon.sidekiq.readinessProbe.periodSeconds }}
-            successThreshold: {{ default 2 $context.Values.mastodon.sidekiq.readinessProbe.successThreshold }}
+            successThreshold: {{ default 1 $context.Values.mastodon.sidekiq.readinessProbe.successThreshold }}
             timeoutSeconds: {{ default 1 $context.Values.mastodon.sidekiq.readinessProbe.timeoutSeconds }}
           {{- end }}
           resources:

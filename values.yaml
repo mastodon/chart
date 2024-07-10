@@ -154,7 +154,7 @@ mastodon:
       path: /opt/mastodon/tmp/sidekiq_process_has_started_and_will_begin_processing_jobs
       initialDelaySeconds: 10
       periodSeconds: 2
-      successThreshold: 2
+      successThreshold: 1
       timeoutSeconds: 1
     # -- Topology spread constraints for Sidekiq Pods, overwrites .Values.topologySpreadConstraints
     topologySpreadConstraints: {}
