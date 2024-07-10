@@ -207,7 +207,7 @@ spec:
             exec:
               command:
               - cat
-              - /var/www/tmp/sidekiq_process_has_started_and_will_begin_processing_jobs
+              - {{ required "A valid sidekiq readiness path is required." $context.Values.mastodon.sidekiq.readinessProbe.path }}
             initialDelaySeconds: {{ default 10 $context.Values.mastodon.sidekiq.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ default 2 $context.Values.mastodon.sidekiq.readinessProbe.periodSeconds }}
             successThreshold: {{ default 2 $context.Values.mastodon.sidekiq.readinessProbe.successThreshold }}

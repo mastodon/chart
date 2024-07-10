@@ -139,9 +139,11 @@ mastodon:
     # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
     affinity: {}
     # Rollout strategy to use when updating pods.
-    # Recreate is recommended for sidekiq pods for now because of possible data
-    # error between old/new versions. Please only use RollingUpdate if you are
-    # running a Mastodon version built after 2024-07-10.
+    # Recreate will help reduce the number of retried jobs when updating when
+    # the code introduces a new job as the pods are all replaced immediately.
+    # RollingUpdate can help with larger clusters if job retries aren't an
+    # issue, as it will reduce strain by replacing pods more slowly. It is
+    # strongly recommended to enable the readinessProbe when using RollingUpdate.
     # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
     updateStrategy:
       type: Recreate
@@ -149,6 +151,7 @@ mastodon:
     # NOTE: Readiness probe will only work on versions of Mastodon built after 2024-07-10.
     readinessProbe:
       enabled: false
+      path: /opt/mastodon/tmp/sidekiq_process_has_started_and_will_begin_processing_jobs
       initialDelaySeconds: 10
       periodSeconds: 2
       successThreshold: 2
