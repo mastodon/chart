@@ -201,19 +201,18 @@ spec:
           {{- with $context.Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          # NOTE: Readiness probe will only work on versions of Mastodon built after 2024-07-10.
-          # Will be un-commented once this is in an official release.
-          #
-          #readinessProbe:
-          #  failureThreshold: 10
-          #  exec:
-          #    command:
-          #    - cat
-          #    - /var/www/tmp/sidekiq_process_has_started_and_will_begin_processing_jobs
-          #  initialDelaySeconds: 10
-          #  periodSeconds: 2
-          #  successThreshold: 2
-          #  timeoutSeconds: 1
+          {{- if $context.Values.mastodon.sidekiq.readinessProbe.enabled }}
+          readinessProbe:
+            failureThreshold: {{ default 10 $context.Values.mastodon.sidekiq.readinessProbe.failureThreshold }}
+            exec:
+              command:
+              - cat
+              - /var/www/tmp/sidekiq_process_has_started_and_will_begin_processing_jobs
+            initialDelaySeconds: {{ default 10 $context.Values.mastodon.sidekiq.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ default 2 $context.Values.mastodon.sidekiq.readinessProbe.periodSeconds }}
+            successThreshold: {{ default 2 $context.Values.mastodon.sidekiq.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ default 1 $context.Values.mastodon.sidekiq.readinessProbe.timeoutSeconds }}
+          {{- end }}
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
       {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}

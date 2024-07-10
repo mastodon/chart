@@ -145,6 +145,14 @@ mastodon:
     # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
     updateStrategy:
       type: Recreate
+    # Readiness probe configuration
+    # NOTE: Readiness probe will only work on versions of Mastodon built after 2024-07-10.
+    readinessProbe:
+      enabled: false
+      initialDelaySeconds: 10
+      periodSeconds: 2
+      successThreshold: 2
+      timeoutSeconds: 1
     # -- Topology spread constraints for Sidekiq Pods, overwrites .Values.topologySpreadConstraints
     topologySpreadConstraints: {}
     # limits:
