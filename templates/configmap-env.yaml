@@ -161,6 +161,9 @@ data:
   {{- with .Values.mastodon.streaming.base_url }}
   STREAMING_API_BASE_URL: {{ . | quote }}
   {{- end }}
+  {{- if .Values.mastodon.trusted_proxy_ip }}
+  TRUSTED_PROXY_IP: {{ .Values.mastodon.trusted_proxy_ip }}
+  {{ end }}
   {{- if .Values.externalAuth.oidc.enabled }}
   OIDC_ENABLED: {{ .Values.externalAuth.oidc.enabled | quote }}
   OIDC_DISPLAY_NAME: {{ .Values.externalAuth.oidc.display_name }}
