@@ -164,6 +164,13 @@ mastodon:
     # requests:
     #   cpu: 250m
     #   memory: 512Mi
+
+    # Open Telemetry configuration for sidekiq pods. Overrides global settings.
+    otel:
+      enabled:
+      exporterUri:
+      namePrefix:
+
     workers:
       - name: all-queues
         # -- Number of threads / parallel sidekiq jobs that are executed per Pod
@@ -285,6 +292,12 @@ mastodon:
     # Specify extra environment variables to be added to streaming pods.
     extraEnvVars: {}
 
+    # Open Telemetry configuration for streaming pods. Overrides global settings.
+    otel:
+      enabled:
+      exporterUri:
+      namePrefix:
+
   web:
     port: 3000
     # -- Number of Web Pods running
@@ -333,6 +346,12 @@ mastodon:
         name:
         key:
 
+    # Open Telemetry configuration for web pods. Overrides global settings.
+    otel:
+      enabled:
+      exporterUri:
+      namePrefix:
+
   # HTTP cache buster configuration.
   # See the documentation for more information about this feature:
   # https://docs.joinmastodon.org/admin/config/#http-cache-buster
@@ -354,6 +373,13 @@ mastodon:
       exporter:
         enabled: false
         port: 9102
+
+  # Open Telemetry configuration for all deployments. Component-specific
+  # configuration will override these values.
+  otel:
+    enabled: false
+    exporterUri:
+    namePrefix: mastodon
 
   # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
   preparedStatements: true
