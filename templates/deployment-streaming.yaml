@@ -122,12 +122,6 @@ spec:
             {{- end }}
             - name: "PORT"
               value: {{ .Values.mastodon.streaming.port | quote }}
-            {{- if or .Values.mastodon.streaming.otel.enabled (and .Values.mastodon.otel.enabled (ne .Values.mastodon.streaming.otel.enabled false)) }}
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ coalesce .Values.mastodon.streaming.otel.endpointUri .Values.mastodon.otel.endpointUri }}
-            - name: OTEL_SERVICE_NAME_PREFIX
-              value: {{ coalesce .Values.mastodon.streaming.otel.namePrefix .Values.mastodon.otel.namePrefix }}
-            {{- end }}
             {{- range $k, $v := .Values.mastodon.streaming.extraEnvVars }}
             - name: {{ $k }}
               value: {{ quote $v }}

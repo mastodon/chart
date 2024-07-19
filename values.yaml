@@ -292,12 +292,6 @@ mastodon:
     # Specify extra environment variables to be added to streaming pods.
     extraEnvVars: {}
 
-    # Open Telemetry configuration for streaming pods. Overrides global settings.
-    otel:
-      enabled:
-      exporterUri:
-      namePrefix:
-
   web:
     port: 3000
     # -- Number of Web Pods running
