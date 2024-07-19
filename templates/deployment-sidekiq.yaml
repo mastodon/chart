@@ -186,6 +186,12 @@ spec:
                   name: {{ $context.Values.mastodon.cacheBuster.authToken.existingSecret }}
                   key: password
             {{- end }}
+            {{- if or $context.Values.mastodon.sidekiq.otel.enabled (and $context.Values.mastodon.otel.enabled (ne $context.Values.mastodon.sidekiq.otel.enabled false)) }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ coalesce $context.Values.mastodon.sidekiq.otel.endpointUri $context.Values.mastodon.otel.endpointUri }}
+            - name: OTEL_SERVICE_NAME_PREFIX
+              value: {{ coalesce $context.Values.mastodon.sidekiq.otel.namePrefix $context.Values.mastodon.otel.namePrefix }}
+            {{- end }}
           volumeMounts:
           {{- if (not $context.Values.mastodon.s3.enabled) }}
             - name: assets
