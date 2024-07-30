@@ -47,6 +47,9 @@ mastodon:
   # -- If you have multiple domains pointed at your Mastodon server, this setting will allow Mastodon to recognize
   # itself when users are addressed using those other domains.
   alternate_domains: []
+  # -- Comma-separated list of public IP addresses of trusted reverse proxy servers reaching Mastodon web and streaming servers
+  # Specifying overrides default list. More info: https://docs.joinmastodon.org/admin/config/#trusted_proxy_ip
+  # trusted_proxy_ip:
   # -- If set to true, the frontpage of your Mastodon server will always redirect to the first profile in the database and registrations will be disabled.
   singleUserMode: false
   # -- Enables "Secure Mode" for more details see: https://docs.joinmastodon.org/admin/config/#authorized_fetch
