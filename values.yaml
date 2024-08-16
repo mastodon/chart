@@ -6,7 +6,7 @@ image:
   # built from the most recent commit
   #
   # tag: latest
-  tag: "v4.2.10"
+  tag: "v4.2.11"
   # use `Always` when using `latest` tag
   pullPolicy: IfNotPresent
 
