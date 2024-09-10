@@ -4,8 +4,14 @@ metadata:
   name: {{ include "mastodon.fullname" . }}-streaming
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
+    {{- with .Values.mastodon.streaming.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-    {{- with (default .Values.deploymentAnnotations .Values.mastodon.streaming.deploymentAnnotations) }}
+    {{- with .Values.deploymentAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.mastodon.web.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
@@ -23,7 +29,10 @@ spec:
   template:
     metadata:
       annotations:
-        {{- with (default .Values.podAnnotations .Values.mastodon.streaming.podAnnotations) }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.mastodon.streaming.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
         # roll the pods to pick up any db migrations or other changes
@@ -31,6 +40,9 @@ spec:
       labels:
         {{- include "mastodon.globalLabels" . | nindent 8 }}
         {{- include "mastodon.selectorLabels" . | nindent 8 }}
+        {{- with .Values.mastodon.streaming.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         app.kubernetes.io/component: streaming
     spec:
       {{- with .Values.imagePullSecrets }}
