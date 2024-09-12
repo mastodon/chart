@@ -11,7 +11,7 @@ metadata:
     {{- with .Values.deploymentAnnotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-    {{- with .Values.mastodon.web.annotations }}
+    {{- with .Values.mastodon.streaming.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
@@ -19,8 +19,8 @@ spec:
   {{- if (ne (toString .Values.mastodon.revisionHistoryLimit) "<nil>") }}
   revisionHistoryLimit: {{ .Values.mastodon.revisionHistoryLimit }}
   {{- end }}
-  {{- if .Values.mastodon.web.updateStrategy }}
-  strategy: {{- toYaml .Values.mastodon.web.updateStrategy | nindent 4 }}
+  {{- if .Values.mastodon.streaming.updateStrategy }}
+  strategy: {{- toYaml .Values.mastodon.streaming.updateStrategy | nindent 4 }}
   {{- end }}
   selector:
     matchLabels:
