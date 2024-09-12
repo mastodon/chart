@@ -141,6 +141,18 @@ mastodon:
     resources: {}
     # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
     affinity: {}
+    # -- Annotations to apply to the deployment object(s) for sidekiq.
+    # -- These are applied in addition to deploymentAnnotations.
+    annotations: {}
+    # -- Labels to apply to the deployment object(s) for sidekiq.
+    # -- These are applied in addition to mastodon.labels.
+    labels: {}
+    # -- Annotations to apply to the sidekiq pods.
+    # -- These are applied in addition to the global podAnnotations.
+    podAnnotations: {}
+    # -- Labels to apply to the sidekiq pods.
+    # -- These are applied in addition to mastodon.labels.
+    podLabels: {}
     # Rollout strategy to use when updating pods.
     # Recreate will help reduce the number of retried jobs when updating when
     # the code introduces a new job as the pods are all replaced immediately.
@@ -255,6 +267,18 @@ mastodon:
     replicas: 1
     # -- Affinity for Streaming Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Annotations to apply to the deployment object for streaming.
+    # -- These are applied in addition to deploymentAnnotations.
+    annotations: {}
+    # -- Labels to apply to the deployment object for streaming.
+    # -- These are applied in addition to mastodon.labels.
+    labels: {}
+    # -- Annotations to apply to the streaming pods.
+    # -- These are applied in addition to the global podAnnotations.
+    podAnnotations: {}
+    # -- Labels to apply to the streaming pods.
+    # -- These are applied in addition to mastodon.labels.
+    podLabels: {}
     # Rollout strategy to use when updating pods
     # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
     updateStrategy:
@@ -301,6 +325,18 @@ mastodon:
     replicas: 1
     # -- Affinity for Web Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Annotations to apply to the deployment object for web.
+    # -- These are applied in addition to deploymentAnnotations.
+    annotations: {}
+    # -- Labels to apply to the deployment object for web.
+    # -- These are applied in addition to mastodon.labels.
+    labels: {}
+    # -- Annotations to apply to the web pods.
+    # -- These are applied in addition to the global podAnnotations.
+    podAnnotations: {}
+    # -- Labels to apply to the web pods.
+    # -- These are applied in addition to mastodon.labels.
+    podLabels: {}
     # Rollout strategy to use when updating pods
     # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
     updateStrategy:
