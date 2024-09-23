@@ -21,7 +21,8 @@ spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-      {{- end }}      volumes:
+      {{- end }}
+      volumes:
       restartPolicy: Never
       initContainers:
         - name: extract-assets
@@ -48,23 +49,23 @@ spec:
           - name: RCLONE_CONFIG_REMOTE_PROVIDER
             value: AWS
           - name: RCLONE_CONFIG_REMOTE_ENDPOINT
-            value: {{ .Values.mastodon.hooks.s3Upload.endpoint }}
+            value: {{ required "Please specify an endpoint for S3 asset uploads" .Values.mastodon.hooks.s3Upload.endpoint }}
           - name: RCLONE_CONFIG_REMOTE_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.mastodon.hooks.s3Upload.secretRef.name }}
+                name: {{ required "Please specify a secret with S3 credentials for S3 asset uploads" .Values.mastodon.hooks.s3Upload.secretRef.name }}
                 key: {{ .Values.mastodon.hooks.s3Upload.secretRef.keys.accesKeyId }}
           - name: RCLONE_CONFIG_REMOTE_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.mastodon.hooks.s3Upload.secretRef.name }}
+                name: {{ required "Please specify a secret with S3 credentials for S3 asset uploads" .Values.mastodon.hooks.s3Upload.secretRef.name }}
                 key: {{ .Values.mastodon.hooks.s3Upload.secretRef.keys.secretAccessKey }}
           command:
           - rclone
           args:
           - copy
           - /assets/public
-          - exo # defined in the env variable name above
+          - "remote:{{ required "Please specify a bucket for S3 asset uploads" .Values.mastodon.hooks.s3Upload.bucket }}"
           - --progress
           - -vv
           volumeMounts:
@@ -76,6 +77,7 @@ spec:
               memory: 256Mi
             limits:
               memory: 500Mi
+      volumes:
         - name: assets
           emptyDir: {}
 {{- end -}}
