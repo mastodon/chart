@@ -28,6 +28,16 @@ mastodon:
       enabled: true
     assetsPrecompile:
       enabled: true
+    # Upload website assets to S3 before deploying
+    s3Upload:
+      enabled: false
+      endpoint:
+      bucket:
+      secretRef:
+        name:
+        keys:
+          accesKeyId: acces-key-id
+          secretAccessKey: secret-access-key
   # Custom labels to add to kubernetes resources
   #labels:
   cron:
