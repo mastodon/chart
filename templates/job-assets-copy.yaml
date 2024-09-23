@@ -66,6 +66,10 @@ spec:
           - copy
           - /assets/public
           - "remote:{{ required "Please specify a bucket for S3 asset uploads" .Values.mastodon.hooks.s3Upload.bucket }}"
+          - --fast-list
+          - --transfers=32
+          - --include
+          - "{assets,packs}/**"
           - --progress
           - -vv
           volumeMounts:
