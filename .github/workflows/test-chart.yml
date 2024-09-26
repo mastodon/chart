@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   lint-templates:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: charts/mastodon
@@ -53,7 +53,7 @@ jobs:
   # basic configuration can be used to successfully startup mastodon.
   #
   test-install:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     defaults:
       run:
