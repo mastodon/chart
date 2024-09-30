@@ -193,6 +193,8 @@ spec:
               value: {{ coalesce .Values.mastodon.web.otel.endpointUri .Values.mastodon.otel.endpointUri }}
             - name: OTEL_SERVICE_NAME_PREFIX
               value: {{ coalesce .Values.mastodon.web.otel.namePrefix .Values.mastodon.otel.namePrefix }}
+            - name: OTEL_SERVICE_NAME_SEPARATOR
+              value: {{ coalesce .Values.mastodon.web.otel.nameSeparator .Values.mastodon.otel.nameSeparator }}
             {{- end }}
           volumeMounts:
           {{- if (not .Values.mastodon.s3.enabled) }}
