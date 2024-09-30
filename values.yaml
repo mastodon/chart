@@ -195,6 +195,7 @@ mastodon:
       enabled:
       exporterUri:
       namePrefix:
+      nameSeparator:
 
     workers:
       - name: all-queues
@@ -394,6 +395,7 @@ mastodon:
       enabled:
       exporterUri:
       namePrefix:
+      nameSeparator:
 
   # HTTP cache buster configuration.
   # See the documentation for more information about this feature:
@@ -423,6 +425,7 @@ mastodon:
     enabled: false
     exporterUri:
     namePrefix: mastodon
+    nameSeparator: "-"
 
   # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
   preparedStatements: true
