@@ -28,7 +28,12 @@ mastodon:
       enabled: true
     assetsPrecompile:
       enabled: true
-    # Upload website assets to S3 before deploying
+    # Upload website assets to S3 before deploying.
+    # Whenever there is an update to Mastodon, sometimes there are assets files
+    # that are renamed. As the pods are getting redeployed, and old/new pods are
+    # present simultaneously, that old asset files are requested from pods that
+    # don't have them anymore. Uploading asset files to S3 in this manner solves
+    # this potential conflict.
     s3Upload:
       enabled: false
       endpoint:
