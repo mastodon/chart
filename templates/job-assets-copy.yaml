@@ -60,6 +60,9 @@ spec:
               secretKeyRef:
                 name: {{ required "Please specify a secret with S3 credentials for S3 asset uploads" .Values.mastodon.hooks.s3Upload.secretRef.name }}
                 key: {{ .Values.mastodon.hooks.s3Upload.secretRef.keys.secretAccessKey }}
+          {{- with .Values.mastodon.hooks.s3Upload.rclone.env }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
           - rclone
           args:

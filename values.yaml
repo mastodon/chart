@@ -28,7 +28,7 @@ mastodon:
       enabled: true
     assetsPrecompile:
       enabled: true
-    # Upload website assets to S3 before deploying.
+    # Upload website assets to S3 before deploying using rclone.
     # Whenever there is an update to Mastodon, sometimes there are assets files
     # that are renamed. As the pods are getting redeployed, and old/new pods are
     # present simultaneously, there is a chance that old asset files are
@@ -46,6 +46,9 @@ mastodon:
         keys:
           accesKeyId: acces-key-id
           secretAccessKey: secret-access-key
+      rclone:
+        # Any additional environment variables to pass to rclone.
+        env: {}
   # Custom labels to add to kubernetes resources
   #labels:
   cron:
