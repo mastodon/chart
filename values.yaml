@@ -28,6 +28,27 @@ mastodon:
       enabled: true
     assetsPrecompile:
       enabled: true
+    # Upload website assets to S3 before deploying using rclone.
+    # Whenever there is an update to Mastodon, sometimes there are assets files
+    # that are renamed. As the pods are getting redeployed, and old/new pods are
+    # present simultaneously, there is a chance that old asset files are
+    # requested from pods that don't have them anymore, or new asset files are
+    # requested from old pods. Uploading asset files to S3 in this manner solves
+    # this potential conflict.
+    # Note that you will need to CDN/proxy to send all requests to /assets and
+    # /packs to this bucket.
+    s3Upload:
+      enabled: false
+      endpoint:
+      bucket:
+      secretRef:
+        name:
+        keys:
+          accesKeyId: acces-key-id
+          secretAccessKey: secret-access-key
+      rclone:
+        # Any additional environment variables to pass to rclone.
+        env: {}
   # Custom labels to add to kubernetes resources
   #labels:
   cron:
