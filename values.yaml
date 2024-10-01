@@ -41,6 +41,7 @@ mastodon:
       enabled: false
       endpoint:
       bucket:
+      acl: public-read
       secretRef:
         name:
         keys:

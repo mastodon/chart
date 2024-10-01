@@ -44,6 +44,8 @@ spec:
           env:
           - name: RCLONE_S3_NO_CHECK_BUCKET
             value: "true"
+          - name: RCLONE_S3_ACL
+            value: {{ required "Please specify a canned ACL for S3 asset uploads" .Values.mastodon.hooks.s3Upload.acl }}
           - name: RCLONE_CONFIG_REMOTE_TYPE
             value: s3
           - name: RCLONE_CONFIG_REMOTE_PROVIDER
