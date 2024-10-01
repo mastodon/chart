@@ -203,6 +203,8 @@ spec:
               value: {{ coalesce $context.Values.mastodon.sidekiq.otel.endpointUri $context.Values.mastodon.otel.endpointUri }}
             - name: OTEL_SERVICE_NAME_PREFIX
               value: {{ coalesce $context.Values.mastodon.sidekiq.otel.namePrefix $context.Values.mastodon.otel.namePrefix }}
+            - name: OTEL_SERVICE_NAME_SEPARATOR
+              value: "{{ coalesce $context.Values.mastodon.sidekiq.otel.nameSeparator $context.Values.mastodon.otel.nameSeparator }}"
             {{- end }}
           volumeMounts:
           {{- if (not $context.Values.mastodon.s3.enabled) }}
