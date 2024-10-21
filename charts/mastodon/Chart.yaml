@@ -12,7 +12,7 @@ type: application
 version: 9.0.0
 
 # renovate: image=ghcr.io/mastodon/mastodon
-appVersion: v4.2.11
+appVersion: v4.3.1
 
 dependencies:
   - name: postgresql
