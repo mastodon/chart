@@ -14,10 +14,10 @@ helm show values mastodon/mastodon > values.yaml
 helm install --namespace mastodon --create-namespace mastodon/mastodon --values values.yaml
 ```
 
-This chart is tested with k8s 1.27+ and helm 3.6.0+.
+This chart is tested with k8s v1.31+ and helm 3.16.0+.
 
 ## Known caveats for this chart
-Currently, you need to run PostgreSQL and Redis helm charts independently of this one, because there's a helm hook job called db-migrate that we can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let us know!
+Currently, you need to run PostgreSQL and Redis (or Valkey) helm charts independently of this one, because there's a helm hook job called db-migrate that we can't figure out how to make run after the dependency charts are fully installed, but before everything else. If you know the answer to this, please open an issue/pr here and let us know!
 
 # Configuration
 

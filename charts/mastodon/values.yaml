@@ -145,7 +145,18 @@ mastodon:
     vapid:
       private_key: ""
       public_key: ""
-    # -- the name of an existing Secret to use. keys must be: VAPID_PRIVATE_KEY, VAPID_PUBLIC_KEY, SECRET_KEY_BASE, OTP_SECRET
+    activeRecordEncryption:
+      primaryKey: ""
+      deterministicKey: ""
+      keyDerivationSalt: ""
+    # -- the name of an existing Secret to use. keys must be:
+    # VAPID_PRIVATE_KEY
+    # VAPID_PUBLIC_KEY
+    # SECRET_KEY_BASE
+    # OTP_SECRET
+    # ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+    # ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+    # ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
     existingSecret: ""
 
   sidekiq:
