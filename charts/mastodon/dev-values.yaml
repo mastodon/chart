@@ -103,6 +103,10 @@ mastodon:
     vapid:
       private_key: dummy-vapid-private_key
       public_key: dummy-vapid-public_key
+    activeRecordEncryption:
+      primaryKey: "dummy-are-primary_key"
+      deterministicKey: "dummy-are-deterministic_key"
+      keyDerivationSalt: "dummy-are-key_derivation_salt"
     # -- you can also specify the name of an existing Secret
     # with keys SECRET_KEY_BASE and OTP_SECRET and
     # VAPID_PRIVATE_KEY and VAPID_PUBLIC_KEY
