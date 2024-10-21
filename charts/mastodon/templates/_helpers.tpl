@@ -159,16 +159,6 @@ Get the redis secret name
     {{- printf "%s-redis" (tpl .Release.Name $) -}}
 {{- end -}}
 {{- end -}}
-{{/*
-Get the redis secret key
-*/}}
-{{- define "mastodon.redis.secretKey" -}}
-{{- if .Values.redis.auth.existingSecret }}
-    {{- printf "%s" (tpl .Values.redis.auth.existingSecretPasswordKey $) -}}
-{{- else -}}
-    {{- printf "redis-password" -}}
-{{- end -}}
-{{- end -}}
 
 {{/*
 Get the redis secret (sidekiq).
