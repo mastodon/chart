@@ -149,12 +149,12 @@ spec:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: {{ .Values.mastodon.s3.secretKeys.s3AccessKey }}
             {{- end }}
-            {{- if and $context.Values.mastodon.deepl.enabled }}
+            {{- if and .Values.mastodon.deepl.enabled }}
             - name: "DEEPL_API_KEY"
               valueFrom:
                 secretKeyRef:
-                  name: {{ $context.Values.mastodon.deepl.apiKeySecretRef.name }}
-                  key: {{ $context.Values.mastodon.deepl.apiKeySecretRef.key }}
+                  name: {{ .Values.mastodon.deepl.apiKeySecretRef.name }}
+                  key: {{ .Values.mastodon.deepl.apiKeySecretRef.key }}
             {{- end }}
             {{- if or .Values.mastodon.web.otel.enabled (and .Values.mastodon.otel.enabled (ne .Values.mastodon.web.otel.enabled false)) }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
