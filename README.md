@@ -75,4 +75,4 @@ Because database migrations are managed as a Job separate from the Rails and Sid
 > If bitnami merges in our [volumeMount fix](https://github.com/bitnami/charts/pull/20901) and fixes [#20904](https://github.com/bitnami/charts/issues/20904) and [#20902](https://github.com/bitnami/charts/issues/20902) and everything else works, we may be less active on this helm chart. Feel free to take what you need and we'll still eventually get around to issues and pull requests regardless :)
 
 > [!Note]
-> UPDATE: Acorrding to [mastodon/chart#129](https://github.com/mastodon/chart/issues/129) mastodon should have a new official helm chart at [mastodon/helm-charts](https://github.com/mastodon/helm-charts) but as of May 12, 2024 it is not yet ready so we'll continue to maintain this chart :)
+> UPDATE: Acorrding to [mastodon/chart#129](https://github.com/mastodon/chart/issues/129) mastodon should have a new official helm chart at [mastodon/helm-charts](https://github.com/mastodon/helm-charts) but as of Oct 21, 2024 it is not yet ready so we'll continue to maintain this chart :)
