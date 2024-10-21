@@ -588,4 +588,5 @@ tolerations: []
 # -- Affinity for all pods unless overwritten
 affinity: {}
 
+# -- timezone for all mastodon pods
 timezone: UTC
