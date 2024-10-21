@@ -1,5 +1,8 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+          "config:recommended", ":disableDependencyDashboard"
+    ],
     "customManagers": [
         {
           "customType": "regex",
@@ -37,16 +40,17 @@
         "bumpVersion": "major"
       },
       {
-        "description": "Bump helm chart versions by a patch when updating values files. Digests, pins, rollbacks, replacements and pinDigest updates are deliberately ignored since in our use case, these need a manual decision about the version bump for the chart. This can be removed when https://github.com/renovatebot/renovate/issues/8231 is implemented and enabled.",
+        "description": "Bump helm chart versions by a patch when updating values files. This can be removed when https://github.com/renovatebot/renovate/issues/8231 is implemented and enabled.",
         "matchManagers": ["helm-values", "regex"],
         "postUpgradeTasks": {
           "commands": [
-            "scripts/bump-chart-version.sh '{{{parentDir}}}' '{{{updateType}}}'"
+            "scripts/bump-chart-version.sh '{{{updateType}}}'"
           ],
-          "fileFilters": ["**/Chart.yaml"]
+          "fileFilters": ["**/Chart.yaml"],
+          "executionMode": "branch"
         }
       },
-      {
+      { 
         "matchManagers": ["github-actions"],
         "matchUpdateTypes": ["patch", "minor"],
         "automerge": true

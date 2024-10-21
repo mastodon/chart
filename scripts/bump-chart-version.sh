@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
+# thanks to original comment: https://github.com/renovatebot/renovate/issues/8231#issuecomment-1978929997
+# converted to discussion: https://github.com/renovatebot/renovate/discussions/28861#discussioncomment-9326722
 
 set -euo pipefail
 
-parent_dir="$1"
-update_type="$2"
+update_type="$1"
 
-version=$(grep "^version:" "charts/${parent_dir}/Chart.yaml" | awk '{print $2}')
+version=$(grep "^version:" "charts/mastodon/Chart.yaml" | awk '{print $2}')
+
 if [[ ! $version ]]; then
   echo "No valid version was found"
   exit 1
@@ -26,5 +28,5 @@ else
   patch=$(( patch + 1 ))
 fi
 
-echo "Bumping version for $parent_dir from $version to $major.$minor.$patch"
-sed -i "s/^version:.*/version: ${major}.${minor}.${patch}/g" "charts/${parent_dir}/Chart.yaml"
+echo "Bumping version for mastodon chart from $version to $major.$minor.$patch"
+sed -i "s/^version:.*/version: ${major}.${minor}.${patch}/g" "charts/mastodon/Chart.yaml"
