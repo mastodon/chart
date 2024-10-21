@@ -148,7 +148,7 @@ Get the postgresql secret.
 {{- end -}}
 
 {{/*
-Get the redis secret.
+Get the redis secret name
 */}}
 {{- define "mastodon.redis.secretName" -}}
 {{- if .Values.redis.auth.existingSecret }}

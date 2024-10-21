@@ -77,20 +77,20 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" . }}
-                  key: redis-password
+                  key: {{ .Values.redis.auth.existingSecretPasswordKey }}
             {{- if and .Values.redis.sidekiq.enabled .Values.redis.sidekiq.auth.existingSecret }}
             - name: "SIDEKIQ_REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.sidekiq.secretName" . }}
-                  key: redis-password
+                  key: {{ .Values.redis.auth.existingSecretPasswordKey }}
             {{- end }}
             {{- if and .Values.redis.cache.enabled .Values.redis.cache.auth.existingSecret }}
             - name: "CACHE_REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.cache.secretName" . }}
-                  key: redis-password
+                  key: {{ .Values.redis.auth.existingSecretPasswordKey }}
             {{- end }}
             - name: "PORT"
               value: {{ .Values.mastodon.web.port | quote }}
