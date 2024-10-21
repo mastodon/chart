@@ -100,6 +100,20 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" $context }}
                   key: redis-password
+            {{- if and .Values.redis.sidekiq.enabled .Values.redis.sidekiq.auth.existingSecret }}
+            - name: "SIDEKIQ_REDIS_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "mastodon.redis.sidekiq.secretName" . }}
+                  key: redis-password
+            {{- end }}
+            {{- if and .Values.redis.cache.enabled .Values.redis.cache.auth.existingSecret }}
+            - name: "CACHE_REDIS_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "mastodon.redis.cache.secretName" . }}
+                  key: redis-password
+            {{- end }}
             - name: "SMTP_SERVER"
               valueFrom:
                 secretKeyRef:
@@ -152,6 +166,21 @@ spec:
                 secretKeyRef:
                   name: {{ $context.Values.mastodon.s3.existingSecret }}
                   key: {{ $context.Values.mastodon.s3.secretKeys.s3AccessKey }}
+            {{- end }}
+            {{- if and $context.Values.mastodon.deepl.enabled }}
+            - name: "DEEPL_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $context.Values.mastodon.deepl.apiKeySecretRef.name }}
+                  key: {{ $context.Values.mastodon.deepl.apiKeySecretRef.key }}
+            {{- end }}
+            {{- if or $context.Values.mastodon.sidekiq.otel.enabled (and $context.Values.mastodon.otel.enabled (ne $context.Values.mastodon.sidekiq.otel.enabled false)) }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ coalesce $context.Values.mastodon.sidekiq.otel.endpointUri $context.Values.mastodon.otel.endpointUri }}
+            - name: OTEL_SERVICE_NAME_PREFIX
+              value: {{ coalesce $context.Values.mastodon.sidekiq.otel.namePrefix $context.Values.mastodon.otel.namePrefix }}
+            - name: OTEL_SERVICE_NAME_SEPARATOR
+              value: "{{ coalesce $context.Values.mastodon.sidekiq.otel.nameSeparator $context.Values.mastodon.otel.nameSeparator }}"
             {{- end }}
           {{- if or $context.Values.mastodon.extraVolumeMounts (not $context.Values.mastodon.s3.enabled)}}
           volumeMounts:

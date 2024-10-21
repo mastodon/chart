@@ -39,6 +39,9 @@ data:
   {{- with .Values.mastodon.web_domain }}
   WEB_DOMAIN: {{ . }}
   {{- end }}
+  {{- with .Values.mastodon.alternate_domains }}
+  ALTERNATE_DOMAINS: {{ join "," . }}
+  {{- end }}
   {{- with .Values.mastodon.singleUserMode }}
   SINGLE_USER_MODE: "true"
   {{- end }}
@@ -58,14 +61,50 @@ data:
   REDIS_HOST: {{ required "When the redis chart is disabled .Values.redis.hostname is required" .Values.redis.hostname }}
   {{- end }}
   REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
+  {{- if .Values.redis.sidekiq.enabled }}
+  {{- if .Values.redis.sidekiq.hostname }}
+  SIDEKIQ_REDIS_HOST: {{ .Values.redis.sidekiq.hostname }}
+  {{- else }}
+  SIDEKIQ_REDIS_HOST: {{ .Values.redis.hostname }}
+  {{- end }}
+  {{- if .Values.redis.sidekiq.port }}
+  SIDEKIQ_REDIS_PORT: {{ .Values.redis.sidekiq.port | quote }}
+  {{- else }}
+  SIDEKIQ_REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.redis.cache.enabled }}
+  {{- if .Values.redis.cache.hostname }}
+  CACHE_REDIS_HOST: {{ .Values.redis.cache.hostname }}
+  {{- else }}
+  CACHE_REDIS_HOST: {{ .Values.redis.hostname}}
+  {{- end }}
+  {{- if .Values.redis.cache.port }}
+  CACHE_REDIS_PORT: {{ .Values.redis.cache.port | quote }}
+  {{- else }}
+  CACHE_REDIS_PORT: {{ .Values.redis.port | default "6379" | quote }}
+  {{- end }}
+  {{- end }}
   {{- if .Values.mastodon.s3.enabled }}
+  S3_BUCKET: {{ .Values.mastodon.s3.bucket }}
   S3_ENABLED: "true"
+  S3_ENDPOINT: {{ .Values.mastodon.s3.endpoint }}
+  S3_HOSTNAME: {{ .Values.mastodon.s3.hostname }}
   S3_PROTOCOL: "https"
   {{- if .Values.mastodon.s3.permission }}
   S3_PERMISSION: {{ .Values.mastodon.s3.permission }}
   {{- end }}
+  {{- with .Values.mastodon.s3.region }}
+  S3_REGION: {{ . }}
+  {{- end }}
   {{- with .Values.mastodon.s3.alias_host }}
   S3_ALIAS_HOST: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.s3.multipart_threshold }}
+  S3_MULTIPART_THRESHOLD: "{{ . }}"
+  {{- end }}
+  {{- with .Values.mastodon.s3.override_path_style }}
+  S3_OVERRIDE_PATH_STYLE: "{{ . }}"
   {{- end }}
   {{- end }}
   {{- with .Values.mastodon.smtp.auth_method }}
@@ -331,4 +370,10 @@ data:
   {{- end }}
   {{- with .Values.mastodon.metrics.statsd.address }}
   STATSD_ADDR: {{ . }}
+  {{- end }}
+  {{- if .Values.mastodon.deepl.enabled }}
+  DEEPL_PLAN: {{ .Values.mastodon.deepl.plan }}
+  {{- end }}
+  {{- with .Values.timezone }}
+  TZ: {{ . | quote }}
   {{- end }}
