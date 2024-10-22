@@ -53,7 +53,7 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ coalesce .Values.mastodon.streaming.image.repository .Values.image.repository }}:{{ coalesce .Values.mastodon.streaming.image.tag .Values.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - node
@@ -106,6 +106,13 @@ spec:
             httpGet:
               path: /api/v1/streaming/health
               port: streaming
+          startupProbe:
+            httpGet:
+              path: /api/v1/streaming/health
+              port: streaming
+            initialDelaySeconds: 5
+            failureThreshold: 15
+            periodSeconds: 5
           {{- with (default .Values.resources .Values.mastodon.streaming.resources) }}
           resources:
             {{- toYaml . | nindent 12 }}
