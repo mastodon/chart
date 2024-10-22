@@ -183,7 +183,7 @@ mastodon:
     existingSecret: ""
   streaming:
     image:
-      repository: ""
+      repository: ghcr.io/mastodon/mastodon-streaming
       tag: ""
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
