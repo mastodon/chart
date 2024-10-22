@@ -34,7 +34,8 @@ mastodon:
     dbMigrate:
       enabled: true
     assetsPrecompile:
-      enabled: true
+      # -- disabled by default, see [mastodon/chart:#158](https://github.com/mastodon/chart/issues/158#issuecomment-2429186438)
+      enabled: false
     # Upload website assets to S3 before deploying using rclone.
     # Whenever there is an update to Mastodon, sometimes there are assets files
     # that are renamed. As the pods are getting redeployed, and old/new pods are
