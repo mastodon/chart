@@ -182,6 +182,9 @@ mastodon:
     # password must be located in keys named `login` and `password` respectively.
     existingSecret: ""
   streaming:
+    image:
+      repository: ""
+      tag: ""
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
     # the node running the pod, which is unrelated to the resources allocated to
