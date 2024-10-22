@@ -10,6 +10,12 @@ metadata:
     {{- end }}
 spec:
   replicas: {{ .Values.mastodon.streaming.replicas }}
+  {{- if (ne (toString .Values.mastodon.revisionHistoryLimit) "<nil>") }}
+  revisionHistoryLimit: {{ .Values.mastodon.revisionHistoryLimit }}
+  {{- end }}
+  {{- if .Values.mastodon.streaming.updateStrategy }}
+  strategy: {{- toYaml .Values.mastodon.streaming.updateStrategy | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "mastodon.selectorLabels" . | nindent 6 }}
