@@ -240,9 +240,12 @@ mastodon:
     # -- Instead of defining server/login/password above, you can specify the name of an existing secret here. Login and
     # keys must be named `login`, `server`, `password` respectively.
     existingSecret: ""
+
   streaming:
     image:
-      repository: ""
+      # -- image repo for the mastodon streaming image
+      repository: ghcr.io/mastodon/mastodon-streaming
+      # -- set a specific tag for mastodon-streaming image, defaults to appVersion in Chart.yaml
       tag: ""
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
