@@ -58,7 +58,7 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 | mastodon.deepl.plan | string | `""` |  |
 | mastodon.extraVolumeMounts | list | `[]` | optional extra volume mounts for the mastodon web pod |
 | mastodon.extraVolumes | list | `[]` | optional extra volumes for the mastodon web pod |
-| mastodon.hooks.assetsPrecompile.enabled | bool | `true` |  |
+| mastodon.hooks.assetsPrecompile.enabled | bool | `false` | disabled by default, see [mastodon/chart:#158](https://github.com/mastodon/chart/issues/158#issuecomment-2429186438) |
 | mastodon.hooks.dbMigrate.enabled | bool | `true` |  |
 | mastodon.hooks.s3Upload.acl | string | `"public-read"` |  |
 | mastodon.hooks.s3Upload.bucket | string | `nil` |  |
