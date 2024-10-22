@@ -276,8 +276,8 @@ mastodon:
     existingSecret:
   streaming:
     image:
-      repository:
-      tag:
+      repository: ghcr.io/mastodon/mastodon-streaming
+      tag: ""
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
     # the node running the pod, which is unrelated to the resources allocated to
