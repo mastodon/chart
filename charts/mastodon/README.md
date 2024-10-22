@@ -1,6 +1,6 @@
 # mastodon
 
-![Version: 9.4.0](https://img.shields.io/badge/Version-9.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.3.1](https://img.shields.io/badge/AppVersion-v4.3.1-informational?style=flat-square)
+![Version: 9.5.0](https://img.shields.io/badge/Version-9.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.3.1](https://img.shields.io/badge/AppVersion-v4.3.1-informational?style=flat-square)
 
 Mastodon is a free, open-source social network server based on ActivityPub.
 
@@ -80,6 +80,7 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 | mastodon.persistence.system.existingClaim | string | `""` | name of existing persistent volume claim to use for system |
 | mastodon.persistence.system.resources.requests.storage | string | `"100Gi"` |  |
 | mastodon.preparedStatements | bool | `true` |  |
+| mastodon.revisionHistoryLimit | int | `2` | The number of old revisions to keep for each Deployment in Kubernetes.    See https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#clean-up-policy |
 | mastodon.s3.access_key | string | `""` |  |
 | mastodon.s3.access_secret | string | `""` |  |
 | mastodon.s3.alias_host | string | `""` | If you have a caching proxy, enter its base URL here. |
@@ -137,6 +138,8 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 | mastodon.smtp.tls | bool | `false` |  |
 | mastodon.streaming.affinity | object | `{}` | Affinity for Streaming Pods, overwrites .Values.affinity |
 | mastodon.streaming.base_url | string | `nil` | The base url for streaming can be set if the streaming API is deployed to a different domain/subdomain. |
+| mastodon.streaming.image.repository | string | `""` |  |
+| mastodon.streaming.image.tag | string | `""` |  |
 | mastodon.streaming.podSecurityContext | object | `{}` | Pod Security Context for Streaming Pods, overwrites .Values.podSecurityContext |
 | mastodon.streaming.port | int | `4000` |  |
 | mastodon.streaming.replicas | int | `1` | Number of Streaming Pods running |
