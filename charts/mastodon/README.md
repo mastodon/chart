@@ -1,6 +1,6 @@
 # mastodon
 
-![Version: 9.5.0](https://img.shields.io/badge/Version-9.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.3.1](https://img.shields.io/badge/AppVersion-v4.3.1-informational?style=flat-square)
+![Version: 9.5.1](https://img.shields.io/badge/Version-9.5.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.3.1](https://img.shields.io/badge/AppVersion-v4.3.1-informational?style=flat-square)
 
 Mastodon is a free, open-source social network server based on ActivityPub.
 
@@ -138,8 +138,8 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 | mastodon.smtp.tls | bool | `false` |  |
 | mastodon.streaming.affinity | object | `{}` | Affinity for Streaming Pods, overwrites .Values.affinity |
 | mastodon.streaming.base_url | string | `nil` | The base url for streaming can be set if the streaming API is deployed to a different domain/subdomain. |
-| mastodon.streaming.image.repository | string | `""` |  |
-| mastodon.streaming.image.tag | string | `""` |  |
+| mastodon.streaming.image.repository | string | `"ghcr.io/mastodon/mastodon-streaming"` | image repo for the mastodon streaming image |
+| mastodon.streaming.image.tag | string | `""` | set a specific tag for mastodon-streaming image, defaults to appVersion in Chart.yaml |
 | mastodon.streaming.podSecurityContext | object | `{}` | Pod Security Context for Streaming Pods, overwrites .Values.podSecurityContext |
 | mastodon.streaming.port | int | `4000` |  |
 | mastodon.streaming.replicas | int | `1` | Number of Streaming Pods running |
