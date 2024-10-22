@@ -57,7 +57,7 @@ spec:
             - bash
             - -c
             - |
-                whoami && bundle exec rake assets:precompile && yarn cache clean
+                bundle exec rake assets:precompile && yarn cache clean
           envFrom:
             - configMapRef:
                 name: {{ include "mastodon.fullname" . }}-env
