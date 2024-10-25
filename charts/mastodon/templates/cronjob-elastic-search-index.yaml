@@ -58,9 +58,14 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               command:
-                - bin/tootctl
-                - |
-                  search deploy --only=instances accounts tags statuses public_statuses
+                - tootctl
+                - search
+                - deploy
+                - '--only=instances'
+                - accounts
+                - tags
+                - statuses
+                - public_statuses
               envFrom:
                 - configMapRef:
                     name: {{ include "mastodon.fullname" . }}-env
