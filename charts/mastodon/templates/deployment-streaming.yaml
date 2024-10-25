@@ -61,6 +61,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "mastodon.fullname" . }}-env
+            {{- if .Values.mastodon.extraEnvFrom }}
+            - configMapRef:
+                name: {{ .Values.mastodon.extraEnvFrom }}
+            {{- end}}
           env:
             - name: "DB_PASS"
               valueFrom:
@@ -88,6 +92,9 @@ spec:
             {{- end }}
             - name: "PORT"
               value: {{ .Values.mastodon.streaming.port | quote }}
+            {{- with .Values.mastodon.extraEnvVars }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- if or .Values.mastodon.extraVolumeMounts }}
           volumeMounts:
           {{- if gt (len .Values.mastodon.extraVolumeMounts) 0 }}

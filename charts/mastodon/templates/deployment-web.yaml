@@ -71,6 +71,10 @@ spec:
                 name: {{ include "mastodon.fullname" . }}-env
             - secretRef:
                 name: {{ template "mastodon.secretName" . }}
+            {{- if .Values.mastodon.extraEnvFrom }}
+            - configMapRef:
+                name: {{ .Values.mastodon.extraEnvFrom }}
+            {{- end}}
           env:
             - name: "DB_PASS"
               valueFrom:
@@ -164,6 +168,9 @@ spec:
               value: {{ coalesce .Values.mastodon.web.otel.namePrefix .Values.mastodon.otel.namePrefix }}
             - name: OTEL_SERVICE_NAME_SEPARATOR
               value: "{{ coalesce .Values.mastodon.web.otel.nameSeparator .Values.mastodon.otel.nameSeparator }}"
+            {{- end }}
+            {{- with .Values.mastodon.extraEnvVars }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
           {{- if or .Values.mastodon.extraVolumeMounts (not .Values.mastodon.s3.enabled)}}
           volumeMounts:

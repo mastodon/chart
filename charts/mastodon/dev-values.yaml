@@ -112,6 +112,16 @@ mastodon:
   # -- optional extra volume mounts for the mastodon web pod
   extraVolumeMounts: []
 
+  # -- Specify extra environment variables to be added to all Mastodon pods.
+  # These can be used for configuration not included in this chart (including configuration for Mastodon varietals.)
+  extraEnvVars:
+    - name: MAX_TOOT_CHARS
+      value: 1024
+
+  # -- Alternatively specify extra environment variables stored in a ConfigMap.
+  # The specified ConfigMap should contain the additional environment variables in key-value format.
+  extraEnvFrom: ""
+
   s3:
     enabled: false
     access_key: ""
