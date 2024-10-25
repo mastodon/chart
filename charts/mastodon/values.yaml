@@ -60,12 +60,16 @@ mastodon:
         env: {}
 
   cron:
-    # -- run `tootctl media remove` every week
     removeMedia:
-      # @ignored
+      # -- run `tootctl media remove` on a cron schedule
       enabled: true
-      # @ignored
+      # -- run once a week
       schedule: "0 0 * * 0"
+    updateSearchIndexMappings:
+      # -- run `tootctl search deploy --only=instances accounts tags statuses public_statuses` on a cron schedule
+      enabled: true
+      # -- run once an hour
+      schedule: "0 * * * *"
   # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
   locale: en
   local_domain: mastodon.local
