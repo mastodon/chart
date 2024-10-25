@@ -1,0 +1,144 @@
+{{ if .Values.mastodon.cron.updateSearchIndexMappings.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "mastodon.fullname" . }}-update-search-index-mappings
+  labels:
+    {{- include "mastodon.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.mastodon.cron.updateSearchIndexMappings.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: {{ include "mastodon.fullname" . }}-update-search-index-mappings
+          {{- with .Values.jobAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        spec:
+          restartPolicy: OnFailure
+          {{- if not .Values.mastodon.s3.enabled }}
+          # ensure we run on the same node as the other rails components; only
+          # required when using PVCs that are ReadWriteOnce
+          {{- if or (eq "ReadWriteOnce" .Values.mastodon.persistence.assets.accessMode) (eq "ReadWriteOnce" .Values.mastodon.persistence.system.accessMode) }}
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/part-of
+                        operator: In
+                        values:
+                          - rails
+                  topologyKey: kubernetes.io/hostname
+          {{- end }}
+          {{- end }}
+          {{- with (default .Values.podSecurityContext .Values.mastodon.web.podSecurityContext) }}
+          # hello
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.mastodon.extraVolumes (not .Values.mastodon.s3.enabled) }}
+          volumes:
+          {{- if .Values.mastodon.extraVolumes }}
+          {{- toYaml .Values.mastodon.extraVolumes | nindent 12}}
+          {{- end }}
+          {{- if not .Values.mastodon.s3.enabled }}
+            - name: assets
+              persistentVolumeClaim:
+                claimName: {{ template "mastodon.pvc.assets" . }}
+            - name: system
+              persistentVolumeClaim:
+                claimName: {{ template "mastodon.pvc.system" . }}
+          {{- end }}
+          {{- end }}
+          containers:
+            - name: {{ include "mastodon.fullname" . }}-update-search-index-mappings
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command:
+                - bin/tootctl
+                - |
+                  search deploy --only=instances accounts tags statuses public_statuses
+              envFrom:
+                - configMapRef:
+                    name: {{ include "mastodon.fullname" . }}-env
+                - secretRef:
+                    name: {{ template "mastodon.secretName" . }}
+              env:
+                - name: "DB_PASS"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ template "mastodon.postgresql.secretName" . }}
+                      key: password
+                - name: "REDIS_PASSWORD"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ template "mastodon.redis.secretName" . }}
+                      key: {{ .Values.redis.auth.existingSecretPasswordKey }}
+                {{- if and .Values.redis.sidekiq.enabled .Values.redis.sidekiq.auth.existingSecret }}
+                - name: "SIDEKIQ_REDIS_PASSWORD"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ template "mastodon.redis.sidekiq.secretName" . }}
+                      key: {{ .Values.redis.auth.existingSecretPasswordKey }}
+                {{- end }}
+                {{- if and .Values.redis.cache.enabled .Values.redis.cache.auth.existingSecret }}
+                - name: "CACHE_REDIS_PASSWORD"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ template "mastodon.redis.cache.secretName" . }}
+                      key: {{ .Values.redis.auth.existingSecretPasswordKey }}
+                {{- end }}
+                - name: "PORT"
+                  value: {{ .Values.mastodon.web.port | quote }}
+                {{- if (and .Values.mastodon.s3.enabled .Values.mastodon.s3.existingSecret) }}
+                {{- if .Values.mastodon.s3.secretKeys.s3Hostname }}
+                - name: "S3_HOSTNAME"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3Hostname }}
+                {{- end }}
+                - name: "S3_ENDPOINT"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3Endpoint }}
+                {{- if .Values.mastodon.s3.secretKeys.s3Region }}
+                - name: "S3_REGION"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3Region }}
+                {{- end }}
+                - name: "S3_BUCKET"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3Bucket }}
+                - name: "AWS_ACCESS_KEY_ID"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3AccessKeyID }}
+                - name: "AWS_SECRET_ACCESS_KEY"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.mastodon.s3.existingSecret }}
+                      key: {{ .Values.mastodon.s3.secretKeys.s3AccessKey }}
+                {{- end }}
+              {{- if or .Values.mastodon.extraVolumeMounts (not .Values.mastodon.s3.enabled) }}
+              volumeMounts:
+              {{- if not .Values.mastodon.s3.enabled }}
+                - name: assets
+                  mountPath: /opt/mastodon/public/assets
+                - name: system
+                  mountPath: /opt/mastodon/public/system
+              {{- end }}
+              {{- if .Values.mastodon.extraVolumeMounts }}
+              {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 16 }}
+              {{- end }}
+              {{- end }}
+{{- end }}
