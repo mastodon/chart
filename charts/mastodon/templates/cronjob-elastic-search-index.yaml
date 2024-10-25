@@ -134,6 +134,9 @@ spec:
                       name: {{ .Values.mastodon.s3.existingSecret }}
                       key: {{ .Values.mastodon.s3.secretKeys.s3AccessKey }}
                 {{- end }}
+                {{- with .Values.mastodon.extraEnvVars }}
+                {{- toYaml . | nindent 16 }}
+                {{- end }}
               {{- if or .Values.mastodon.extraVolumeMounts (not .Values.mastodon.s3.enabled) }}
               volumeMounts:
               {{- if not .Values.mastodon.s3.enabled }}
