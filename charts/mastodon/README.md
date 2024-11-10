@@ -1,6 +1,6 @@
 # mastodon
 
-![Version: 9.7.0](https://img.shields.io/badge/Version-9.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.3.1](https://img.shields.io/badge/AppVersion-v4.3.1-informational?style=flat-square)
+![Version: 9.8.0](https://img.shields.io/badge/Version-9.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.3.1](https://img.shields.io/badge/AppVersion-v4.3.1-informational?style=flat-square)
 
 Mastodon is a free, open-source social network server based on ActivityPub.
 
@@ -57,7 +57,7 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 | mastodon.cron.updateSearchIndexMappings.schedule | string | `"0 * * * *"` | run once an hour |
 | mastodon.deepl.apiKeySecretRef.key | string | `""` |  |
 | mastodon.deepl.apiKeySecretRef.name | string | `""` |  |
-| mastodon.deepl.enabled | bool | `false` |  |
+| mastodon.deepl.enabled | bool | `false` | enable the use of deepl for translations |
 | mastodon.deepl.plan | string | `""` |  |
 | mastodon.extraEnvFrom | string | `""` | Alternatively specify extra environment variables stored in a ConfigMap. The specified ConfigMap should contain the additional environment variables in key-value format. |
 | mastodon.extraEnvVars | list | `[]` | Specify extra environment variables to be added to all Mastodon pods. These can be used for configuration not included in this chart (including configuration for Mastodon varietals.) |
@@ -73,6 +73,12 @@ Mastodon is a free, open-source social network server based on ActivityPub.
 | mastodon.hooks.s3Upload.secretRef.keys.accesKeyId | string | `"acces-key-id"` |  |
 | mastodon.hooks.s3Upload.secretRef.keys.secretAccessKey | string | `"secret-access-key"` |  |
 | mastodon.hooks.s3Upload.secretRef.name | string | `nil` |  |
+| mastodon.libretranslate.apiKey | string | `""` |  |
+| mastodon.libretranslate.enabled | bool | `false` | enable the use of libretranslate for translations |
+| mastodon.libretranslate.endpoint | string | `""` |  |
+| mastodon.libretranslate.existingSecret | string | `""` | use an existing secret for libretranslate endpoint and api key |
+| mastodon.libretranslate.secretKeys.apiKey | string | `""` |  |
+| mastodon.libretranslate.secretKeys.endpoint | string | `""` |  |
 | mastodon.limitedFederationMode | bool | `false` | Enables "Limited Federation Mode" for more detauls see: https://docs.joinmastodon.org/admin/config/#limited_federation_mode |
 | mastodon.local_domain | string | `"mastodon.local"` |  |
 | mastodon.locale | string | `"en"` | available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71 |
