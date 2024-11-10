@@ -154,12 +154,34 @@ spec:
                   name: {{ .Values.mastodon.s3.existingSecret }}
                   key: {{ .Values.mastodon.s3.secretKeys.s3AccessKey }}
             {{- end }}
-            {{- if and .Values.mastodon.deepl.enabled }}
+            {{- if .Values.mastodon.deepl.enabled }}
             - name: "DEEPL_API_KEY"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.mastodon.deepl.apiKeySecretRef.name }}
                   key: {{ .Values.mastodon.deepl.apiKeySecretRef.key }}
+            {{- end }}
+            {{- if .Values.mastodon.libretranslate.enabled }}
+            - name: "LIBRE_TRANSLATE_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  {{- if .Values.mastodon.libretranslate.existingSecret }}
+                  name: {{ .Values.mastodon.libretranslate.existingSecret }}
+                  key: {{ .Values.mastodon.libretranslate.secretKeys.apiKey }}
+                  {{- else -}}
+                  name: {{ include "mastodon.fullname" . }}-libretranslate
+                  key: apiKey
+                  {{- end }}
+            - name: "LIBRE_TRANSLATE_ENDPOINT"
+              valueFrom:
+                secretKeyRef:
+                  {{- if .Values.mastodon.libretranslate.existingSecret }}
+                  name: {{ .Values.mastodon.libretranslate.existingSecret }}
+                  key: {{ .Values.mastodon.libretranslate.secretKeys.endpoint }}
+                  {{- else -}}
+                  name: {{ include "mastodon.fullname" . }}-libretranslate
+                  key: endpoint
+                  {{- end }}
             {{- end }}
             {{- if or .Values.mastodon.web.otel.enabled (and .Values.mastodon.otel.enabled (ne .Values.mastodon.web.otel.enabled false)) }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
