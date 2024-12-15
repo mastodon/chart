@@ -7,5 +7,6 @@
     "includeForks": true,
     "repositories": [
         "small-hack/mastodon-helm-chart"
-    ]
+    ],
+    "allowedPostUpgradeCommands": ["^scripts"]
 }
