@@ -28,7 +28,7 @@ jobs:
 
       - name: Self-hosted Renovate
         # renovate keeps itself up to date
-        uses: renovatebot/github-action@v41.0.10
+        uses: renovatebot/github-action@v41.0.11
         with:
           token: '${{ steps.get_token.outputs.token }}'
           configurationFile: .github/renovate-config.json
