@@ -202,7 +202,7 @@ spec:
             - name: PROMETHEUS_EXPORTER_HOST
               value: {{ $.Values.mastodon.metrics.prometheus.host }}
             - name: PROMETHEUS_EXPORTER_PORT
-              value: {{ .Values.mastodon.metrics.prometheus.port }}
+              value: "{{ .Values.mastodon.metrics.prometheus.port }}"
             {{- if .Values.mastodon.metrics.prometheus.web.detailed }}
             - name: MASTODON_PROMETHEUS_EXPORTER_WEB_DETAILED_METRICS
               value: "true"
