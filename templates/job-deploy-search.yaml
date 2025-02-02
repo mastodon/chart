@@ -2,9 +2,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "oliphaunt.fullname" . }}-deploy-search
+  name: {{ include "mastodon.fullname" . }}-deploy-search
   labels:
-    {{- include "oliphaunt.labels" . | nindent 4 }}
+    {{- include "mastodon.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
@@ -13,7 +13,7 @@ spec:
   suspend: false
   template:
     metadata:
-      name: {{ include "oliphaunt.fullname" . }}-deploy-search
+      name: {{ include "mastodon.fullname" . }}-deploy-search
       {{- with .Values.jobAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
@@ -38,13 +38,13 @@ spec:
       volumes:
         - name: assets
           persistentVolumeClaim:
-            claimName: {{ template "oliphaunt.fullname" . }}-assets
+            claimName: {{ template "mastodon.fullname" . }}-assets
         - name: system
           persistentVolumeClaim:
-            claimName: {{ template "oliphaunt.fullname" . }}-system
+            claimName: {{ template "mastodon.fullname" . }}-system
       {{- end }}
       containers:
-        - name: {{ include "oliphaunt.fullname" . }}-deploy-search
+        - name: {{ include "mastodon.fullname" . }}-deploy-search
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
@@ -68,7 +68,7 @@ spec:
             {{- end }}
           envFrom:
             - configMapRef:
-                name: {{ include "oliphaunt.fullname" . }}-mastodon-env
+                name: {{ include "mastodon.fullname" . }}-env
             - secretRef:
                 name: {{ template "mastodon.secretName" $ }}
           env:
