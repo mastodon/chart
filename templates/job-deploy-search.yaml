@@ -62,6 +62,10 @@ spec:
             {{- if .Values.mastodon.deploySearch.resetChewy }}
             - '--reset-chewy'
             {{- end }}
+            {{- with .Values.mastodon.deploySearch.batchSize }}
+            - '--batch-size'
+            - {{ . | quote }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "oliphaunt.fullname" . }}-mastodon-env
