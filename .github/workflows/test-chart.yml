@@ -125,7 +125,6 @@ jobs:
             deploy/mastodon-sidekiq
             deploy/mastodon-streaming
             deploy/mastodon-web
-            job/mastodon-assets-precompile
             job/mastodon-chewy-upgrade
             job/mastodon-create-admin
             job/mastodon-db-migrate
