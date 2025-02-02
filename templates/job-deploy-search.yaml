@@ -1,4 +1,4 @@
-{{- if and .Values.mastodon.deploySearch.enabled .Values.elasticsearch.enabled -}}
+{{- if and .Values.mastodon.hooks.deploySearch.enabled .Values.elasticsearch.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -55,14 +55,14 @@ spec:
             - bin/tootctl
             - search
             - deploy
-            {{- with .Values.mastodon.deploySearch.concurrency }}
+            {{- with .Values.mastodon.hooks.deploySearch.concurrency }}
             - '--concurrency'
             - {{ . | quote }}
             {{- end }}
-            {{- if .Values.mastodon.deploySearch.resetChewy }}
+            {{- if .Values.mastodon.hooks.deploySearch.resetChewy }}
             - '--reset-chewy'
             {{- end }}
-            {{- with .Values.mastodon.deploySearch.batchSize }}
+            {{- with .Values.mastodon.hooks.deploySearch.batchSize }}
             - '--batch-size'
             - {{ . | quote }}
             {{- end }}

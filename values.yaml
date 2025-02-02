@@ -35,6 +35,10 @@ mastodon:
     # Whether to perform DB migrations on `helm upgrade`.
     dbMigrate:
       enabled: true
+    deploySearch:
+      enabled: false
+      concurrency: 5
+      resetChewy: true
     # Upload website assets to S3 before deploying using rclone.
     # Whenever there is an update to Mastodon, sometimes there are assets files
     # that are renamed. As the pods are getting redeployed, and old/new pods are
@@ -60,10 +64,6 @@ mastodon:
   # Custom labels to add to kubernetes resources
   #labels:
   # -- deploy search to elastsicsearch. Requires .elasticsearch.enabled = true
-  deploySearch:
-    enabled: false
-    concurrency: 5
-    resetChewy: true
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
