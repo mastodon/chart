@@ -213,17 +213,15 @@ spec:
               value: {{ $context.Values.mastodon.metrics.prometheus.host }}
             - name: PROMETHEUS_EXPORTER_PORT
               value: "{{ $context.Values.mastodon.metrics.prometheus.port }}"
-            {{- if $context.Values.mastodon.metrics.prometheus.sidekiq.detailed }}
-            - name: MASTODON_PROMETHEUS_EXPORTER_SIDEKIQ_DETAILED_METRICS
-              value: "true"
-            {{- end }}
-            {{- if $context.Values.mastodon.metrics.prometheus.sidekiq.local.enabled }}
             - name: MASTODON_PROMETHEUS_EXPORTER_LOCAL
               value: "true"
             - name: MASTODON_PROMETHEUS_EXPORTER_HOST
               value: {{ $context.Values.mastodon.metrics.prometheus.sidekiq.local.host }}
             - name: MASTODON_PROMETHEUS_EXPORTER_PORT
               value: "{{ $context.Values.mastodon.metrics.prometheus.sidekiq.local.port }}"
+            {{- if $context.Values.mastodon.metrics.prometheus.sidekiq.detailed }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_SIDEKIQ_DETAILED_METRICS
+              value: "true"
             {{- end }}
             {{- end }}
           volumeMounts:

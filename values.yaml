@@ -449,11 +449,6 @@ mastodon:
       sidekiq:
         # Collect per-job metrics for every job
         detailed: false
-        # Use a local in-process exporter instead
-        local:
-          enabled: true
-          host: localhost
-          port: 9394
 
   # Open Telemetry configuration for all deployments. Component-specific
   # configuration will override these values.
