@@ -39,6 +39,7 @@ mastodon:
       enabled: false
       concurrency: 5
       resetChewy: true
+      only: "" # one index name. Possible values: instances, accounts, tags, statuses, public_statuses
     # Upload website assets to S3 before deploying using rclone.
     # Whenever there is an update to Mastodon, sometimes there are assets files
     # that are renamed. As the pods are getting redeployed, and old/new pods are

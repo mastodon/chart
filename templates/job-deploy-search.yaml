@@ -66,6 +66,13 @@ spec:
             - '--batch-size'
             - {{ . | quote }}
             {{- end }}
+            {{- with .Values.mastodon.hooks.deploySearch.only }}
+              {{- if not (has . (list "instances" "accounts" "tags" "statuses" "public_statuses")) -}}
+                {{ fail "mastodon.hooks.deploySearch.only: Value must be one of the following words: instances, accounts, tags, statuses, public_statuses"}}
+              {{- end }}
+            - '--only'
+            - {{ . | quote }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "mastodon.fullname" . }}-env
