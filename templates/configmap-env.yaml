@@ -137,10 +137,10 @@ data:
   SMTP_ENABLE_STARTTLS_AUTO: {{ . | quote }}
   {{- end }}
   {{- with .Values.mastodon.smtp.from_address }}
-  SMTP_FROM_ADDRESS: {{ . }}
+  SMTP_FROM_ADDRESS: {{ . | quote }}
   {{- end }}
   {{- with .Values.mastodon.smtp.return_path }}
-  SMTP_RETURN_PATH: {{ . }}
+  SMTP_RETURN_PATH: {{ . | quote }}
   {{- end }}
   {{- with .Values.mastodon.smtp.openssl_verify_mode }}
   SMTP_OPENSSL_VERIFY_MODE: {{ . }}
@@ -149,7 +149,7 @@ data:
   SMTP_PORT: {{ . | quote }}
   {{- end }}
   {{- with .Values.mastodon.smtp.reply_to }}
-  SMTP_REPLY_TO: {{ . }}
+  SMTP_REPLY_TO: {{ . | quote }}
   {{- end }}
   {{- with .Values.mastodon.smtp.server }}
   SMTP_SERVER: {{ . }}
