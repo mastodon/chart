@@ -122,6 +122,8 @@ spec:
                 name: {{ $context.Values.mastodon.extraEnvFrom }}
             {{- end}}
           env:
+            - name: "DB_POOL"
+              value: {{ (max (int .concurrency) 1) | quote }}
             - name: "DB_PASS"
               valueFrom:
                 secretKeyRef:
