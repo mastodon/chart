@@ -276,8 +276,10 @@ mastodon:
     existingSecret:
   streaming:
     image:
-      repository:
-      tag:
+      # streaming image split in Mastodon v4.3.0
+      repository: ghcr.io/mastodon/mastodon-streaming
+      # other options: `latest` for the latest release or `edge` for most recent commit
+      tag: null
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
     # the node running the pod, which is unrelated to the resources allocated to
