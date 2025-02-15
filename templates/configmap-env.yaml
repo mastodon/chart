@@ -19,7 +19,7 @@ data:
   REPLICA_DB_HOST: {{ .Values.postgresql.readReplica.hostname }}
   {{- end }}
   {{- if .Values.postgresql.readReplica.port }}
-  REPLICA_DB_PORT: {{ .Values.postgresql.readReplica.port }}
+  REPLICA_DB_PORT: {{ .Values.postgresql.readReplica.port | quote }}
   {{- end }}
   {{- if .Values.postgresql.readReplica.auth.database }}
   REPLICA_DB_NAME: {{ .Values.postgresql.readReplica.auth.database }}
