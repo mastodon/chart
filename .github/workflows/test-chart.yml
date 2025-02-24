@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   lint-templates:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v3
@@ -53,7 +53,7 @@ jobs:
   # basic configuration can be used to successfully startup mastodon.
   #
   test-install:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     strategy:
@@ -75,7 +75,7 @@ jobs:
           # available for use in the templates, currently we need v3.6.0 or
           # higher.
           #
-          - k3s-channel: v1.21
+          - k3s-channel: v1.28
             helm-version: v3.8.0
 
     env:
@@ -109,7 +109,7 @@ jobs:
         run: |
           helm install mastodon . \
               --values dev-values.yaml \
-              --timeout 10m
+              --timeout 15m
 
       # This actions provides a report about the state of the k8s cluster,
       # providing logs etc on anything that has failed and workloads marked as
@@ -125,7 +125,6 @@ jobs:
             deploy/mastodon-sidekiq
             deploy/mastodon-streaming
             deploy/mastodon-web
-            job/mastodon-assets-precompile
             job/mastodon-chewy-upgrade
             job/mastodon-create-admin
             job/mastodon-db-migrate
