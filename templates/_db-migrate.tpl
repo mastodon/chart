@@ -61,6 +61,26 @@ spec:
               value: {{ template "mastodon.redis.host" . }}
             - name: "REDIS_PORT"
               value: {{ .Values.redis.port | default "6379" | quote }}
+            {{- if .Values.redis.sidekiq.enabled }}
+            {{- if .Values.redis.sidekiq.hostname }}
+            - name: SIDEKIQ_REDIS_HOST
+              value: {{ .Values.redis.sidekiq.hostname }}
+            {{- end }}
+            {{- if .Values.redis.sidekiq.port }}
+            - name: SIDEKIQ_REDIS_PORT
+              value: {{ .Values.redis.sidekiq.port | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.redis.cache.enabled }}
+            {{- if .Values.redis.cache.hostname }}
+            - name: CACHE_REDIS_HOST
+              value: {{ .Values.redis.cache.hostname }}
+            {{- end }}
+            {{- if .Values.redis.cache.port }}
+            - name: CACHE_REDIS_PORT
+              value: {{ .Values.redis.cache.port | quote }}
+            {{- end }}
+            {{- end }}
             - name: "REDIS_DRIVER"
               value: "ruby"
             - name: "REDIS_PASSWORD"
