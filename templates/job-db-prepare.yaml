@@ -1,0 +1,1 @@
+{{- include "mastodon.dbMigrateJob" (merge (dict "prepare" true ) .) }}

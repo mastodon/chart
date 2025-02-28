@@ -6,7 +6,9 @@ Spec template for DB migration pre- and post-install/upgrade jobs.
 apiVersion: batch/v1
 kind: Job
 metadata:
-  {{- if .preDeploy }}
+  {{- if .prepare }}
+  name: {{ include "mastodon.fullname" . }}-db-prepare
+  {{- else if .preDeploy }}
   name: {{ include "mastodon.fullname" . }}-db-pre-migrate
   {{- else }}
   name: {{ include "mastodon.fullname" . }}-db-post-migrate
@@ -14,7 +16,9 @@ metadata:
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
   annotations:
-    {{- if .preDeploy }}
+    {{- if .prepare }}
+    "helm.sh/hook": pre-install
+    {{- else if .preDeploy }}
     "helm.sh/hook": pre-upgrade
     {{- else }}
     "helm.sh/hook": post-install,post-upgrade
@@ -39,7 +43,11 @@ spec:
             - bundle
             - exec
             - rake
+            {{- if .prepare }}
+            - db:prepare
+            {{- else }}
             - db:migrate
+            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ template "mastodon.secretName" . }}
