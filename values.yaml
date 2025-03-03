@@ -24,6 +24,9 @@ mastodon:
     # @ignored
     email: not@example.com
   hooks:
+    # Whether to perform DB migrations on `helm install|upgrade`.
+    # Please note that initial DB schema creation on `helm install` does not
+    # work when using the included database (postgresql.enabled=true).
     dbMigrate:
       enabled: true
     assetsPrecompile:
@@ -523,7 +526,9 @@ elasticsearch:
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
   # -- disable if you want to use an existing db; in which case the values below
-  # must match those of that external postgres instance
+  # must match those of that external postgres instance.
+  # Please note that certain features do not work when enabling the included
+  # database, namely automatic schema creation when the app is first installed.
   enabled: true
   # postgresqlHostname: preexisting-postgresql
   # postgresqlPort: 5432
