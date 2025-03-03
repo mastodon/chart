@@ -50,7 +50,11 @@ spec:
             {{- end }}
           envFrom:
             - secretRef:
+                {{- if and .prepare (not .Values.mastodon.secrets.existingSecret) }}
+                name: {{ template "mastodon.secretName" . }}-prepare
+                {{- else }}
                 name: {{ template "mastodon.secretName" . }}
+                {{- end }}
           env:
             - name: "DB_HOST"
               value: {{ template "mastodon.postgres.host" . }}
