@@ -439,7 +439,7 @@ mastodon:
     # https://docs.joinmastodon.org/admin/config/#prometheus
     prometheus:
       enabled: false
-      # Host & port to send metrics to
+      # Host & port for the exporter to listen on
       host: localhost
       port: 9394
 
