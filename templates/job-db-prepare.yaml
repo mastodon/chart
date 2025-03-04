@@ -1,4 +1,3 @@
-# Does not work with included database because of helm install order.
 {{- if not .Values.postgresql.enabled }}
 {{- include "mastodon.dbMigrateJob" (merge (dict "prepare" true ) .) }}
 {{- end }}
