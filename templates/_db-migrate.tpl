@@ -57,11 +57,11 @@ spec:
                 {{- end }}
           env:
             - name: "DB_HOST"
-              value: {{ template "mastodon.postgres.host" . }}
+              value: {{ template "mastodon.postgres.direct.host" . }}
             - name: "DB_PORT"
-              value: {{ template "mastodon.postgres.port" . }}
+              value: {{ template "mastodon.postgres.direct.port" . }}
             - name: "DB_NAME"
-              value: {{ .Values.postgresql.auth.database }}
+              value: {{ template "mastodon.postgres.direct.database" . }}
             - name: "DB_USER"
               value: {{ .Values.postgresql.auth.username }}
             - name: "DB_PASS"
