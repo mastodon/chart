@@ -439,8 +439,7 @@ mastodon:
     # https://docs.joinmastodon.org/admin/config/#prometheus
     prometheus:
       enabled: false
-      # Host & port for the exporter to listen on
-      host: localhost
+      # Port for the exporter to listen on
       port: 9394
 
       # Prometheus for web pods
