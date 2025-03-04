@@ -4,7 +4,7 @@
 - Services for web & streaming now use `ipFamilyPolicy: PreferDualStack`. This will cause upgrades on existing deployments to fail, as kubernetes cannot patch this field. Please remove both service objects before running `helm upgrade` (services are `mastodon-web` and `mastodon-streaming` by default).
 
 ### Features
-- Added prometheus metrics for web and sidekiq pods:
+- Added prometheus metrics config for web and sidekiq pods (feature will be available with Mastodon v4.4).
 ```yaml
 mastodon:
   metrics:
