@@ -220,6 +220,11 @@ spec:
               value: "true"
             {{- end }}
             {{- end }}
+          {{- if or $context.Values.mastodon.sidekiq.otel.enabled (and $context.Values.mastodon.otel.enabled (ne $context.Values.mastodon.sidekiq.otel.enabled false)) }}
+          ports:
+            - name: prometheus
+              containerPort: {{ .Values.mastodon.metrics.prometheus.port }}
+          {{- end }}
           volumeMounts:
           {{- if (not $context.Values.mastodon.s3.enabled) }}
             - name: assets
