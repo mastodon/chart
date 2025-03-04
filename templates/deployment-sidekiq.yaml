@@ -209,10 +209,6 @@ spec:
             {{- if $context.Values.mastodon.metrics.prometheus.enabled }}
             - name: MASTODON_PROMETHEUS_EXPORTER_ENABLED
               value: "true"
-            - name: PROMETHEUS_EXPORTER_HOST
-              value: {{ $context.Values.mastodon.metrics.prometheus.host }}
-            - name: PROMETHEUS_EXPORTER_PORT
-              value: "{{ $context.Values.mastodon.metrics.prometheus.port }}"
             - name: MASTODON_PROMETHEUS_EXPORTER_LOCAL
               value: "true"
             - name: MASTODON_PROMETHEUS_EXPORTER_HOST
