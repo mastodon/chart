@@ -252,6 +252,9 @@ spec:
           image: "{{ coalesce .Values.mastodon.web.image.repository .Values.image.repository }}:{{ coalesce .Values.mastodon.web.image.tag .Values.image.tag .Chart.AppVersion }}"
           command:
             - ./bin/prometheus_exporter
+          args:
+            - "--port"
+            - "{{ .Values.mastodon.metrics.prometheus.port }}"
           resources:
             requests:
               cpu: "0.1"
