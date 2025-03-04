@@ -140,6 +140,33 @@ Establish which values we will use for remote connections
 {{- end }}
 {{- end }}
 
+{{/*
+Establish which values we will use for direct remote DB connections
+*/}}
+{{- define "mastodon.postgres.direct.host" -}}
+{{- if .Values.postgresql.direct.hostname }}
+{{- printf "%s" .Values.postgresql.direct.hostname -}}
+{{- else }}
+{{- printf "%s" (include "mastodon.postgres.host" .) -}}
+{{- end }}
+{{- end }}
+
+{{- define "mastodon.postgres.direct.port" -}}
+{{- if .Values.postgresql.direct.port }}
+{{- printf "%d" (int .Values.postgresql.direct.port) | quote -}}
+{{- else }}
+{{- printf "%s" (include "mastodon.postgres.port" .) -}}
+{{- end }}
+{{- end }}
+
+{{- define "mastodon.postgres.direct.database" -}}
+{{- if .Values.postgresql.direct.database }}
+{{- printf "%s" .Values.postgresql.direct.database -}}
+{{- else }}
+{{- printf "%s" .Values.postgresql.auth.database -}}
+{{- end }}
+{{- end }}
+
 {{- define "mastodon.redis.host" -}}
 {{- if .Values.redis.enabled }}
 {{- printf "%s-%s" (include "mastodon.redis.fullname" .) "master" -}}

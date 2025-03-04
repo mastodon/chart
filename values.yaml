@@ -532,6 +532,16 @@ postgresql:
   enabled: true
   # postgresqlHostname: preexisting-postgresql
   # postgresqlPort: 5432
+
+  # If using a connection pooler such as pgbouncer, please specify a hostname/IP
+  # that serves as a "direct" connection to the database, rather than going
+  # through the connection pooler. This is required for migrations to work
+  # properly.
+  direct:
+    hostname:
+    port:
+    database:
+
   auth:
     database: mastodon_production
     username: mastodon
