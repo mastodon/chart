@@ -434,6 +434,24 @@ mastodon:
         enabled: false
         port: 9102
 
+    # Settings for Prometheus metrics. NOTE: Only available in Mastodon v4.4.
+    # For more information, see:
+    # https://docs.joinmastodon.org/admin/config/#prometheus
+    prometheus:
+      enabled: false
+      # Port for the exporter to listen on
+      port: 9394
+
+      # Prometheus for web pods
+      web:
+        # Collect per-controller/action metrics for every request
+        detailed: false
+
+      # Prometheus for sidekiq pods
+      sidekiq:
+        # Collect per-job metrics for every job
+        detailed: false
+
   # Open Telemetry configuration for all deployments. Component-specific
   # configuration will override these values.
   otel:

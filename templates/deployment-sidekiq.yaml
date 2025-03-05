@@ -206,6 +206,25 @@ spec:
             - name: OTEL_SERVICE_NAME_SEPARATOR
               value: "{{ coalesce $context.Values.mastodon.sidekiq.otel.nameSeparator $context.Values.mastodon.otel.nameSeparator }}"
             {{- end }}
+            {{- if $context.Values.mastodon.metrics.prometheus.enabled }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_ENABLED
+              value: "true"
+            - name: MASTODON_PROMETHEUS_EXPORTER_LOCAL
+              value: "true"
+            - name: MASTODON_PROMETHEUS_EXPORTER_HOST
+              value: "0.0.0.0"
+            - name: MASTODON_PROMETHEUS_EXPORTER_PORT
+              value: "{{ $context.Values.mastodon.metrics.prometheus.port }}"
+            {{- if $context.Values.mastodon.metrics.prometheus.sidekiq.detailed }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_SIDEKIQ_DETAILED_METRICS
+              value: "true"
+            {{- end }}
+            {{- end }}
+          {{- if $context.Values.mastodon.metrics.prometheus.enabled }}
+          ports:
+            - name: prometheus
+              containerPort: {{ $context.Values.mastodon.metrics.prometheus.port }}
+          {{- end }}
           volumeMounts:
           {{- if (not $context.Values.mastodon.s3.enabled) }}
             - name: assets
