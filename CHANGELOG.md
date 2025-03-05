@@ -1,3 +1,46 @@
+# 6.0.0
+
+### !! BREAKING CHANGES !!
+- Services for web & streaming now use `ipFamilyPolicy: PreferDualStack`. This will cause upgrades on existing deployments to fail, as kubernetes cannot patch this field. Please remove both service objects before running `helm upgrade` (services are `mastodon-web` and `mastodon-streaming` by default).
+
+### Features
+- Added prometheus metrics config for web and sidekiq pods (feature will be available with Mastodon v4.4).
+```yaml
+mastodon:
+  metrics:
+    prometheus:
+```
+- Added ability to automatically upload assets to an S3 bucket:
+```yaml
+mastodon:
+  hooks:
+    s3Upload:
+```
+- Added OpenTelemetry metrics:
+```yaml
+mastodon:
+  otel:
+---
+mastodon:
+  sidekiq:
+    otel:
+---
+mastodon:
+  web:
+    otel:
+```
+- Fine-grained control of labels and annotations for both pods and deployments.
+- Additional redis options for separate instances (app, sidekiq, cache).
+- Configurable PodDisruptionBudgets for web and streaming pods.
+
+### Fixes
+- Various database migrations fixes
+  - Fixed first-time install DB setup on self-managed databases
+  - Fixed running migrations through a connection pooler.
+- Removed old, unused jobs:
+  - chewy upgrade (use `tootctl search deploy` instead)
+  - assets precompile
+
 # 5.1.0
 
 - Added values for Active Record Encryption in Redis:
