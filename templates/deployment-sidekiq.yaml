@@ -223,7 +223,7 @@ spec:
           {{- if $context.Values.mastodon.metrics.prometheus.enabled }}
           ports:
             - name: prometheus
-              containerPort: {{ .Values.mastodon.metrics.prometheus.port }}
+              containerPort: {{ $context.Values.mastodon.metrics.prometheus.port }}
           {{- end }}
           volumeMounts:
           {{- if (not $context.Values.mastodon.s3.enabled) }}
