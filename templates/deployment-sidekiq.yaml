@@ -220,7 +220,7 @@ spec:
               value: "true"
             {{- end }}
             {{- end }}
-          {{- if or $context.Values.mastodon.sidekiq.otel.enabled (and $context.Values.mastodon.otel.enabled (ne $context.Values.mastodon.sidekiq.otel.enabled false)) }}
+          {{- if $context.Values.mastodon.metrics.prometheus.enabled }}
           ports:
             - name: prometheus
               containerPort: {{ .Values.mastodon.metrics.prometheus.port }}
