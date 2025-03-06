@@ -73,6 +73,8 @@ mastodon:
       enabled: true
       # @ignored
       schedule: "0 0 * * 0"
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
 
   # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
   locale: en
