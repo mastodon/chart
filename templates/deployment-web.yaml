@@ -253,6 +253,8 @@ spec:
           command:
             - ./bin/prometheus_exporter
           args:
+            - "--bind"
+            - "0.0.0.0"
             - "--port"
             - "{{ .Values.mastodon.metrics.prometheus.port }}"
           resources:
