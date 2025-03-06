@@ -27,6 +27,9 @@ mastodon:
     # Whether to perform DB schema creation on `helm install`.
     # Please note that this does not work when using the included database
     # (postgresql.enabled=true).
+    # NOTE: When using certain GitOps solutions such as Argo CD, this should be
+    # disabled, as these apps do not necessarily differentiate between `pre-install`
+    # and `pre-upgrade`.
     dbPrepare:
       enabled: true
     # Whether to perform DB migrations on `helm upgrade`.
