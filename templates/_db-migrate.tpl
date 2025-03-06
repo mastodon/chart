@@ -24,7 +24,11 @@ metadata:
     "helm.sh/hook": post-install,post-upgrade
     {{- end }}
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    {{- if .prepare }}
+    "helm.sh/hook-weight": "-3"
+    {{- else }}
     "helm.sh/hook-weight": "-2"
+    {{- end }}
 spec:
   template:
     metadata:
