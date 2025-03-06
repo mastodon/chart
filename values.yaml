@@ -24,7 +24,7 @@ mastodon:
     # @ignored
     email: not@example.com
   hooks:
-    # Whether to perform DB migrations on `helm install|upgrade`.
+    # Whether to perform DB preparations & migrations on `helm install|upgrade`.
     # Please note that initial DB schema creation on `helm install` does not
     # work when using the included database (postgresql.enabled=true).
     dbMigrate:
