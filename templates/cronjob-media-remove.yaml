@@ -109,9 +109,9 @@ spec:
               {{- end }}
           {{- if .Values.mastodon.cron.removeMedia.nodeSelector }}
           nodeSelector:
-            {{ .Values.mastodon.cron.removeMedia.nodeSelector | toYaml | nindent 12 }}
+            {{- .Values.mastodon.cron.removeMedia.nodeSelector | toYaml | nindent 12 }}
           {{- else if .Values.nodeSelector }}
           nodeSelector:
-            {{ .Values.nodeSelector | toYaml | nindent 12 }}
+            {{- .Values.nodeSelector | toYaml | nindent 12 }}
           {{- end }}
 {{- end }}

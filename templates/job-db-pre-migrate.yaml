@@ -2,9 +2,9 @@
 {{- include "mastodon.dbMigrateJob" (merge (dict "preDeploy" true ) .) }}
       {{- if .Values.mastodon.hooks.dbMigrate.nodeSelector }}
       nodeSelector:
-        {{ .Values.mastodon.hooks.dbMigrate.nodeSelector | toYaml | nindent 8 }}
+        {{- .Values.mastodon.hooks.dbMigrate.nodeSelector | toYaml | nindent 8 }}
       {{- else if .Values.nodeSelector }}
       nodeSelector:
-        {{ .Values.nodeSelector | toYaml | nindent 8 }}
+        {{- .Values.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
 {{- end }}
