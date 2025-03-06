@@ -24,6 +24,9 @@ mastodon:
     # @ignored
     email: not@example.com
   hooks:
+    # Whether to perform DB migrations on `helm install|upgrade`.
+    # Please note that initial DB schema creation on `helm install` does not
+    # work when using the included database (postgresql.enabled=true).
     dbMigrate:
       enabled: true
     # Upload website assets to S3 before deploying using rclone.
@@ -431,6 +434,24 @@ mastodon:
         enabled: false
         port: 9102
 
+    # Settings for Prometheus metrics. NOTE: Only available in Mastodon v4.4.
+    # For more information, see:
+    # https://docs.joinmastodon.org/admin/config/#prometheus
+    prometheus:
+      enabled: false
+      # Port for the exporter to listen on
+      port: 9394
+
+      # Prometheus for web pods
+      web:
+        # Collect per-controller/action metrics for every request
+        detailed: false
+
+      # Prometheus for sidekiq pods
+      sidekiq:
+        # Collect per-job metrics for every job
+        detailed: false
+
   # Open Telemetry configuration for all deployments. Component-specific
   # configuration will override these values.
   otel:
@@ -523,10 +544,22 @@ elasticsearch:
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
   # -- disable if you want to use an existing db; in which case the values below
-  # must match those of that external postgres instance
+  # must match those of that external postgres instance.
+  # Please note that certain features do not work when enabling the included
+  # database, namely automatic schema creation when the app is first installed.
   enabled: true
   # postgresqlHostname: preexisting-postgresql
   # postgresqlPort: 5432
+
+  # If using a connection pooler such as pgbouncer, please specify a hostname/IP
+  # that serves as a "direct" connection to the database, rather than going
+  # through the connection pooler. This is required for migrations to work
+  # properly.
+  direct:
+    hostname:
+    port:
+    database:
+
   auth:
     database: mastodon_production
     username: mastodon

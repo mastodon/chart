@@ -196,6 +196,20 @@ spec:
             - name: OTEL_SERVICE_NAME_SEPARATOR
               value: "{{ coalesce .Values.mastodon.web.otel.nameSeparator .Values.mastodon.otel.nameSeparator }}"
             {{- end }}
+            {{- if .Values.mastodon.metrics.prometheus.enabled }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_ENABLED
+              value: "true"
+            - name: PROMETHEUS_EXPORTER_HOST
+              value: "127.0.0.1"
+            - name: PROMETHEUS_EXPORTER_PORT
+              value: "{{ .Values.mastodon.metrics.prometheus.port }}"
+            {{- if .Values.mastodon.metrics.prometheus.web.detailed }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_WEB_DETAILED_METRICS
+              value: "true"
+            {{- end }}
+            {{- end }}
+            - name: TEST_ENV_VALUE
+              value: {{ .Values.mastodon.metrics.statsd.address }}
           volumeMounts:
           {{- if (not .Values.mastodon.s3.enabled) }}
             - name: assets
@@ -233,6 +247,27 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+        {{- if .Values.mastodon.metrics.prometheus.enabled }}
+        - name: prometheus-exporter
+          image: "{{ coalesce .Values.mastodon.web.image.repository .Values.image.repository }}:{{ coalesce .Values.mastodon.web.image.tag .Values.image.tag .Chart.AppVersion }}"
+          command:
+            - ./bin/prometheus_exporter
+          args:
+            - "--bind"
+            - "0.0.0.0"
+            - "--port"
+            - "{{ .Values.mastodon.metrics.prometheus.port }}"
+          resources:
+            requests:
+              cpu: "0.1"
+              memory: "180M"
+            limits:
+              cpu: "0.5"
+              memory: "250M"
+          ports:
+            - name: prometheus
+              containerPort: {{ .Values.mastodon.metrics.prometheus.port }}
+        {{- end }}
         {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
