@@ -6,7 +6,7 @@ image:
   # built from the most recent commit
   #
   # tag: latest
-  tag: null
+  tag: ""
   # use `Always` when using `latest` tag
   pullPolicy: IfNotPresent
 
@@ -28,8 +28,6 @@ mastodon:
     # Please note that initial DB schema creation on `helm install` does not
     # work when using the included database (postgresql.enabled=true).
     dbMigrate:
-      enabled: true
-    assetsPrecompile:
       enabled: true
     # Upload website assets to S3 before deploying using rclone.
     # Whenever there is an update to Mastodon, sometimes there are assets files
@@ -279,8 +277,10 @@ mastodon:
     existingSecret:
   streaming:
     image:
-      repository:
-      tag:
+      # streaming image split in Mastodon v4.3.0
+      repository: ghcr.io/mastodon/mastodon-streaming
+      # other options: `latest` for the latest release or `edge` for most recent commit
+      tag: ""
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
     # the node running the pod, which is unrelated to the resources allocated to

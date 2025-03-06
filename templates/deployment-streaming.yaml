@@ -70,7 +70,7 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ coalesce .Values.mastodon.streaming.image.repository .Values.image.repository }}:{{ coalesce .Values.mastodon.streaming.image.tag .Values.image.tag .Chart.AppVersion }}"
+          image: "{{ .Values.mastodon.streaming.image.repository }}:{{ coalesce .Values.mastodon.streaming.image.tag .Values.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - node
