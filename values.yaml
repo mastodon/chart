@@ -23,6 +23,8 @@ mastodon:
     username: not_gargron
     # @ignored
     email: not@example.com
+    # Node(s) on which we will deploy this job
+    nodeSelector: {}
   hooks:
     # Whether to perform DB schema creation on `helm install`.
     # Please note that this does not work when using the included database
