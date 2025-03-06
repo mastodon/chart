@@ -1,3 +1,15 @@
+# 6.0.1
+
+- Added additional values to separate out `db:prepare` and `db:migrate` jobs and whether they should run:
+```yaml
+mastodon:
+  hooks:
+    dbPrepare:
+      enabled: true
+    dbMigrate:
+      enabled: true
+```
+
 # 6.0.0
 
 ### !! BREAKING CHANGES !!
