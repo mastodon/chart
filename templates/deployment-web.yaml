@@ -4,8 +4,14 @@ metadata:
   name: {{ include "mastodon.fullname" . }}-web
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
+    {{- with .Values.mastodon.web.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   annotations:
-    {{- with (default .Values.deploymentAnnotations .Values.mastodon.web.deploymentAnnotations) }}
+    {{- with .Values.deploymentAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.mastodon.web.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
@@ -24,7 +30,10 @@ spec:
   template:
     metadata:
       annotations:
-        {{- with (default .Values.podAnnotations .Values.mastodon.web.podAnnotations) }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.mastodon.web.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
         # roll the pods to pick up any db migrations or other changes
@@ -33,6 +42,9 @@ spec:
         {{- include "mastodon.globalLabels" . | nindent 8 }}
         {{- include "mastodon.selectorLabels" . | nindent 8 }}
         {{- include "mastodon.statsdExporterLabels" . | nindent 8 }}
+        {{- with .Values.mastodon.web.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         app.kubernetes.io/component: web
         app.kubernetes.io/part-of: rails
     spec:
@@ -181,7 +193,23 @@ spec:
               value: {{ coalesce .Values.mastodon.web.otel.endpointUri .Values.mastodon.otel.endpointUri }}
             - name: OTEL_SERVICE_NAME_PREFIX
               value: {{ coalesce .Values.mastodon.web.otel.namePrefix .Values.mastodon.otel.namePrefix }}
+            - name: OTEL_SERVICE_NAME_SEPARATOR
+              value: "{{ coalesce .Values.mastodon.web.otel.nameSeparator .Values.mastodon.otel.nameSeparator }}"
             {{- end }}
+            {{- if .Values.mastodon.metrics.prometheus.enabled }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_ENABLED
+              value: "true"
+            - name: PROMETHEUS_EXPORTER_HOST
+              value: "127.0.0.1"
+            - name: PROMETHEUS_EXPORTER_PORT
+              value: "{{ .Values.mastodon.metrics.prometheus.port }}"
+            {{- if .Values.mastodon.metrics.prometheus.web.detailed }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_WEB_DETAILED_METRICS
+              value: "true"
+            {{- end }}
+            {{- end }}
+            - name: TEST_ENV_VALUE
+              value: {{ .Values.mastodon.metrics.statsd.address }}
           volumeMounts:
           {{- if (not .Values.mastodon.s3.enabled) }}
             - name: assets
@@ -219,6 +247,27 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+        {{- if .Values.mastodon.metrics.prometheus.enabled }}
+        - name: prometheus-exporter
+          image: "{{ coalesce .Values.mastodon.web.image.repository .Values.image.repository }}:{{ coalesce .Values.mastodon.web.image.tag .Values.image.tag .Chart.AppVersion }}"
+          command:
+            - ./bin/prometheus_exporter
+          args:
+            - "--bind"
+            - "0.0.0.0"
+            - "--port"
+            - "{{ .Values.mastodon.metrics.prometheus.port }}"
+          resources:
+            requests:
+              cpu: "0.1"
+              memory: "180M"
+            limits:
+              cpu: "0.5"
+              memory: "250M"
+          ports:
+            - name: prometheus
+              containerPort: {{ .Values.mastodon.metrics.prometheus.port }}
+        {{- end }}
         {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

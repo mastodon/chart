@@ -6,7 +6,7 @@ image:
   # built from the most recent commit
   #
   # tag: latest
-  tag: null
+  tag: ""
   # use `Always` when using `latest` tag
   pullPolicy: IfNotPresent
 
@@ -24,10 +24,39 @@ mastodon:
     # @ignored
     email: not@example.com
   hooks:
+    # Whether to perform DB schema creation on `helm install`.
+    # Please note that this does not work when using the included database
+    # (postgresql.enabled=true).
+    # NOTE: When using certain GitOps solutions such as Argo CD, this should be
+    # disabled, as these apps do not necessarily differentiate between `pre-install`
+    # and `pre-upgrade`.
+    dbPrepare:
+      enabled: true
+    # Whether to perform DB migrations on `helm upgrade`.
     dbMigrate:
       enabled: true
-    assetsPrecompile:
-      enabled: true
+    # Upload website assets to S3 before deploying using rclone.
+    # Whenever there is an update to Mastodon, sometimes there are assets files
+    # that are renamed. As the pods are getting redeployed, and old/new pods are
+    # present simultaneously, there is a chance that old asset files are
+    # requested from pods that don't have them anymore, or new asset files are
+    # requested from old pods. Uploading asset files to S3 in this manner solves
+    # this potential conflict.
+    # Note that you will need to CDN/proxy to send all requests to /assets and
+    # /packs to this bucket.
+    s3Upload:
+      enabled: false
+      endpoint:
+      bucket:
+      acl: public-read
+      secretRef:
+        name:
+        keys:
+          accesKeyId: acces-key-id
+          secretAccessKey: secret-access-key
+      rclone:
+        # Any additional environment variables to pass to rclone.
+        env: {}
   # Custom labels to add to kubernetes resources
   #labels:
   cron:
@@ -141,6 +170,18 @@ mastodon:
     resources: {}
     # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
     affinity: {}
+    # -- Annotations to apply to the deployment object(s) for sidekiq.
+    # -- These are applied in addition to deploymentAnnotations.
+    annotations: {}
+    # -- Labels to apply to the deployment object(s) for sidekiq.
+    # -- These are applied in addition to mastodon.labels.
+    labels: {}
+    # -- Annotations to apply to the sidekiq pods.
+    # -- These are applied in addition to the global podAnnotations.
+    podAnnotations: {}
+    # -- Labels to apply to the sidekiq pods.
+    # -- These are applied in addition to mastodon.labels.
+    podLabels: {}
     # Rollout strategy to use when updating pods.
     # Recreate will help reduce the number of retried jobs when updating when
     # the code introduces a new job as the pods are all replaced immediately.
@@ -173,6 +214,7 @@ mastodon:
       enabled:
       exporterUri:
       namePrefix:
+      nameSeparator:
 
     workers:
       - name: all-queues
@@ -241,8 +283,10 @@ mastodon:
     existingSecret:
   streaming:
     image:
-      repository:
-      tag:
+      # streaming image split in Mastodon v4.3.0
+      repository: ghcr.io/mastodon/mastodon-streaming
+      # other options: `latest` for the latest release or `edge` for most recent commit
+      tag: ""
     port: 4000
     # -- this should be set manually since os.cpus() returns the number of CPUs on
     # the node running the pod, which is unrelated to the resources allocated to
@@ -255,6 +299,18 @@ mastodon:
     replicas: 1
     # -- Affinity for Streaming Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Annotations to apply to the deployment object for streaming.
+    # -- These are applied in addition to deploymentAnnotations.
+    annotations: {}
+    # -- Labels to apply to the deployment object for streaming.
+    # -- These are applied in addition to mastodon.labels.
+    labels: {}
+    # -- Annotations to apply to the streaming pods.
+    # -- These are applied in addition to the global podAnnotations.
+    podAnnotations: {}
+    # -- Labels to apply to the streaming pods.
+    # -- These are applied in addition to mastodon.labels.
+    podLabels: {}
     # Rollout strategy to use when updating pods
     # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
     updateStrategy:
@@ -301,6 +357,18 @@ mastodon:
     replicas: 1
     # -- Affinity for Web Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Annotations to apply to the deployment object for web.
+    # -- These are applied in addition to deploymentAnnotations.
+    annotations: {}
+    # -- Labels to apply to the deployment object for web.
+    # -- These are applied in addition to mastodon.labels.
+    labels: {}
+    # -- Annotations to apply to the web pods.
+    # -- These are applied in addition to the global podAnnotations.
+    podAnnotations: {}
+    # -- Labels to apply to the web pods.
+    # -- These are applied in addition to mastodon.labels.
+    podLabels: {}
     # Rollout strategy to use when updating pods
     # ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
     updateStrategy:
@@ -348,6 +416,7 @@ mastodon:
       enabled:
       exporterUri:
       namePrefix:
+      nameSeparator:
 
   # HTTP cache buster configuration.
   # See the documentation for more information about this feature:
@@ -371,12 +440,31 @@ mastodon:
         enabled: false
         port: 9102
 
+    # Settings for Prometheus metrics. NOTE: Only available in Mastodon v4.4.
+    # For more information, see:
+    # https://docs.joinmastodon.org/admin/config/#prometheus
+    prometheus:
+      enabled: false
+      # Port for the exporter to listen on
+      port: 9394
+
+      # Prometheus for web pods
+      web:
+        # Collect per-controller/action metrics for every request
+        detailed: false
+
+      # Prometheus for sidekiq pods
+      sidekiq:
+        # Collect per-job metrics for every job
+        detailed: false
+
   # Open Telemetry configuration for all deployments. Component-specific
   # configuration will override these values.
   otel:
     enabled: false
     exporterUri:
     namePrefix: mastodon
+    nameSeparator: "-"
 
   # Sets the PREPARED_STATEMENTS environment variable: https://docs.joinmastodon.org/admin/config/#prepared_statements
   preparedStatements: true
@@ -462,10 +550,22 @@ elasticsearch:
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
   # -- disable if you want to use an existing db; in which case the values below
-  # must match those of that external postgres instance
+  # must match those of that external postgres instance.
+  # Please note that certain features do not work when enabling the included
+  # database, namely automatic schema creation when the app is first installed.
   enabled: true
   # postgresqlHostname: preexisting-postgresql
   # postgresqlPort: 5432
+
+  # If using a connection pooler such as pgbouncer, please specify a hostname/IP
+  # that serves as a "direct" connection to the database, rather than going
+  # through the connection pooler. This is required for migrations to work
+  # properly.
+  direct:
+    hostname:
+    port:
+    database:
+
   auth:
     database: mastodon_production
     username: mastodon

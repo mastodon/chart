@@ -7,10 +7,16 @@ metadata:
   name: {{ include "mastodon.fullname" $context }}-sidekiq-{{ .name }}
   labels:
     {{- include "mastodon.labels" $context | nindent 4 }}
+    {{- with $context.Values.mastodon.sidekiq.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
     app.kubernetes.io/component: sidekiq-{{ .name }}
     app.kubernetes.io/part-of: rails
   annotations:
     {{- with $context.Values.deploymentAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $context.Values.mastodon.sidekiq.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
@@ -37,6 +43,9 @@ spec:
         {{- with $context.Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        {{- with $context.Values.mastodon.sidekiq.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         # roll the pods to pick up any db migrations or other changes
         {{- include "mastodon.rollingPodAnnotations" $context | nindent 8 }}
         checksum/config-secrets-smtp: {{ include ( print $.Template.BasePath "/secret-smtp.yaml" ) $context | sha256sum | quote }}
@@ -44,6 +53,9 @@ spec:
         {{- include "mastodon.globalLabels" $context | nindent 8 }}
         {{- include "mastodon.selectorLabels" $context | nindent 8 }}
         {{- include "mastodon.statsdExporterLabels" $context | nindent 8 }}
+        {{- with $context.Values.mastodon.sidekiq.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         app.kubernetes.io/component: sidekiq-{{ .name }}
         app.kubernetes.io/part-of: rails
     spec:
@@ -191,7 +203,28 @@ spec:
               value: {{ coalesce $context.Values.mastodon.sidekiq.otel.endpointUri $context.Values.mastodon.otel.endpointUri }}
             - name: OTEL_SERVICE_NAME_PREFIX
               value: {{ coalesce $context.Values.mastodon.sidekiq.otel.namePrefix $context.Values.mastodon.otel.namePrefix }}
+            - name: OTEL_SERVICE_NAME_SEPARATOR
+              value: "{{ coalesce $context.Values.mastodon.sidekiq.otel.nameSeparator $context.Values.mastodon.otel.nameSeparator }}"
             {{- end }}
+            {{- if $context.Values.mastodon.metrics.prometheus.enabled }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_ENABLED
+              value: "true"
+            - name: MASTODON_PROMETHEUS_EXPORTER_LOCAL
+              value: "true"
+            - name: MASTODON_PROMETHEUS_EXPORTER_HOST
+              value: "0.0.0.0"
+            - name: MASTODON_PROMETHEUS_EXPORTER_PORT
+              value: "{{ $context.Values.mastodon.metrics.prometheus.port }}"
+            {{- if $context.Values.mastodon.metrics.prometheus.sidekiq.detailed }}
+            - name: MASTODON_PROMETHEUS_EXPORTER_SIDEKIQ_DETAILED_METRICS
+              value: "true"
+            {{- end }}
+            {{- end }}
+          {{- if $context.Values.mastodon.metrics.prometheus.enabled }}
+          ports:
+            - name: prometheus
+              containerPort: {{ $context.Values.mastodon.metrics.prometheus.port }}
+          {{- end }}
           volumeMounts:
           {{- if (not $context.Values.mastodon.s3.enabled) }}
             - name: assets

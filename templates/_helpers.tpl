@@ -124,6 +124,60 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Establish which values we will use for remote connections
+*/}}
+{{- define "mastodon.postgres.host" -}}
+{{- if .Values.postgresql.enabled }}
+{{- printf "%s" (include "mastodon.postgresql.fullname" .) -}}
+{{- else }}
+{{- printf "%s" .Values.postgresql.postgresqlHostname -}}
+{{- end }}
+{{- end }}
+
+{{- define "mastodon.postgres.port" -}}
+{{- if .Values.postgresql.enabled }}
+{{- printf "%d" 5432 | int | quote -}}
+{{- else }}
+{{- printf "%d" | default 5432 .Values.postgresql.postgresqlPort | int | quote -}}
+{{- end }}
+{{- end }}
+
+{{/*
+Establish which values we will use for direct remote DB connections
+*/}}
+{{- define "mastodon.postgres.direct.host" -}}
+{{- if .Values.postgresql.direct.hostname }}
+{{- printf "%s" .Values.postgresql.direct.hostname -}}
+{{- else }}
+{{- printf "%s" (include "mastodon.postgres.host" .) -}}
+{{- end }}
+{{- end }}
+
+{{- define "mastodon.postgres.direct.port" -}}
+{{- if .Values.postgresql.direct.port }}
+{{- printf "%d" (int .Values.postgresql.direct.port) | quote -}}
+{{- else }}
+{{- printf "%s" (include "mastodon.postgres.port" .) -}}
+{{- end }}
+{{- end }}
+
+{{- define "mastodon.postgres.direct.database" -}}
+{{- if .Values.postgresql.direct.database }}
+{{- printf "%s" .Values.postgresql.direct.database -}}
+{{- else }}
+{{- printf "%s" .Values.postgresql.auth.database -}}
+{{- end }}
+{{- end }}
+
+{{- define "mastodon.redis.host" -}}
+{{- if .Values.redis.enabled }}
+{{- printf "%s-%s" (include "mastodon.redis.fullname" .) "master" -}}
+{{- else }}
+{{- printf "%s" (required "When the redis chart is disabled .Values.redis.hostname is required" .Values.redis.hostname) -}}
+{{- end }}
+{{- end }}
+
+{{/*
 Get the mastodon secret.
 */}}
 {{- define "mastodon.secretName" -}}

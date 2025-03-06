@@ -1,0 +1,3 @@
+{{- if .Values.mastodon.hooks.dbMigrate.enabled }}
+{{- include "mastodon.dbMigrateJob" (merge (dict "preDeploy" true ) .) }}
+{{- end }}

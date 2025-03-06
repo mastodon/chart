@@ -1,0 +1,3 @@
+{{- if and .Values.mastodon.hooks.dbPrepare.enabled (not .Values.postgresql.enabled) }}
+{{- include "mastodon.dbMigrateJob" (merge (dict "prepare" true ) .) }}
+{{- end }}
