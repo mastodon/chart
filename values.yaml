@@ -23,6 +23,8 @@ mastodon:
     username: not_gargron
     # @ignored
     email: not@example.com
+    # Node(s) on which we will deploy this job
+    nodeSelector: {}
   hooks:
     # Whether to perform DB schema creation on `helm install`.
     # Please note that this does not work when using the included database
@@ -32,9 +34,13 @@ mastodon:
     # and `pre-upgrade`.
     dbPrepare:
       enabled: true
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
     # Whether to perform DB migrations on `helm upgrade`.
     dbMigrate:
       enabled: true
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
     # Upload website assets to S3 before deploying using rclone.
     # Whenever there is an update to Mastodon, sometimes there are assets files
     # that are renamed. As the pods are getting redeployed, and old/new pods are
@@ -57,8 +63,11 @@ mastodon:
       rclone:
         # Any additional environment variables to pass to rclone.
         env: {}
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
   # Custom labels to add to kubernetes resources
   #labels:
+
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
@@ -66,6 +75,9 @@ mastodon:
       enabled: true
       # @ignored
       schedule: "0 0 * * 0"
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
+
   # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
   locale: en
   local_domain: mastodon.local
@@ -170,6 +182,9 @@ mastodon:
     resources: {}
     # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
     affinity: {}
+    # Node(s) on which we will deploy sidekiq in general
+    # Any worker-specific configuration will override this setting.
+    nodeSelector: {}
     # -- Annotations to apply to the deployment object(s) for sidekiq.
     # -- These are applied in addition to deploymentAnnotations.
     annotations: {}
@@ -226,8 +241,11 @@ mastodon:
         resources: {}
         # -- Affinity for this specific deployment, overwrites .Values.affinity and .Values.mastodon.sidekiq.affinity
         affinity: {}
+        # -- Node(s) on which we will deploy this sidekiq worker
+        nodeSelector: {}
         # -- Topology spread constraints for this specific deployment, overwrites .Values.topologySpreadConstraints and .Values.mastodon.sidekiq.topologySpreadConstraints
         topologySpreadConstraints: {}
+
         # -- Sidekiq queues for Mastodon that are handled by this worker. See https://docs.joinmastodon.org/admin/scaling/#concurrency
         # See https://github.com/mperham/sidekiq/wiki/Advanced-Options#queues for how to weight queues as argument
         queues:
@@ -299,6 +317,8 @@ mastodon:
     replicas: 1
     # -- Affinity for Streaming Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Node(s) on which we will deploy the streaming pods
+    nodeSelector: {}
     # -- Annotations to apply to the deployment object for streaming.
     # -- These are applied in addition to deploymentAnnotations.
     annotations: {}
@@ -357,6 +377,8 @@ mastodon:
     replicas: 1
     # -- Affinity for Web Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Node(s) on which we will deploy the web pods
+    nodeSelector: {}
     # -- Annotations to apply to the deployment object for web.
     # -- These are applied in addition to deploymentAnnotations.
     annotations: {}
@@ -395,8 +417,10 @@ mastodon:
       enable: false
     # minAvailable: 1
     # maxUnavailable: 1
+
     # -- Puma-specific options. Below values are based on default behavior in
     # config/puma.rb when no custom values are provided.
+
     minThreads: "5"
     maxThreads: "5"
     workers: "2"
@@ -547,6 +571,18 @@ elasticsearch:
   # Name of an existing secret with a password key
   # existingSecret:
 
+  # -- Node(s) on which we will deploy the various elasticsearch pods
+  master:
+    nodeSelector: {}
+  data:
+    nodeSelector: {}
+  coordinating:
+    nodeSelector: {}
+  ingest:
+    nodeSelector: {}
+  metrics:
+    nodeSelector: {}
+
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
 postgresql:
   # -- disable if you want to use an existing db; in which case the values below
@@ -595,6 +631,15 @@ postgresql:
       password:
       existingSecret:
 
+  # -- Node(s) on which we will deploy the various database pods
+  primary:
+    nodeSelector: {}
+  readReplicas:
+    nodeSelector: {}
+  backup:
+    cronjob:
+      nodeSelector: {}
+
 # https://github.com/bitnami/charts/tree/master/bitnami/redis#parameters
 redis:
   # disable if you want to use an existing redis instance; in which case the
@@ -640,6 +685,12 @@ redis:
       # you can also specify the name of an existing Secret
       # with a key of redis-password set to the password you want
       existingSecret: ""
+
+  # -- Node(s) on which we will deploy the various redis pods
+  master:
+    nodeSelector: {}
+  replica:
+    nodeSelector: {}
 
 # @ignored
 service:
@@ -798,13 +849,15 @@ resources:
   #   memory: 128Mi
 
 # @ignored
-nodeSelector: {}
-
-# @ignored
 tolerations: []
 
 # -- Affinity for all pods unless overwritten
 affinity: {}
+
+# Node(s) on which we will deploy all resources.
+# Any node selectors specified for individual resources will override this
+# setting.
+nodeSelector: {}
 
 # -- Timezone for all pods unless overwritten
 timezone: UTC
