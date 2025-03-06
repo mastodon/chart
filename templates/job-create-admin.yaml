@@ -98,5 +98,8 @@ spec:
       {{- if .Values.mastodon.createAdmin.nodeSelector }}
       nodeSelector:
         {{ .Values.mastodon.createAdmin.nodeSelector | toYaml | nindent 8 }}
+      {{- else if .Values.nodeSelector }}
+      nodeSelector:
+        {{ .Values.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
 {{- end }}

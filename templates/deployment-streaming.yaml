@@ -164,6 +164,9 @@ spec:
       {{- if .Values.mastodon.streaming.nodeSelector }}
       nodeSelector:
         {{ .Values.mastodon.streaming.nodeSelector | toYaml | nindent 8 }}
+      {{- else if .Values.nodeSelector }}
+      nodeSelector:
+        {{ .Values.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
       {{- with (default .Values.affinity .Values.mastodon.streaming.affinity) }}
       affinity:

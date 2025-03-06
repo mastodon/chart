@@ -272,6 +272,9 @@ spec:
       {{- if .Values.mastodon.web.nodeSelector }}
       nodeSelector:
         {{ .Values.mastodon.web.nodeSelector | toYaml | nindent 8 }}
+      {{- else if .Values.nodeSelector }}
+      nodeSelector:
+        {{ .Values.nodeSelector | toYaml | nindent 8 }}
       {{- end }}
       {{- with (default .Values.affinity .Values.mastodon.web.affinity) }}
       affinity:
