@@ -1,3 +1,7 @@
+# 6.0.2
+
+- Updated the Mastodon version to v4.3.5
+
 # 6.0.1
 
 - Added additional values to separate out `db:prepare` and `db:migrate` jobs and whether they should run:
