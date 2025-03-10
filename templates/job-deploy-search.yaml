@@ -47,10 +47,10 @@ spec:
         - name: {{ include "mastodon.fullname" . }}-deploy-search
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.mastodon.hooks.deploySearch.resources }}
           resources:
-            requests:
-              cpu: 700m
-              memory: 768Mi
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - bin/tootctl
             - search
