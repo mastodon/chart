@@ -1,6 +1,10 @@
-# 6.0.2
+# 6.0.3
 
 - Updated the Mastodon version to v4.3.5
+
+# 6.0.2
+
+- Helm version tagging now utilizes `.Values.image.tag` when set.
 
 # 6.0.1
 
