@@ -2,6 +2,10 @@
 
 - Added `nodeSelector` fields for every resource type for better fine-grain tuning of where resources end up.
 
+# 6.0.2
+
+- Helm version tagging now utilizes `.Values.image.tag` when set.
+
 # 6.0.1
 
 - Added additional values to separate out `db:prepare` and `db:migrate` jobs and whether they should run:
