@@ -49,7 +49,7 @@ mastodon:
     # with timing hooks to ensure the job runs immediately after install/upgrade
     # and will be restarted if another, corrective upgrade is triggered.
     # Please check the tootctl documentation and upgrade notes to pick values.
-    # 
+    #
     # NOTE: The resource stanza set below is intentionally very conservative.
     # Consider assigning a liberal chunk of your cluster's typical headroom.
     deploySearch:
