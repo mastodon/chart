@@ -40,10 +40,12 @@ mastodon:
       concurrency: 5
       resetChewy: true
       only: "" # one index name. Possible values: instances, accounts, tags, statuses, public_statuses
-      resources:
+      resources: # this accepts any keys in a full container resources stanza.
         requests:
-          cpu: 700m
-          memory: 768Mi
+          cpu: 250m
+          memory: 256Mi
+        limits:
+          cpu: 500m
 
     # Upload website assets to S3 before deploying using rclone.
     # Whenever there is an update to Mastodon, sometimes there are assets files
