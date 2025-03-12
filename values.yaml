@@ -97,11 +97,7 @@ mastodon:
       nodeSelector: {}
   # Custom labels to add to kubernetes resources
   #labels:
-<<<<<<< HEAD
 
-=======
-  # -- deploy search to elastsicsearch. Requires .elasticsearch.enabled = true
->>>>>>> main
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
