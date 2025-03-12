@@ -1,6 +1,19 @@
-# 6.1.0
+# 6.2.0
 
 - Added `nodeSelector` fields for every resource type for better fine-grain tuning of where resources end up.
+
+# 6.1.0
+
+- Added a new job to re/build elasticsearch indices as a post-upgrade hook:
+```yaml
+mastodon:
+  hooks:
+    deploySearch:
+```
+
+# 6.0.3
+
+- Updated the Mastodon version to v4.3.5
 
 # 6.0.2
 

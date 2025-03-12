@@ -41,6 +41,36 @@ mastodon:
       enabled: true
       # Node(s) on which we will deploy this job
       nodeSelector: {}
+
+    # WARNING: deploySearch is potentially a very expensive job!
+    # Only enable this once at a time, when you deploy elasticsearch or when
+    # the upgrade notes for a new mastodon version request rebuilding search.
+    # Recommended use is via `-f mastodon.hooks.deploySearch.enabled=true`
+    # to ensure the job is only dispatched for a single upgrade when required.
+    # This job may take days to run on very large instances. Even small
+    # instances may take long enough to trigger helm's completion timeout, so
+    # DO NOT PANIC if helm complains; simply verify the job is still running.
+    #
+    # Builds or rebuilds the elasticsearch indices via `tootctl deploy search`
+    # with timing hooks to ensure the job runs immediately after install/upgrade
+    # and will be restarted if another, corrective upgrade is triggered.
+    # Please check the tootctl documentation and upgrade notes to pick values.
+    #
+    # NOTE: The resource stanza set below is intentionally very conservative.
+    # Consider assigning a liberal chunk of your cluster's typical headroom.
+    deploySearch:
+      enabled: false
+      resetChewy: true
+      # one index name. Possible values: instances, accounts, tags, statuses, public_statuses
+      only: ""
+      concurrency: 5
+      resources: # this accepts any keys in a full container resources stanza.
+        requests:
+          cpu: 250m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+
     # Upload website assets to S3 before deploying using rclone.
     # Whenever there is an update to Mastodon, sometimes there are assets files
     # that are renamed. As the pods are getting redeployed, and old/new pods are
@@ -67,7 +97,11 @@ mastodon:
       nodeSelector: {}
   # Custom labels to add to kubernetes resources
   #labels:
+<<<<<<< HEAD
 
+=======
+  # -- deploy search to elastsicsearch. Requires .elasticsearch.enabled = true
+>>>>>>> main
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
