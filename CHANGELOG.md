@@ -1,3 +1,8 @@
+# 6.1.1
+
+- Fixed some situations where disabling all bitnami charts caused it to error.
+- Fixed a potential null postgresql host value error.
+
 # 6.1.0
 
 - Added a new job to re/build elasticsearch indices as a post-upgrade hook:
