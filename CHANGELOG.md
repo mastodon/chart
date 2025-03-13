@@ -1,3 +1,7 @@
+# 6.1.1
+
+- Updated the Mastodon version to v4.3.6
+
 # 6.1.0
 
 - Added a new job to re/build elasticsearch indices as a post-upgrade hook:
