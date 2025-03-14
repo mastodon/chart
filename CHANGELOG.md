@@ -1,3 +1,7 @@
+# 6.2.0
+
+- Added ability to add pod labels to pods created from Deployment objects at the global level
+
 # 6.1.1
 
 - Updated the Mastodon version to v4.3.6
