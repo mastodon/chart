@@ -46,6 +46,18 @@ podAffinity:
       topologyKey: kubernetes.io/hostname
 ```
 
+## Using a mastodon fork
+
+We have only tested this chart with one mastodon fork and that's [glitch-soc/mastodon](https://github.com/glitch-soc/mastodon). You can find a complete list of their docker images [here](https://github.com/glitch-soc/mastodon/pkgs/container/mastodon). Here's a `values.yaml` example of using one their nightly builds:
+
+```yaml
+# ⚠️ Using a nightly build means you are using the dev branch of glitch-soc/mastodon
+# If you use that dev branch, you cannot use pinned semver versions. You must pick one or the other
+image:
+  repository: ghcr.io/glitch-soc/mastodon
+  tag: nightly.2025-03-14-security
+```
+
 # Administration
 
 You can run [admin CLI](https://docs.joinmastodon.org/admin/tootctl/) commands in the web deployment.
