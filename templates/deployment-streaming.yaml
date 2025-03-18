@@ -40,6 +40,9 @@ spec:
       labels:
         {{- include "mastodon.globalLabels" . | nindent 8 }}
         {{- include "mastodon.selectorLabels" . | nindent 8 }}
+        {{- with .Values.mastodon.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         {{- with .Values.mastodon.streaming.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
