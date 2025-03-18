@@ -1,3 +1,8 @@
+# 6.2.1
+
+- Fixed some situations where disabling all bitnami charts caused it to error.
+- Fixed a potential null postgresql host value error.
+
 # 6.2.0
 
 - Added ability to add pod labels to pods created from Deployment objects at the global level
