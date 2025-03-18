@@ -1,3 +1,7 @@
+# 6.3.0
+
+- Added `nodeSelector` fields for every resource type for better fine-grain tuning of where resources end up.
+
 # 6.2.1
 
 - Fixed some situations where disabling all bitnami charts caused it to error.
