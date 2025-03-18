@@ -42,6 +42,9 @@ spec:
         {{- include "mastodon.globalLabels" . | nindent 8 }}
         {{- include "mastodon.selectorLabels" . | nindent 8 }}
         {{- include "mastodon.statsdExporterLabels" . | nindent 8 }}
+        {{- with .Values.mastodon.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         {{- with .Values.mastodon.web.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

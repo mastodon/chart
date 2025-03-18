@@ -1,6 +1,19 @@
-# 6.2.0
+# 6.3.0
 
 - Added `nodeSelector` fields for every resource type for better fine-grain tuning of where resources end up.
+
+# 6.2.1
+
+- Fixed some situations where disabling all bitnami charts caused it to error.
+- Fixed a potential null postgresql host value error.
+
+# 6.2.0
+
+- Added ability to add pod labels to pods created from Deployment objects at the global level
+
+# 6.1.1
+
+- Updated the Mastodon version to v4.3.6
 
 # 6.1.0
 
