@@ -554,7 +554,13 @@ ingress:
         hosts:
           - streaming.mastodon.local
 
-# -- https://github.com/bitnami/charts/tree/master/bitnami/elasticsearch#parameters
+# Configuration for Elasticsearch.
+# When enabled, the bitnami helm chart is used for Elasticsearch deployment, and
+# all values here correspond to their values file. Please see the bitnami chart
+# documentation:
+# https://github.com/bitnami/charts/tree/master/bitnami/elasticsearch#parameters
+#
+# Please note that we recommend using your own deployment for better management.
 elasticsearch:
   # Elasticsearch is powering full-text search. It is optional.
 
@@ -580,7 +586,13 @@ elasticsearch:
   # Name of an existing secret with a password key
   # existingSecret:
 
+# Configuration for PostgreSQL.
+# When enabled, the bitnami helm chart is used for PostgreSQL deployment, and
+# all values here correspond to their values file. Please see the bitnami chart
+# documentation:
 # https://github.com/bitnami/charts/tree/master/bitnami/postgresql#parameters
+#
+# Please note that we recommend using your own deployment for better management.
 postgresql:
   # -- disable if you want to use an existing db; in which case the values below
   # must match those of that external postgres instance.
@@ -628,7 +640,13 @@ postgresql:
       password:
       existingSecret:
 
+# Configuration for Redis.
+# When enabled, the bitnami helm chart used for Redis deployment, and all values
+# here correspond to their values file. Please see the bitnami chart
+# documentation:
 # https://github.com/bitnami/charts/tree/master/bitnami/redis#parameters
+#
+# Please note that we recommend using your own deployment for better management.
 redis:
   # disable if you want to use an existing redis instance; in which case the
   # values below must match those of that external redis instance
@@ -800,23 +818,23 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-# Custom annotations to apply to all created deployment objects. These can be
-# used to help mastodon interact with other services in the cluster.
+# Custom annotations to apply to all created mastodon deployment objects. These
+# can be used to help mastodon interact with other services in the cluster.
 deploymentAnnotations: {}
 
 # -- Kubernetes manages pods for jobs and pods for deployments differently, so you might
 # need to apply different annotations to the two different sets of pods. The annotations
-# set with podAnnotations will be added to all deployment-managed pods.
+# set with podAnnotations will be added to all mastodon deployment-managed pods.
 podAnnotations: {}
 
 # If set to true, an annotation with the current chart release number will be added to all mastodon pods. This will
 # cause all pods to be recreated every `helm upgrade` regardless of whether their config or spec changes.
 revisionPodAnnotation: true
 
-# The annotations set with jobAnnotations will be added to all job pods.
+# The annotations set with jobAnnotations will be added to all mastodon job pods
 jobAnnotations: {}
 
-# -- Default resources for all Deployments and jobs unless overwritten
+# -- Default resources for all mastodon Deployments and jobs unless overwritten
 resources:
   {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -836,20 +854,20 @@ nodeSelector: {}
 # @ignored
 tolerations: []
 
-# -- Affinity for all pods unless overwritten
+# -- Affinity for all mastodon pods unless overwritten
 affinity: {}
 
-# -- Timezone for all pods unless overwritten
+# -- Timezone for all mastodon pods unless overwritten
 timezone: UTC
 
-# -- Topology Spread Constraints for all pods unless overwritten
+# -- Topology Spread Constraints for all mastodon pods unless overwritten
 # Please note that you need to use `matchLabelKeys` (Kubernetes 1.25+) if you
 # want to spread each deployment independently, or override topologySpreadConstraints
 # for each deployment
 topologySpreadConstraints: {}
 
-# Default volume mounts for all pods
+# Default volume mounts for all mastodon pods
 volumeMounts: []
 
-# Default volumes for all pods
+# Default volumes for all mastodon pods
 volumes: []
