@@ -1,6 +1,6 @@
 # 6.2.2
 
--  `app.kubernetes.io/version` no longer includes digests when specified, as they can often go over the 63 character limit.
+-  `app.kubernetes.io/version` shortens any potential digest hash to 7 characters to avoid hitting the 63 character lable limit.
 
 # 6.2.1
 
