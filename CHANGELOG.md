@@ -1,3 +1,7 @@
+# 6.2.2
+
+-  `app.kubernetes.io/version` no longer inlcudes digests when specified, as they can often go over the 63 character limit.
+
 # 6.2.1
 
 - Fixed some situations where disabling all bitnami charts caused it to error.

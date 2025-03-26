@@ -48,7 +48,7 @@ helm.sh/chart: {{ include "mastodon.chart" . }}
 {{ include "mastodon.selectorLabels" . }}
 {{ include "mastodon.globalLabels" . }}
 {{- if .Values.image.tag }}
-app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+app.kubernetes.io/version: {{ regexReplaceAll "@[a-zA-Z0-9:]+" .Values.image.tag "" | quote }}
 {{- else if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
