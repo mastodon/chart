@@ -904,16 +904,12 @@ tolerations: []
 # -- Affinity for all mastodon pods unless overwritten
 affinity: {}
 
-<<<<<<< HEAD
 # Node(s) on which we will deploy all resources.
 # Any node selectors specified for individual resources will override this
 # setting.
 nodeSelector: {}
 
-# -- Timezone for all pods unless overwritten
-=======
 # -- Timezone for all mastodon pods unless overwritten
->>>>>>> main
 timezone: UTC
 
 # -- Topology Spread Constraints for all mastodon pods unless overwritten
