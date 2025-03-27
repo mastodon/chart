@@ -1,3 +1,7 @@
+# 6.3.0
+
+- Added `nodeSelector` fields for every resource type for better fine-grain tuning of where resources end up.
+
 # 6.2.2
 
 -  `app.kubernetes.io/version` shortens any potential digest hash to 7 characters to avoid hitting the 63 character label limit.
