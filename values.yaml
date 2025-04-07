@@ -586,6 +586,12 @@ elasticsearch:
   # Name of an existing secret with a password key
   # existingSecret:
 
+  caSecret:
+    # caSecret.name is the name of the secret containing the CA certificate.
+    name:
+    # caSecret.key is the key in the secret containing the CA certificate.
+    key: ca.crt
+
 # Configuration for PostgreSQL.
 # When enabled, the bitnami helm chart is used for PostgreSQL deployment, and
 # all values here correspond to their values file. Please see the bitnami chart
