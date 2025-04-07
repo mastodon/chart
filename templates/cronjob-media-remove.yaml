@@ -12,6 +12,10 @@ spec:
       template:
         metadata:
           name: {{ include "mastodon.fullname" . }}-media-remove
+          {{- with .Values.jobLabels }}
+          labels:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.jobAnnotations }}
           annotations:
             {{- toYaml . | nindent 12 }}
