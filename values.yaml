@@ -586,6 +586,9 @@ elasticsearch:
   # Name of an existing secret with a password key
   # existingSecret:
 
+  # elasticsearchIndexPrefix specifies the prefix for Elasticsearch indices used by this Mastodon server
+  # indexPrefix: ""
+
 # Configuration for PostgreSQL.
 # When enabled, the bitnami helm chart is used for PostgreSQL deployment, and
 # all values here correspond to their values file. Please see the bitnami chart
