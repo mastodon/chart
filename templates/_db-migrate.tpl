@@ -102,7 +102,7 @@ spec:
             - name: "REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  {{- if and (.prepare) (not .Values.redis.enabled) (and (not .Values.redis.auth.existingSecret) (not .Values.redis.existingSecret)) (.Values.redis.auth.password) }}
+                  {{- if and (.prepare) (not .Values.redis.enabled) (not .Values.redis.auth.existingSecret) (not .Values.redis.existingSecret) (.Values.redis.auth.password) }}
                   name: {{ template "mastodon.redis.secretName" . }}-pre-install
                   {{- else }}
                   name: {{ template "mastodon.redis.secretName" . }}
