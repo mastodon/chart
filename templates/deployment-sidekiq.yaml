@@ -258,15 +258,9 @@ spec:
           resources:
             {{- toYaml (default (default $context.Values.resources $context.Values.mastodon.sidekiq.resources) .resources) | nindent 12 }}
       {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
-      {{- if .nodeSelector }}
+      {{- with coalesce .nodeSelector $context.Values.mastodon.sidekiq.nodeSelector $context.Values.nodeSelector }}
       nodeSelector:
-        {{- .nodeSelector | toYaml | nindent 8 }}
-      {{- else if $context.Values.mastodon.sidekiq.nodeSelector }}
-      nodeSelector:
-        {{- $context.Values.mastodon.sidekiq.nodeSelector | toYaml | nindent 8 }}
-      {{- else if $context.Values.nodeSelector }}
-      nodeSelector:
-        {{- $context.Values.nodeSelector | toYaml | nindent 8 }}
+        {{- . | toYaml | nindent 8 }}
       {{- end }}
       {{- with $context.Values.tolerations }}
       tolerations:

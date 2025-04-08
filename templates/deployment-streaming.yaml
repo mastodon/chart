@@ -164,12 +164,9 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- if .Values.mastodon.streaming.nodeSelector }}
+      {{- with coalesce .Values.mastodon.streaming.nodeSelector .Values.nodeSelector }}
       nodeSelector:
-        {{- .Values.mastodon.streaming.nodeSelector | toYaml | nindent 8 }}
-      {{- else if .Values.nodeSelector }}
-      nodeSelector:
-        {{- .Values.nodeSelector | toYaml | nindent 8 }}
+        {{- . | toYaml | nindent 8 }}
       {{- end }}
       {{- with (default .Values.affinity .Values.mastodon.streaming.affinity) }}
       affinity:

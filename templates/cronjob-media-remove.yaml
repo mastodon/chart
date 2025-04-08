@@ -107,11 +107,8 @@ spec:
                 - name: system
                   mountPath: /opt/mastodon/public/system
               {{- end }}
-          {{- if .Values.mastodon.cron.removeMedia.nodeSelector }}
+          {{- with coalesce .Values.mastodon.cron.removeMedia.nodeSelector .Values.nodeSelector }}
           nodeSelector:
-            {{- .Values.mastodon.cron.removeMedia.nodeSelector | toYaml | nindent 12 }}
-          {{- else if .Values.nodeSelector }}
-          nodeSelector:
-            {{- .Values.nodeSelector | toYaml | nindent 12 }}
+            {{- . | toYaml | nindent 12 }}
           {{- end }}
 {{- end }}
