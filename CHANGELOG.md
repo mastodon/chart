@@ -1,3 +1,7 @@
+# 6.2.4
+
+- Fixed an issue where redis secrets specified in values or the helm CLI wouldn't be used by the db-prepare job on install.
+
 # 6.2.3
 
 - Updated the Mastodon version to v4.3.7
