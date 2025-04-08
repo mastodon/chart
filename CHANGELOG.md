@@ -2,6 +2,14 @@
 
 - Added `nodeSelector` fields for every resource type for better fine-grain tuning of where resources end up.
 
+# 6.2.4
+
+- Fixed an issue where redis secrets specified in values or the helm CLI wouldn't be used by the db-prepare job on install.
+
+# 6.2.3
+
+- Updated the Mastodon version to v4.3.7
+
 # 6.2.2
 
 -  `app.kubernetes.io/version` shortens any potential digest hash to 7 characters to avoid hitting the 63 character label limit.
