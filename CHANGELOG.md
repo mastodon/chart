@@ -1,3 +1,7 @@
+# 6.3.0
+
+- Added `nodeSelector` fields for every resource type for better fine-grain tuning of where resources end up.
+
 # 6.2.4
 
 - Fixed an issue where redis secrets specified in values or the helm CLI wouldn't be used by the db-prepare job on install.

@@ -89,4 +89,9 @@ spec:
       volumes:
         - name: assets
           emptyDir: {}
+      {{- with coalesce .Values.mastodon.hooks.s3Upload.nodeSelector .Values.nodeSelector }}
+      nodeSelector:
+        {{- . | toYaml | nindent 8 }}
+      {{- end }}
+
 {{- end -}}
