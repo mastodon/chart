@@ -8,7 +8,6 @@ data:
   DB_HOST: {{ template "mastodon.postgres.host" . }}
   DB_PORT: {{ template "mastodon.postgres.port" . }}
   DB_NAME: {{ .Values.postgresql.auth.database }}
-  DB_POOL: {{ include "mastodon.maxDbPool" . }}
   DB_USER: {{ .Values.postgresql.auth.username }}
   {{- if .Values.postgresql.readReplica.hostname }}
   REPLICA_DB_HOST: {{ .Values.postgresql.readReplica.hostname }}
