@@ -1,3 +1,7 @@
+# 6.3.1
+
+- Removed DB_POOL from the ConfigMap as we should never have to override this.
+
 # 6.3.0
 
 - Added `nodeSelector` fields for every resource type for better fine-grain tuning of where resources end up.
