@@ -110,8 +110,12 @@ mastodon:
       # Node(s) on which we will deploy this job
       nodeSelector: {}
 
+  # Sets the default locale for this server.
+  # NOTICE: This will force this locale on every user who is not logged in, and
+  # the instance will no longer do any local detection for clients.
   # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
-  locale: en
+  locale:
+
   local_domain: mastodon.local
   # -- Use of WEB_DOMAIN requires careful consideration: https://docs.joinmastodon.org/admin/config/#federation
   # You must redirect the path LOCAL_DOMAIN/.well-known/ to WEB_DOMAIN/.well-known/ as described

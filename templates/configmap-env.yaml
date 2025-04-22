@@ -25,7 +25,9 @@ data:
   REPLICA_DB_PASS: {{ .Values.postgresql.readReplica.auth.password }}
   {{- end }}
   PREPARED_STATEMENTS: {{ .Values.mastodon.preparedStatements | quote }}
+  {{- if .Values.mastodon.locale }}
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
+  {{- end }}
   {{- if .Values.elasticsearch.enabled }}
   ES_ENABLED: "true"
   ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
