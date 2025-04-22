@@ -1,3 +1,7 @@
+# 6.3.2
+
+- No longer sets `DEFAULT_LOCALE` to `en` by default; leaves this value unset.
+
 # 6.3.1
 
 - Removed DB_POOL from the ConfigMap as we should never have to override this.
