@@ -1,3 +1,7 @@
+# 6.3.3
+
+- Updated the Mastodon version to v4.3.8
+
 # 6.3.2
 
 - No longer sets `DEFAULT_LOCALE` to `en` by default; leaves this value unset.
