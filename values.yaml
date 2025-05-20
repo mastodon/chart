@@ -133,6 +133,19 @@ mastodon:
   authorizedFetch: false
   # -- Enables "Limited Federation Mode" for more details see: https://docs.joinmastodon.org/admin/config/#limited_federation_mode
   limitedFederationMode: false
+  fetchReplies:
+    # -- Enables fetching additional replies when a post's detailed view is expanded.
+    enabled: false
+    # -- The amount of time to wait since the last fetch of a post and its replies since the last fetch
+    cooldownMinutes: 15
+    # -- The amount of time after a post was created to wait before it is eligible for fetching replies
+    initialWaitMinutes: 5
+    # -- The maximum number of replies to fetch - total
+    maxGlobal: 1000
+    # -- The maximum number of replies to fetch for a single status
+    maxSingle: 500
+    # -- The total number of ActivityPub `Collection` pages to fetch
+    maxPages: 500
   persistence:
     assets:
       # -- ReadWriteOnce is more widely supported than ReadWriteMany, but limits

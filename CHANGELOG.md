@@ -1,3 +1,7 @@
+# 6.4.0
+
+- Added `fetchReplies` values
+
 # 6.3.3
 
 - Updated the Mastodon version to v4.3.8

@@ -28,6 +28,16 @@ data:
   {{- if .Values.mastodon.locale }}
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
   {{- end }}
+  {{- with .Values.fetchReplies }}
+  {{- if .enabled }}
+  FETCH_REPLIES_ENABLED: "true"
+  FETCH_REPLIES_COOLDOWN_MINUTES: {{ .cooldownMinutes | default "15" | quote }}
+  FETCH_REPLIES_INITIAL_WAIT_MINUTES: {{ .initialWaitMinutes | default "5" | quote }}
+  FETCH_REPLIES_MAX_GLOBAL: {{ .maxGlobal | default "1000" | quote }}
+  FETCH_REPLIES_MAX_SINGLE: {{ .maxSingle | default "500" | quote }}
+  FETCH_REPLIES_MAX_PAGES: {{ .maxPages | default "500" | quote }}
+  {{- end }}
+  {{- end }}
   {{- if .Values.elasticsearch.enabled }}
   ES_ENABLED: "true"
   ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
