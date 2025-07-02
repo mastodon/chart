@@ -9,10 +9,10 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 9.8.6
+version: 9.8.7
 
 # renovate: image=ghcr.io/mastodon/mastodon
-appVersion: v4.3.8
+appVersion: v4.3.9
 
 dependencies:
   - name: postgresql
