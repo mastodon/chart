@@ -1,3 +1,16 @@
+# 6.4.0
+
+- Added configuration for [bulk SMTP](https://docs.joinmastodon.org/admin/config/#optional-bulk-email-settings):
+```yaml
+mastodon:
+  smtp:
+    bulk:
+```
+
+# 6.3.4
+
+- Updated the Mastodon version to v4.3.9
+
 # 6.3.3
 
 - Updated the Mastodon version to v4.3.8

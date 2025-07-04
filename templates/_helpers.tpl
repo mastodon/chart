@@ -189,13 +189,21 @@ Get the mastodon secret.
 {{- end -}}
 
 {{/*
-Get the smtp secret.
+Get the smtp secrets.
 */}}
 {{- define "mastodon.smtp.secretName" -}}
 {{- if .Values.mastodon.smtp.existingSecret }}
     {{- printf "%s" (tpl .Values.mastodon.smtp.existingSecret $) -}}
 {{- else -}}
     {{- printf "%s-smtp" (include "mastodon.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "mastodon.smtp.bulk.secretName" -}}
+{{- if .Values.mastodon.smtp.bulk.existingSecret }}
+    {{- printf "%s" (tpl .Values.mastodon.smtp.bulk.existingSecret $) -}}
+{{- else -}}
+    {{- printf "%s-smtp-bulk" (include "mastodon.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 

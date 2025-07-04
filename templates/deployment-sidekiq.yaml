@@ -175,6 +175,20 @@ spec:
                   name: {{ include "mastodon.smtp.secretName" $context }}
                   key: password
                   optional: true
+            {{- if $context.Values.mastodon.smtp.bulk.enabled }}
+            - name: "BULK_SMTP_LOGIN"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mastodon.smtp.bulk.secretName" $context }}
+                  key: login
+                  optional: true
+            - name: "BULK_SMTP_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mastodon.smtp.bulk.secretName" $context }}
+                  key: password
+                  optional: true
+            {{- end }}
             {{- if (and $context.Values.mastodon.s3.enabled $context.Values.mastodon.s3.existingSecret) }}
             - name: "AWS_SECRET_ACCESS_KEY"
               valueFrom:
