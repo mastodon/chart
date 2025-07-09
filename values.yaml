@@ -500,7 +500,7 @@ mastodon:
         enabled: false
         port: 9102
 
-    # Settings for Prometheus metrics. NOTE: Only available in Mastodon v4.4.
+    # Settings for Prometheus metrics.
     # For more information, see:
     # https://docs.joinmastodon.org/admin/config/#prometheus
     prometheus:
