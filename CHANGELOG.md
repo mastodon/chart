@@ -1,4 +1,4 @@
-# 6.4.0
+# 6.5.0
 
 Updated the Mastodon version to v4.4.1. Main feature highlights:
 - Redis & Postgres minimum versions have been bumped to 6.2 and 13 respectively
@@ -9,6 +9,19 @@ Updated the Mastodon version to v4.4.1. Main feature highlights:
 
 Please see the Release Notes for more information:
 https://github.com/mastodon/mastodon/releases/tag/v4.4.0
+
+# 6.4.0
+
+- Added configuration for [bulk SMTP](https://docs.joinmastodon.org/admin/config/#optional-bulk-email-settings):
+```yaml
+mastodon:
+  smtp:
+    bulk:
+```
+
+# 6.3.4
+
+- Updated the Mastodon version to v4.3.9
 
 # 6.3.3
 
