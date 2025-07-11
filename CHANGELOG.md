@@ -1,3 +1,12 @@
+# 6.5.0
+
+Updated the Mastodon version to v4.4.1. Please read the [4.4.0 release notes](https://github.com/mastodon/mastodon/releases/tag/v4.4.0) before updating from a version < 4.4. In particular:
+- Redis & Postgres minimum versions have been bumped to 6.2 and 13 respectively
+- Redis namespace support has been dropped
+- No-downtime updates from versions before 4.3.0 are not supported
+- Elasticsearch mappings need to be updated manually via `tootctl` after deploying this new version
+- The new experimental Fediverse Auxiliary Service (`fasp`) Sidekiq queue needs to be added to the list of processed queues if you changed the default Sidekiq values
+
 # 6.4.0
 
 - Added configuration for [bulk SMTP](https://docs.joinmastodon.org/admin/config/#optional-bulk-email-settings):

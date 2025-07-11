@@ -291,6 +291,7 @@ mastodon:
           - mailers,2
           - pull
           - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
+          - fasp
         image:
           repository:
           tag:
@@ -514,6 +515,8 @@ mastodon:
       existingSecret:
 
   metrics:
+
+    # NOTE: This feature was dropped in v4.3.0, and will not work for any versions beyond this.
     statsd:
       # -- Enable statsd publishing via STATSD_ADDR environment variable
       address: ""
@@ -523,7 +526,7 @@ mastodon:
         enabled: false
         port: 9102
 
-    # Settings for Prometheus metrics. NOTE: Only available in Mastodon v4.4.
+    # Settings for Prometheus metrics.
     # For more information, see:
     # https://docs.joinmastodon.org/admin/config/#prometheus
     prometheus:
