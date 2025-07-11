@@ -5,7 +5,7 @@ Updated the Mastodon version to v4.4.1. Please read the [4.4.0 release notes](ht
 - Redis namespace support has been dropped
 - No-downtime updates from versions before 4.3.0 are not supported
 - Elasticsearch mappings need to be updated manually via `tootctl` after deploying this new version
-- The new experimental Fediverse Auxiliary Service (`fasp`) sidekiq queue can be added
+- The new experimental Fediverse Auxiliary Service (`fasp`) Sidekiq queue needs to be added to the list of processed queues if you changed the default Sidekiq values
 
 Please see the Release Notes for more information:
 https://github.com/mastodon/mastodon/releases/tag/v4.4.0
