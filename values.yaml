@@ -491,6 +491,8 @@ mastodon:
       existingSecret:
 
   metrics:
+
+    # NOTE: This feature was dropped in v4.3.0, and will not work for any versions beyond this.
     statsd:
       # -- Enable statsd publishing via STATSD_ADDR environment variable
       address: ""
