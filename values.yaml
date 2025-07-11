@@ -291,6 +291,7 @@ mastodon:
           - mailers,2
           - pull
           - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
+          - fasp
         image:
           repository:
           tag:
