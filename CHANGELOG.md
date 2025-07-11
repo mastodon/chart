@@ -1,6 +1,6 @@
 # 6.5.0
 
-Updated the Mastodon version to v4.4.1. Main feature highlights:
+Updated the Mastodon version to v4.4.1. Please read the [4.4.0 release notes](https://github.com/mastodon/mastodon/releases/tag/v4.4.0) before updating from a version < 4.4. In particular:
 - Redis & Postgres minimum versions have been bumped to 6.2 and 13 respectively
 - Redis namespace support has been dropped
 - No-downtime updates from versions before 4.3.0 are not supported
