@@ -156,9 +156,6 @@ data:
   {{- with .Values.mastodon.smtp.bulk.ca_file }}
   BULK_SMTP_CA_FILE: {{ . }}
   {{- end }}
-  {{- with .Values.mastodon.smtp.bulk.delivery_method }}
-  BULK_SMTP_DELIVERY_METHOD: {{ . }}
-  {{- end }}
   {{- with .Values.mastodon.smtp.bulk.domain }}
   BULK_SMTP_DOMAIN: {{ . }}
   {{- end }}
@@ -171,17 +168,11 @@ data:
   {{- with .Values.mastodon.smtp.bulk.from_address }}
   BULK_SMTP_FROM_ADDRESS: {{ . | quote }}
   {{- end }}
-  {{- with .Values.mastodon.smtp.bulk.return_path }}
-  BULK_SMTP_RETURN_PATH: {{ . | quote }}
-  {{- end }}
   {{- with .Values.mastodon.smtp.bulk.openssl_verify_mode }}
   BULK_SMTP_OPENSSL_VERIFY_MODE: {{ . }}
   {{- end }}
   {{- with .Values.mastodon.smtp.bulk.port }}
   BULK_SMTP_PORT: {{ . | quote }}
-  {{- end }}
-  {{- with .Values.mastodon.smtp.bulk.reply_to }}
-  BULK_SMTP_REPLY_TO: {{ . | quote }}
   {{- end }}
   {{- with .Values.mastodon.smtp.bulk.server }}
   BULK_SMTP_SERVER: {{ . }}
