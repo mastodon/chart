@@ -9,7 +9,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 9.8.7
+version: 10.0.0
 
 # renovate: image=ghcr.io/mastodon/mastodon
 appVersion: v4.3.9
@@ -26,6 +26,6 @@ dependencies:
     condition: elasticsearch.enabled
 
   - name: redis
-    version: 20.1.4
+    version: 21.2.0
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: redis.enabled
