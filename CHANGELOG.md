@@ -1,3 +1,7 @@
+# 6.5.1
+
+- Updated the Mastodon version to v4.4.2
+
 # 6.5.0
 
 Updated the Mastodon version to v4.4.1. Please read the [4.4.0 release notes](https://github.com/mastodon/mastodon/releases/tag/v4.4.0) before updating from a version < 4.4. In particular:
