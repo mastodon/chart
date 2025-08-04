@@ -733,8 +733,9 @@ redis:
     password: ""
     # setting password for an existing redis instance will store it in a new Secret
     # you can also specify the name of an existing Secret
-    # with a key of redis-password set to the password you want
-    # existingSecret: ""
+    # set to the password you want
+    existingSecret: ""
+    existingSecretKey: redis-password
   replica:
     replicaCount: 0
 
@@ -749,8 +750,9 @@ redis:
     auth:
       password: ""
       # you can also specify the name of an existing Secret
-      # with a key of redis-password set to the password you want
+      # set to the password you want
       existingSecret: ""
+      existingSecretKey: redis-password
 
   # Configuration for a separate redis instance only for cache.
   # If enabled, any values not specified will be copied from the base config.
@@ -763,8 +765,9 @@ redis:
     auth:
       password: ""
       # you can also specify the name of an existing Secret
-      # with a key of redis-password set to the password you want
+      # set to the password you want
       existingSecret: ""
+      existingSecretKey: redis-password
 
   # -- Node(s) on which we will deploy the various redis pods
   master:

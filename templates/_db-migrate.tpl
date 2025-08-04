@@ -107,7 +107,7 @@ spec:
                   {{- else }}
                   name: {{ template "mastodon.redis.secretName" . }}
                   {{- end }}
-                  key: redis-password
+                  key: {{ .Values.redis.auth.existingSecretKey }}
           {{- if .preDeploy }}
             - name: "SKIP_POST_DEPLOYMENT_MIGRATIONS"
               value: "true"

@@ -118,20 +118,20 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.secretName" . }}
-                  key: redis-password
+                  key: {{ .Values.redis.auth.existingSecretKey }}
             {{- if and .Values.redis.sidekiq.enabled .Values.redis.sidekiq.auth.existingSecret }}
             - name: "SIDEKIQ_REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.sidekiq.secretName" . }}
-                  key: redis-password
+                  key: {{ .Values.redis.sidekiq.auth.existingSecretKey }}
             {{- end }}
             {{- if and .Values.redis.cache.enabled .Values.redis.cache.auth.existingSecret }}
             - name: "CACHE_REDIS_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ template "mastodon.redis.cache.secretName" . }}
-                  key: redis-password
+                  key: {{ .Values.redis.cache.auth.existingSecretKey }}
             {{- end }}
             {{- if and .Values.elasticsearch.existingSecret (or .Values.elasticsearch.enabled .Values.elasticsearch.hostname) }}
             - name: "ES_PASS"
