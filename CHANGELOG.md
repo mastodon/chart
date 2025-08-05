@@ -1,4 +1,4 @@
-# 6.5.2
+# 6.5.3
 
 - Added additional customization for redis secret:
 ```yaml
@@ -7,6 +7,10 @@ redis:
     existingSecret:
     existingSecretKey:
 ```
+
+# 6.5.2
+
+- Update the Mastodon version to v4.4.3
 
 # 6.5.1
 
