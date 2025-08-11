@@ -24,7 +24,7 @@ jobs:
           app_id: ${{ secrets.APP_ID }}
 
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.3.0
 
       - name: Self-hosted Renovate
         # renovate keeps itself up to date
