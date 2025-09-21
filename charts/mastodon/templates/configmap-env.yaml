@@ -32,8 +32,12 @@ data:
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
   {{- if .Values.elasticsearch.enabled }}
   ES_ENABLED: "true"
+  ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
   ES_HOST: {{ template "mastodon.elasticsearch.fullname" . }}-master-hl
   ES_PORT: "9200"
+  {{- with .Values.elasticsearch.user }}
+  ES_USER: {{ . }}
+  {{- end }}
   {{- end }}
   LOCAL_DOMAIN: {{ .Values.mastodon.local_domain }}
   {{- with .Values.mastodon.web_domain }}
@@ -143,10 +147,45 @@ data:
   {{- with .Values.mastodon.smtp.tls }}
   SMTP_TLS: {{ . | quote }}
   {{- end }}
+  {{- if .Values.mastodon.smtp.bulk.enabled }}
+  {{- with .Values.mastodon.smtp.bulk.auth_method }}
+  BULK_SMTP_AUTH_METHOD: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.ca_file }}
+  BULK_SMTP_CA_FILE: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.domain }}
+  BULK_SMTP_DOMAIN: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.enable_starttls }}
+  BULK_SMTP_ENABLE_STARTTLS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.enable_starttls_auto }}
+  BULK_SMTP_ENABLE_STARTTLS_AUTO: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.from_address }}
+  BULK_SMTP_FROM_ADDRESS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.openssl_verify_mode }}
+  BULK_SMTP_OPENSSL_VERIFY_MODE: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.port }}
+  BULK_SMTP_PORT: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.server }}
+  BULK_SMTP_SERVER: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.tls }}
+  BULK_SMTP_TLS: {{ . | quote }}
+  {{- end }}
+  {{- end }}
   STREAMING_CLUSTER_NUM: {{ .Values.mastodon.streaming.workers | quote }}
   {{- with .Values.mastodon.streaming.base_url }}
   STREAMING_API_BASE_URL: {{ . | quote }}
   {{- end }}
+  {{- if .Values.mastodon.trusted_proxy_ip }}
+  TRUSTED_PROXY_IP: {{ .Values.mastodon.trusted_proxy_ip }}
+  {{ end }}
   {{- if .Values.externalAuth.oidc.enabled }}
   OIDC_ENABLED: {{ .Values.externalAuth.oidc.enabled | quote }}
   OIDC_DISPLAY_NAME: {{ .Values.externalAuth.oidc.display_name }}
@@ -368,11 +407,27 @@ data:
   LDAP_UID_CONVERSION_REPLACE: {{ . }}
   {{- end }}
   {{- end }}
-  {{- with .Values.mastodon.metrics.statsd.address }}
-  STATSD_ADDR: {{ . }}
+  {{- if .Values.mastodon.metrics.statsd.address }}
+  STATSD_ADDR: {{ .Values.mastodon.metrics.statsd.address }}
+  {{- else if .Values.mastodon.metrics.statsd.exporter.enabled }}
+  STATSD_ADDR: localhost:9125
   {{- end }}
   {{- if .Values.mastodon.deepl.enabled }}
   DEEPL_PLAN: {{ .Values.mastodon.deepl.plan }}
+  {{- end }}
+  {{- if .Values.mastodon.hcaptcha.enabled }}
+  HCAPTCHA_SITE_KEY: {{ .Values.mastodon.hcaptcha.siteId }}
+  {{- end }}
+  {{- if .Values.mastodon.cacheBuster.enabled }}
+  CACHE_BUSTER_ENABLED: "true"
+    {{- if .Values.mastodon.cacheBuster.httpMethod }}
+  CACHE_BUSTER_HTTP_METHOD: {{ .Values.mastodon.cacheBuster.httpMethod }}
+    {{- end }}
+    {{- if .Values.mastodon.cacheBuster.authHeader }}
+  CACHE_BUSTER_SECRET_HEADER: {{ .Values.mastodon.cacheBuster.authHeader }}
+    {{- end }}
+  {{- else }}
+  CACHE_BUSTER_ENABLED: "false"
   {{- end }}
   {{- with .Values.timezone }}
   TZ: {{ . | quote }}
