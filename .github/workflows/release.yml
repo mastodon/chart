@@ -2,6 +2,7 @@ name: Release Chart
 concurrency: chart_releaser
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
