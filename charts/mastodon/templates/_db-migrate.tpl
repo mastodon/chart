@@ -39,6 +39,12 @@ spec:
       {{- end }}
     spec:
       restartPolicy: Never
+      {{- if .Values.mastodon.extraVolumes }}
+      volumes:
+        {{- if gt (len .Values.mastodon.extraVolumes) 0 }}
+        {{ toYaml .Values.mastodon.extraVolumes | nindent 8}}
+        {{- end }}
+      {{- end }}
       containers:
         - name: {{ include "mastodon.fullname" . }}-db-migrate
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -52,6 +58,12 @@ spec:
             {{- else }}
             - db:migrate
             {{- end }}
+          {{- if .Values.mastodon.extraVolumeMounts }}
+          volumeMounts:
+          {{- if gt (len .Values.mastodon.extraVolumeMounts) 0 }}
+          {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 12 }}
+          {{- end }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "mastodon.fullname" . }}-env
