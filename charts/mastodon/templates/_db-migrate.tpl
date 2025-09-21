@@ -53,6 +53,8 @@ spec:
             - db:migrate
             {{- end }}
           envFrom:
+            - configMapRef:
+                name: {{ include "mastodon.fullname" . }}-env
             - secretRef:
                 {{- if and .prepare (not .Values.mastodon.secrets.existingSecret) }}
                 name: {{ template "mastodon.secretName" . }}-prepare
@@ -60,14 +62,6 @@ spec:
                 name: {{ template "mastodon.secretName" . }}
                 {{- end }}
           env:
-            - name: "DB_HOST"
-              value: {{ template "mastodon.postgres.direct.host" . }}
-            - name: "DB_PORT"
-              value: {{ template "mastodon.postgres.direct.port" . }}
-            - name: "DB_NAME"
-              value: {{ template "mastodon.postgres.direct.database" . }}
-            - name: "DB_USER"
-              value: {{ .Values.postgresql.auth.username }}
             - name: "DB_PASS"
               valueFrom:
                 secretKeyRef:
