@@ -39,6 +39,10 @@ spec:
       {{- end }}
     spec:
       restartPolicy: Never
+      {{- with (default .Values.podSecurityContext .Values.mastodon.web.podSecurityContext) }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if .Values.mastodon.extraVolumes }}
       volumes:
         {{- if gt (len .Values.mastodon.extraVolumes) 0 }}
@@ -47,6 +51,10 @@ spec:
       {{- end }}
       containers:
         - name: {{ include "mastodon.fullname" . }}-db-migrate
+          {{- with (default .Values.securityContext .Values.mastodon.web.securityContext) }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
