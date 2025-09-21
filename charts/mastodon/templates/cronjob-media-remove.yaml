@@ -91,6 +91,13 @@ spec:
                       name: {{ template "mastodon.redis.cache.secretName" . }}
                       key: {{ .Values.redis.auth.existingSecretPasswordKey }}
                 {{- end }}
+                {{- if and .Values.elasticsearch.existingSecret (or .Values.elasticsearch.enabled .Values.elasticsearch.hostname) }}
+                - name: "ES_PASS"
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.elasticsearch.existingSecret }}
+                      key: password
+                {{- end }}
                 - name: "PORT"
                   value: {{ .Values.mastodon.web.port | quote }}
                 {{- if (and .Values.mastodon.s3.enabled .Values.mastodon.s3.existingSecret) }}
@@ -141,4 +148,8 @@ spec:
               {{- toYaml .Values.mastodon.extraVolumeMounts | nindent 16 }}
               {{- end }}
               {{- end }}
+          {{- with coalesce .Values.mastodon.cron.removeMedia.nodeSelector .Values.nodeSelector }}
+          nodeSelector:
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
 {{- end }}
