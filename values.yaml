@@ -25,6 +25,8 @@ mastodon:
     username: not_gargron
     # @ignored
     email: not@example.com
+    # Node(s) on which we will deploy this job
+    nodeSelector: {}
   hooks:
     # Whether to perform DB schema creation on `helm install`.
     # Please note that this does not work when using the included database
@@ -34,9 +36,13 @@ mastodon:
     # and `pre-upgrade`.
     dbPrepare:
       enabled: true
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
     # Whether to perform DB migrations on `helm upgrade`.
     dbMigrate:
       enabled: true
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
 
     # WARNING: deploySearch is potentially a very expensive job!
     # Only enable this once at a time, when you deploy elasticsearch or when
@@ -89,9 +95,11 @@ mastodon:
       rclone:
         # Any additional environment variables to pass to rclone.
         env: {}
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
   # Custom labels to add to kubernetes resources
   #labels:
-  # -- deploy search to elastsicsearch. Requires .elasticsearch.enabled = true
+
   cron:
     # -- run `tootctl media remove` every week
     removeMedia:
@@ -99,8 +107,15 @@ mastodon:
       enabled: true
       # @ignored
       schedule: "0 0 * * 0"
+      # Node(s) on which we will deploy this job
+      nodeSelector: {}
+
+  # Sets the default locale for this server.
+  # NOTICE: This will force this locale on every user who is not logged in, and
+  # the instance will no longer do any local detection for clients.
   # -- available locales: https://github.com/mastodon/mastodon/blob/main/config/application.rb#L71
-  locale: en
+  locale:
+
   local_domain: mastodon.local
   # -- Use of WEB_DOMAIN requires careful consideration: https://docs.joinmastodon.org/admin/config/#federation
   # You must redirect the path LOCAL_DOMAIN/.well-known/ to WEB_DOMAIN/.well-known/ as described
@@ -203,6 +218,9 @@ mastodon:
     resources: {}
     # -- Affinity for all Sidekiq Deployments unless overwritten, overwrites .Values.affinity
     affinity: {}
+    # Node(s) on which we will deploy sidekiq in general
+    # Any worker-specific configuration will override this setting.
+    nodeSelector: {}
     # -- Annotations to apply to the deployment object(s) for sidekiq.
     # -- These are applied in addition to deploymentAnnotations.
     annotations: {}
@@ -259,8 +277,11 @@ mastodon:
         resources: {}
         # -- Affinity for this specific deployment, overwrites .Values.affinity and .Values.mastodon.sidekiq.affinity
         affinity: {}
+        # -- Node(s) on which we will deploy this sidekiq worker
+        nodeSelector: {}
         # -- Topology spread constraints for this specific deployment, overwrites .Values.topologySpreadConstraints and .Values.mastodon.sidekiq.topologySpreadConstraints
         topologySpreadConstraints: {}
+
         # -- Sidekiq queues for Mastodon that are handled by this worker. See https://docs.joinmastodon.org/admin/scaling/#concurrency
         # See https://github.com/mperham/sidekiq/wiki/Advanced-Options#queues for how to weight queues as argument
         queues:
@@ -270,6 +291,7 @@ mastodon:
           - mailers,2
           - pull
           - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
+          - fasp
         image:
           repository:
           tag:
@@ -314,6 +336,29 @@ mastodon:
     # -- Instead of defining login/password above, you can specify the name of an existing secret here. Login and
     # password must be located in keys named `login` and `password` respectively.
     existingSecret:
+
+    # Configuration for bulk/broadcast messages.
+    # Some transactional email providers require customers to use a separate set
+    # of SMTP credentials to send emails that are not transactional in nature.
+    # For more information, refer to the docs:
+    # https://docs.joinmastodon.org/admin/config/#optional-bulk-email-settings
+    bulk:
+      enabled: false
+      auth_method: plain
+      ca_file: /etc/ssl/certs/ca-certificates.crt
+      domain:
+      enable_starttls: "auto"
+      from_address: notifications@example.com
+      openssl_verify_mode: peer
+      port: 587
+      server: smtp.mailgun.org
+      tls:
+      login:
+      password:
+      # -- Instead of defining login/password above, you can specify the name of an existing secret here. Login and
+      # password must be located in keys named `login` and `password` respectively.
+      existingSecret:
+
   streaming:
     image:
       # streaming image split in Mastodon v4.3.0
@@ -332,6 +377,8 @@ mastodon:
     replicas: 1
     # -- Affinity for Streaming Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Node(s) on which we will deploy the streaming pods
+    nodeSelector: {}
     # -- Annotations to apply to the deployment object for streaming.
     # -- These are applied in addition to deploymentAnnotations.
     annotations: {}
@@ -390,6 +437,8 @@ mastodon:
     replicas: 1
     # -- Affinity for Web Pods, overwrites .Values.affinity
     affinity: {}
+    # -- Node(s) on which we will deploy the web pods
+    nodeSelector: {}
     # -- Annotations to apply to the deployment object for web.
     # -- These are applied in addition to deploymentAnnotations.
     annotations: {}
@@ -428,8 +477,10 @@ mastodon:
       enable: false
     # minAvailable: 1
     # maxUnavailable: 1
+
     # -- Puma-specific options. Below values are based on default behavior in
     # config/puma.rb when no custom values are provided.
+
     minThreads: "5"
     maxThreads: "5"
     workers: "2"
@@ -464,6 +515,8 @@ mastodon:
       existingSecret:
 
   metrics:
+
+    # NOTE: This feature was dropped in v4.3.0, and will not work for any versions beyond this.
     statsd:
       # -- Enable statsd publishing via STATSD_ADDR environment variable
       address: ""
@@ -473,7 +526,7 @@ mastodon:
         enabled: false
         port: 9102
 
-    # Settings for Prometheus metrics. NOTE: Only available in Mastodon v4.4.
+    # Settings for Prometheus metrics.
     # For more information, see:
     # https://docs.joinmastodon.org/admin/config/#prometheus
     prometheus:
@@ -586,11 +639,23 @@ elasticsearch:
   # Name of an existing secret with a password key
   # existingSecret:
 
-  caSecret:
-    # caSecret.name is the name of the secret containing the CA certificate.
-    name:
-    # caSecret.key is the key in the secret containing the CA certificate.
-    key: ca.crt
+# -- Node(s) on which we will deploy the various elasticsearch pods
+  master:
+    nodeSelector: {}
+  data:
+    nodeSelector: {}
+  coordinating:
+    nodeSelector: {}
+  ingest:
+    nodeSelector: {}
+  metrics:
+    nodeSelector: {}
+
+  caSecret: {}
+  #  # caSecret.name is the name of the secret containing the CA certificate.
+  #  name:
+  #  # caSecret.key is the key in the secret containing the CA certificate.
+  #  key: ca.crt
 
 # Configuration for PostgreSQL.
 # When enabled, the bitnami helm chart is used for PostgreSQL deployment, and
@@ -646,6 +711,15 @@ postgresql:
       password:
       existingSecret:
 
+  # -- Node(s) on which we will deploy the various database pods
+  primary:
+    nodeSelector: {}
+  readReplicas:
+    nodeSelector: {}
+  backup:
+    cronjob:
+      nodeSelector: {}
+
 # Configuration for Redis.
 # When enabled, the bitnami helm chart used for Redis deployment, and all values
 # here correspond to their values file. Please see the bitnami chart
@@ -697,6 +771,12 @@ redis:
       # you can also specify the name of an existing Secret
       # with a key of redis-password set to the password you want
       existingSecret: ""
+
+  # -- Node(s) on which we will deploy the various redis pods
+  master:
+    nodeSelector: {}
+  replica:
+    nodeSelector: {}
 
 # @ignored
 service:
@@ -855,13 +935,15 @@ resources:
   #   memory: 128Mi
 
 # @ignored
-nodeSelector: {}
-
-# @ignored
 tolerations: []
 
 # -- Affinity for all mastodon pods unless overwritten
 affinity: {}
+
+# Node(s) on which we will deploy all resources.
+# Any node selectors specified for individual resources will override this
+# setting.
+nodeSelector: {}
 
 # -- Timezone for all mastodon pods unless overwritten
 timezone: UTC
