@@ -272,9 +272,9 @@ spec:
               containerPort: {{ .Values.mastodon.metrics.prometheus.port }}
         {{- end }}
         {{- include "mastodon.statsdExporterContainer" $ | indent 8 }}
-      {{- with .Values.nodeSelector }}
+      {{- with coalesce .Values.mastodon.web.nodeSelector .Values.nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
+        {{- . | toYaml | nindent 8 }}
       {{- end }}
       {{- with (default .Values.affinity .Values.mastodon.web.affinity) }}
       affinity:
