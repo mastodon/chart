@@ -189,13 +189,21 @@ Get the mastodon secret.
 {{- end -}}
 
 {{/*
-Get the smtp secret.
+Get the smtp secrets.
 */}}
 {{- define "mastodon.smtp.secretName" -}}
 {{- if .Values.mastodon.smtp.existingSecret }}
     {{- printf "%s" (tpl .Values.mastodon.smtp.existingSecret $) -}}
 {{- else -}}
     {{- printf "%s-smtp" (include "mastodon.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "mastodon.smtp.bulk.secretName" -}}
+{{- if .Values.mastodon.smtp.bulk.existingSecret }}
+    {{- printf "%s" (tpl .Values.mastodon.smtp.bulk.existingSecret $) -}}
+{{- else -}}
+    {{- printf "%s-smtp-bulk" (include "mastodon.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
@@ -269,18 +277,6 @@ Return true if a mastodon secret object should be created
     {{- true -}}
 {{- end -}}
 {{- end -}}
-
-{{/*
-Find highest number of needed database connections to set DB_POOL variable
-*/}}
-{{- define "mastodon.maxDbPool" -}}
-{{/* Default MAX_THREADS for Puma is 5 */}}
-{{- $poolSize := 5 }}
-{{- range .Values.mastodon.sidekiq.workers }}
-{{- $poolSize = max $poolSize .concurrency }}
-{{- end }}
-{{- $poolSize | quote }}
-{{- end }}
 
 {{/*
 Full hostname for a custom Elasticsearch cluster

@@ -8,7 +8,6 @@ data:
   DB_HOST: {{ template "mastodon.postgres.host" . }}
   DB_PORT: {{ template "mastodon.postgres.port" . }}
   DB_NAME: {{ .Values.postgresql.auth.database }}
-  DB_POOL: {{ include "mastodon.maxDbPool" . }}
   DB_USER: {{ .Values.postgresql.auth.username }}
   {{- if .Values.postgresql.readReplica.hostname }}
   REPLICA_DB_HOST: {{ .Values.postgresql.readReplica.hostname }}
@@ -26,7 +25,9 @@ data:
   REPLICA_DB_PASS: {{ .Values.postgresql.readReplica.auth.password }}
   {{- end }}
   PREPARED_STATEMENTS: {{ .Values.mastodon.preparedStatements | quote }}
+  {{- if .Values.mastodon.locale }}
   DEFAULT_LOCALE: {{ .Values.mastodon.locale }}
+  {{- end }}
   {{- if .Values.elasticsearch.enabled }}
   ES_ENABLED: "true"
   ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
@@ -150,6 +151,38 @@ data:
   {{- end }}
   {{- with .Values.mastodon.smtp.tls }}
   SMTP_TLS: {{ . | quote }}
+  {{- end }}
+  {{- if .Values.mastodon.smtp.bulk.enabled }}
+  {{- with .Values.mastodon.smtp.bulk.auth_method }}
+  BULK_SMTP_AUTH_METHOD: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.ca_file }}
+  BULK_SMTP_CA_FILE: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.domain }}
+  BULK_SMTP_DOMAIN: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.enable_starttls }}
+  BULK_SMTP_ENABLE_STARTTLS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.enable_starttls_auto }}
+  BULK_SMTP_ENABLE_STARTTLS_AUTO: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.from_address }}
+  BULK_SMTP_FROM_ADDRESS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.openssl_verify_mode }}
+  BULK_SMTP_OPENSSL_VERIFY_MODE: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.port }}
+  BULK_SMTP_PORT: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.server }}
+  BULK_SMTP_SERVER: {{ . }}
+  {{- end }}
+  {{- with .Values.mastodon.smtp.bulk.tls }}
+  BULK_SMTP_TLS: {{ . | quote }}
+  {{- end }}
   {{- end }}
   STREAMING_CLUSTER_NUM: {{ .Values.mastodon.streaming.workers | quote }}
   {{- with .Values.mastodon.streaming.base_url }}
