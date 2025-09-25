@@ -639,7 +639,7 @@ elasticsearch:
   # Name of an existing secret with a password key
   # existingSecret:
 
- # -- Node(s) on which we will deploy the various elasticsearch pods
+  # -- Node(s) on which we will deploy the various elasticsearch pods
   master:
     nodeSelector: {}
   data:
