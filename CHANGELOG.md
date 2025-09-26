@@ -1,4 +1,4 @@
-# 6.5.4
+# 6.5.5
 
 - Added additional customization for redis secret. Can now specify auth secrey key:
 ```yaml
@@ -15,6 +15,10 @@ redis:
       existingSecret:
       existingSecretKey:
 ```
+
+# 6.5.4
+
+- Update the mastodon version to v4.4.5
 
 # 6.5.3
 
