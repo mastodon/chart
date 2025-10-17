@@ -11,6 +11,12 @@ image:
   pullPolicy: IfNotPresent
 
 mastodon:
+  logLevel:
+    # Set log level for the web and Sidekiq processes.
+    rails: info
+    # Set log level for the streaming process.
+    streaming: info
+
   # Labels added to every Mastodon-related object
   labels: {}
   # Labes added to every deployed mastodon pod
