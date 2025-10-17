@@ -5,6 +5,8 @@ metadata:
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
 data:
+  RAILS_LOG_LEVEL: {{ .Values.mastodon.logLevel.rails | default "info" }}
+  LOG_LEVEL: {{ .Values.mastodon.logLevel.streaming | default "info" }}
   DB_HOST: {{ template "mastodon.postgres.host" . }}
   DB_PORT: {{ template "mastodon.postgres.port" . }}
   DB_NAME: {{ .Values.postgresql.auth.database }}
