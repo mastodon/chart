@@ -137,6 +137,13 @@ spec:
             {{- end }}
             - name: "PORT"
               value: {{ .Values.mastodon.streaming.port | quote }}
+            {{- if and .Values.externalAuth.ldap.enabled .Values.externalAuth.ldap.passwordSecretRef.name }}
+            - name: LDAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.externalAuth.ldap.passwordSecretRef.name }}
+                  value: {{ .Values.externalAuth.ldap.passwordSecretRef.key | default "password" }}
+            {{- end }}
             {{- range $k, $v := .Values.mastodon.streaming.extraEnvVars }}
             - name: {{ $k }}
               value: {{ quote $v }}

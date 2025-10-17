@@ -242,6 +242,13 @@ spec:
               value: "true"
             {{- end }}
             {{- end }}
+            {{- if and $context.Values.externalAuth.ldap.enabled $context.Values.externalAuth.ldap.passwordSecretRef.name }}
+            - name: LDAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $context.Values.externalAuth.ldap.passwordSecretRef.name }}
+                  value: {{ $context.Values.externalAuth.ldap.passwordSecretRef.key | default "password" }}
+            {{- end }}
           {{- if $context.Values.mastodon.metrics.prometheus.enabled }}
           ports:
             - name: prometheus
