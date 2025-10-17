@@ -201,7 +201,7 @@ data:
   OIDC_DISCOVERY: {{ .Values.externalAuth.oidc.discovery | quote }}
   OIDC_SCOPE: {{ .Values.externalAuth.oidc.scope | quote }}
   OIDC_UID_FIELD: {{ .Values.externalAuth.oidc.uid_field }}
-  OIDC_CLIENT_ID: {{ .Values.externalAuth.oidc.client_id }}
+  OIDC_CLIENT_ID: {{ .Values.externalAuth.oidc.client_id | quote }}
   OIDC_CLIENT_SECRET: {{ .Values.externalAuth.oidc.client_secret }}
   OIDC_REDIRECT_URI: {{ .Values.externalAuth.oidc.redirect_uri }}
   OIDC_SECURITY_ASSUME_EMAIL_IS_VERIFIED: {{ .Values.externalAuth.oidc.assume_email_is_verified | quote }}
