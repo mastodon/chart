@@ -75,8 +75,8 @@ jobs:
           # available for use in the templates, currently we need v3.6.0 or
           # higher.
           #
-          - k3s-channel: v1.28
-            helm-version: v3.8.0
+          - k3s-channel: v1.33
+            helm-version: v3.19.0
 
     env:
       HELM_EXPERIMENTAL_OCI: "1"
