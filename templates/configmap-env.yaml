@@ -45,6 +45,9 @@ data:
   {{- with .Values.elasticsearch.user }}
   ES_USER: {{ . }}
   {{- end }}
+  {{- if .Values.elasticsearch.indexPrefix }}
+  ES_PREFIX: {{ .Values.elasticsearch.indexPrefix | quote }}
+  {{- end }}
   LOCAL_DOMAIN: {{ .Values.mastodon.local_domain }}
   {{- with .Values.mastodon.web_domain }}
   WEB_DOMAIN: {{ . }}
@@ -96,7 +99,7 @@ data:
   S3_ENABLED: "true"
   S3_ENDPOINT: {{ .Values.mastodon.s3.endpoint }}
   S3_HOSTNAME: {{ .Values.mastodon.s3.hostname }}
-  S3_PROTOCOL: "https"
+  S3_PROTOCOL: {{ .Values.mastodon.s3.protocol }}
   {{- if .Values.mastodon.s3.permission }}
   S3_PERMISSION: {{ .Values.mastodon.s3.permission }}
   {{- end }}

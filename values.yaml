@@ -160,6 +160,7 @@ mastodon:
     existingSecret: ""
     bucket: ""
     endpoint: ""
+    protocol: https
     hostname: ""
     region: ""
     permission: ""
@@ -657,6 +658,9 @@ elasticsearch:
   #  # caSecret.key is the key in the secret containing the CA certificate.
   #  key: ca.crt
 
+  # elasticsearchIndexPrefix specifies the prefix for Elasticsearch indices used by this Mastodon server
+  # indexPrefix: ""
+
 # Configuration for PostgreSQL.
 # When enabled, the bitnami helm chart is used for PostgreSQL deployment, and
 # all values here correspond to their values file. Please see the bitnami chart
@@ -731,6 +735,9 @@ redis:
   # disable if you want to use an existing redis instance; in which case the
   # values below must match those of that external redis instance
   enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/redis
   hostname: ""
   port: 6379
   auth:
@@ -916,6 +923,9 @@ podAnnotations: {}
 # If set to true, an annotation with the current chart release number will be added to all mastodon pods. This will
 # cause all pods to be recreated every `helm upgrade` regardless of whether their config or spec changes.
 revisionPodAnnotation: true
+
+# The labels set with jobLabels will be added to all mastodon job pods
+jobLabels: {}
 
 # The annotations set with jobAnnotations will be added to all mastodon job pods
 jobAnnotations: {}
