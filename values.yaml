@@ -139,6 +139,7 @@ mastodon:
       # scalability, since it requires the Rails and Sidekiq pods to run on the
       # same node.
       accessMode: ReadWriteOnce
+      keepAfterDelete: true
       resources:
         requests:
           storage: 10Gi
@@ -146,6 +147,7 @@ mastodon:
       existingClaim:
     system:
       accessMode: ReadWriteOnce
+      keepAfterDelete: true
       resources:
         requests:
           storage: 100Gi
