@@ -82,14 +82,14 @@ jobs:
       HELM_EXPERIMENTAL_OCI: "1"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       # This action starts a k8s cluster with NetworkPolicy enforcement and
       # installs both kubectl and helm.
       #
       # ref: https://github.com/jupyterhub/action-k3s-helm#readme
       #
-      - uses: jupyterhub/action-k3s-helm@v3
+      - uses: jupyterhub/action-k3s-helm@v4
         with:
           k3s-channel: ${{ matrix.k3s-channel }}
           helm-version: ${{ matrix.helm-version }}
