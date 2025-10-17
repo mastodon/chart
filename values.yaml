@@ -624,8 +624,8 @@ elasticsearch:
   # RAILS_ENV=production bundle exec rake chewy:sync
   # (https://docs.joinmastodon.org/admin/optional/elasticsearch/)
   enabled: true
-  # @ignored
   image:
+    repository: bitnamilegacy/elasticsearch
     tag: 7
 
   # If you are using an external ES cluster, use `enabled: false` and set the hostname, port,
@@ -674,6 +674,8 @@ postgresql:
   # Please note that certain features do not work when enabling the included
   # database, namely automatic schema creation when the app is first installed.
   enabled: true
+  image:
+    repository: bitnamilegacy/postgresql
   # postgresqlHostname: preexisting-postgresql
   # postgresqlPort: 5432
 
