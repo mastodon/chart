@@ -652,6 +652,12 @@ elasticsearch:
   metrics:
     nodeSelector: {}
 
+  caSecret: {}
+  #  # caSecret.name is the name of the secret containing the CA certificate.
+  #  name:
+  #  # caSecret.key is the key in the secret containing the CA certificate.
+  #  key: ca.crt
+
   # elasticsearchIndexPrefix specifies the prefix for Elasticsearch indices used by this Mastodon server
   # indexPrefix: ""
 

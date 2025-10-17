@@ -38,6 +38,9 @@ data:
   ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
   ES_HOST: {{ include "mastodon.elasticsearch.fullHostname" .}}
   ES_PORT: {{ .Values.elasticsearch.port | default "9200" | quote }}
+  {{- if .Values.elasticsearch.caSecret }}
+  ES_CA_FILE: /opt/opensearch/config/ca.certs
+  {{- end }}
   {{- end }}
   {{- with .Values.elasticsearch.user }}
   ES_USER: {{ . }}
