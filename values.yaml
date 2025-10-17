@@ -915,6 +915,9 @@ podAnnotations: {}
 # cause all pods to be recreated every `helm upgrade` regardless of whether their config or spec changes.
 revisionPodAnnotation: true
 
+# The labels set with jobLabels will be added to all mastodon job pods
+jobLabels: {}
+
 # The annotations set with jobAnnotations will be added to all mastodon job pods
 jobAnnotations: {}
 
