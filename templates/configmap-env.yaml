@@ -42,6 +42,9 @@ data:
   {{- with .Values.elasticsearch.user }}
   ES_USER: {{ . }}
   {{- end }}
+  {{- if .Values.elasticsearch.indexPrefix }}
+  ES_PREFIX: {{ .Values.elasticsearch.indexPrefix | quote }}
+  {{- end }}
   LOCAL_DOMAIN: {{ .Values.mastodon.local_domain }}
   {{- with .Values.mastodon.web_domain }}
   WEB_DOMAIN: {{ . }}
