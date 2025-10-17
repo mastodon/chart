@@ -725,6 +725,9 @@ redis:
   # disable if you want to use an existing redis instance; in which case the
   # values below must match those of that external redis instance
   enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/redis
   hostname: ""
   port: 6379
   auth:
