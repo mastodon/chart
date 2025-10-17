@@ -160,6 +160,7 @@ mastodon:
     existingSecret: ""
     bucket: ""
     endpoint: ""
+    protocol: https
     hostname: ""
     region: ""
     permission: ""
