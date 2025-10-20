@@ -5,6 +5,10 @@ metadata:
   name: {{ template "mastodon.fullname" . }}-assets
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
+  {{- if .Values.mastodon.persistence.assets.keepAfterDelete }}
+  annotations:
+    helm.sh/hook-delete-policy: keep
+  {{- end }}
 spec:
   accessModes:
     - {{ .Values.mastodon.persistence.assets.accessMode }}
