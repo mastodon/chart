@@ -1,4 +1,4 @@
-# 6.5.7
+# 6.5.8
 
 - Added additional customization for redis secret. Can now specify auth secrey key:
 ```yaml
@@ -15,6 +15,21 @@ redis:
       existingSecret:
       existingSecretKey:
 
+# 6.5.7
+
+- Updated all dependent chart images to bitnami legacy repositories.
+- Updated chart test jobs.
+- Added additional configuration options:
+```yaml
+mastodon:
+  s3:
+    protocol: https
+...
+elasticsearch:
+  caSecret:
+  indexPrefix:
+...
+jobLabels:
 ```
 
 # 6.5.6
