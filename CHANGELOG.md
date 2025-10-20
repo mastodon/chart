@@ -9,6 +9,23 @@ externalAuth:
       key: password
 ```
 
+# 6.5.7
+
+- Updated all dependent chart images to bitnami legacy repositories.
+- Updated chart test jobs.
+- Added additional configuration options:
+```yaml
+mastodon:
+  s3:
+    protocol: https
+...
+elasticsearch:
+  caSecret:
+  indexPrefix:
+...
+jobLabels:
+```
+
 # 6.5.6
 
 - Update the mastodon version to v4.4.7

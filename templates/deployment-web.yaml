@@ -69,6 +69,11 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "mastodon.pvc.system" . }}
       {{- end }}
+      {{- if .Values.elasticsearch.caSecret.name }}
+        - name: elasticsearch-ca
+          secret:
+            secretName: {{ .Values.elasticsearch.caSecret.name}}
+      {{- end }}
       {{- include "mastodon.statsdExporterVolume" $ | indent 8 }}
       {{- if .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
         - name: config-database-yml
@@ -226,6 +231,12 @@ spec:
               mountPath: /opt/mastodon/public/assets
             - name: system
               mountPath: /opt/mastodon/public/system
+          {{- end }}
+          {{- if .Values.elasticsearch.caSecret.name }}
+            - name: elasticsearch-ca
+              mountPath: /opt/opensearch/config/ca.certs
+              subPath: {{ .Values.elasticsearch.caSecret.key }}
+              readOnly: true
           {{- end }}
           {{- if .Values.mastodon.web.customDatabaseConfigYml.configMapRef.name }}
             - name: config-database-yml

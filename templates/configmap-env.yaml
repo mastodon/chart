@@ -38,9 +38,15 @@ data:
   ES_PRESET: {{ .Values.elasticsearch.preset | default "single_node_cluster" | quote }}
   ES_HOST: {{ include "mastodon.elasticsearch.fullHostname" .}}
   ES_PORT: {{ .Values.elasticsearch.port | default "9200" | quote }}
+  {{- if .Values.elasticsearch.caSecret }}
+  ES_CA_FILE: /opt/opensearch/config/ca.certs
+  {{- end }}
   {{- end }}
   {{- with .Values.elasticsearch.user }}
   ES_USER: {{ . }}
+  {{- end }}
+  {{- if .Values.elasticsearch.indexPrefix }}
+  ES_PREFIX: {{ .Values.elasticsearch.indexPrefix | quote }}
   {{- end }}
   LOCAL_DOMAIN: {{ .Values.mastodon.local_domain }}
   {{- with .Values.mastodon.web_domain }}
@@ -93,7 +99,7 @@ data:
   S3_ENABLED: "true"
   S3_ENDPOINT: {{ .Values.mastodon.s3.endpoint }}
   S3_HOSTNAME: {{ .Values.mastodon.s3.hostname }}
-  S3_PROTOCOL: "https"
+  S3_PROTOCOL: {{ .Values.mastodon.s3.protocol }}
   {{- if .Values.mastodon.s3.permission }}
   S3_PERMISSION: {{ .Values.mastodon.s3.permission }}
   {{- end }}
@@ -195,7 +201,7 @@ data:
   OIDC_DISCOVERY: {{ .Values.externalAuth.oidc.discovery | quote }}
   OIDC_SCOPE: {{ .Values.externalAuth.oidc.scope | quote }}
   OIDC_UID_FIELD: {{ .Values.externalAuth.oidc.uid_field }}
-  OIDC_CLIENT_ID: {{ .Values.externalAuth.oidc.client_id }}
+  OIDC_CLIENT_ID: {{ .Values.externalAuth.oidc.client_id | quote }}
   OIDC_CLIENT_SECRET: {{ .Values.externalAuth.oidc.client_secret }}
   OIDC_REDIRECT_URI: {{ .Values.externalAuth.oidc.redirect_uri }}
   OIDC_SECURITY_ASSUME_EMAIL_IS_VERIFIED: {{ .Values.externalAuth.oidc.assume_email_is_verified | quote }}
