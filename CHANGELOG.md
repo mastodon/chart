@@ -1,3 +1,22 @@
+# 6.5.8
+
+- Options to keep PVCs around in the event of helm deletion:
+```yaml
+mastodon:
+  persistence:
+    assets:
+      keepAfterDelete: true
+    system:
+      keepAfterDelete: true
+```
+- Options for log levels:
+```yaml
+mastodon:
+  logLevel:
+    rails: info
+    streaming: info
+```
+
 # 6.5.7
 
 - Updated all dependent chart images to bitnami legacy repositories.
