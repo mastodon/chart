@@ -1,3 +1,7 @@
+# 6.5.8
+
+- Update the mastodon version to v4.4.8
+
 # 6.5.7
 
 - Updated all dependent chart images to bitnami legacy repositories.
