@@ -1,4 +1,4 @@
-# 7.0.0
+# 6.6.0
 
 - Update the mastodon version to v4.5.0. Please refer to the [release notes](https://github.com/mastodon/mastodon/releases/tag/v4.5.0) for important changes.
 
