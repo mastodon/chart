@@ -1,4 +1,4 @@
-# 6.6.1
+# 6.6.2
 
 - Options to keep PVCs around in the event of helm deletion:
 ```yaml
@@ -16,6 +16,10 @@ mastodon:
     rails: info
     streaming: info
 ```
+
+# 6.6.1
+
+- Update the mastodon version to v4.5.1
 
 # 6.6.0
 
