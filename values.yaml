@@ -11,6 +11,12 @@ image:
   pullPolicy: IfNotPresent
 
 mastodon:
+  logLevel:
+    # Set log level for the web and Sidekiq processes.
+    rails: info
+    # Set log level for the streaming process.
+    streaming: info
+
   # Labels added to every Mastodon-related object
   labels: {}
   # Labes added to every deployed mastodon pod
@@ -139,6 +145,7 @@ mastodon:
       # scalability, since it requires the Rails and Sidekiq pods to run on the
       # same node.
       accessMode: ReadWriteOnce
+      keepAfterDelete: true
       resources:
         requests:
           storage: 10Gi
@@ -146,6 +153,7 @@ mastodon:
       existingClaim:
     system:
       accessMode: ReadWriteOnce
+      keepAfterDelete: true
       resources:
         requests:
           storage: 100Gi
