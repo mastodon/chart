@@ -9,6 +9,10 @@ externalAuth:
       key: password
 ```
 
+# 6.6.2
+
+- Update the mastodon version to v4.5.2
+
 # 6.6.1
 
 - Update the mastodon version to v4.5.1
