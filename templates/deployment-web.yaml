@@ -216,6 +216,13 @@ spec:
               value: "true"
             {{- end }}
             {{- end }}
+            {{- if and .Values.externalAuth.ldap.enabled .Values.externalAuth.ldap.passwordSecretRef.name }}
+            - name: LDAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.externalAuth.ldap.passwordSecretRef.name }}
+                  value: {{ .Values.externalAuth.ldap.passwordSecretRef.key | default "password" }}
+            {{- end }}
             - name: TEST_ENV_VALUE
               value: {{ .Values.mastodon.metrics.statsd.address }}
           volumeMounts:
