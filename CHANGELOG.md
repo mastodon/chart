@@ -1,3 +1,15 @@
+# 6.7.0
+
+- LDAP passwords can be given as secrets:
+```yaml
+externalAuth:
+  ldap:
+    passwordSecretRef:
+      name: ldap-auth
+      key: password
+
+```
+
 # 6.6.4
 
 - Update the mastodon version to v4.5.4
