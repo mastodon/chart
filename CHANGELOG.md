@@ -1,3 +1,22 @@
+# 6.6.6
+
+- Options to keep PVCs around in the event of helm deletion:
+```yaml
+mastodon:
+  persistence:
+    assets:
+      keepAfterDelete: true
+    system:
+      keepAfterDelete: true
+```
+- Options for log levels:
+```yaml
+mastodon:
+  logLevel:
+    rails: info
+    streaming: info
+```
+
 # 6.6.5
 
 - Update the mastodon version to v4.5.5
