@@ -7,8 +7,11 @@ externalAuth:
     passwordSecretRef:
       name: ldap-auth
       key: password
-
 ```
+
+# 6.6.5
+
+- Update the mastodon version to v4.5.5
 
 # 6.6.4
 
