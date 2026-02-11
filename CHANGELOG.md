@@ -1,4 +1,4 @@
-# 6.7.0
+# 6.8.0
 
 - LDAP passwords can be given as secrets:
 ```yaml
@@ -7,6 +7,25 @@ externalAuth:
     passwordSecretRef:
       name: ldap-auth
       key: password
+```
+
+# 6.7.0
+
+- Added support for `HTTPRoute` via the Gateway API:
+```yaml
+httproute:
+  enabled: true
+  parentRefs:
+    - name: example-gateway
+      namespace: example-gateway-namespace
+      sectionName: websecure
+  hostnames:
+    - mastodon.local
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
 ```
 
 # 6.6.7
