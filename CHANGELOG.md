@@ -1,4 +1,4 @@
-# 6.7.1
+# 6.8.1
 
 - Options to keep PVCs around in the event of helm deletion:
 ```yaml
@@ -15,6 +15,17 @@ mastodon:
   logLevel:
     rails: info
     streaming: info
+```
+
+# 6.8.0
+
+- LDAP passwords can be given as secrets:
+```yaml
+externalAuth:
+  ldap:
+    passwordSecretRef:
+      name: ldap-auth
+      key: password
 ```
 
 # 6.7.0
