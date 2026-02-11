@@ -37,7 +37,7 @@ spec:
           port: {{ $webPort }}
           weight: 1
     {{- end }}
-    {{- if not $.Values.httproute.streaming.enabled }}
+    {{- if not $.Values.httproute.streamingHostnames }}
     {{- range .Values.httproute.streamingRules}}
     {{- with .matches }}
     - matches:
