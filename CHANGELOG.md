@@ -1,3 +1,22 @@
+# 6.7.0
+
+- Added support for `HTTPRoute` via the Gateway API:
+```yaml
+httproute:
+  enabled: true
+  parentRefs:
+    - name: example-gateway
+      namespace: example-gateway-namespace
+      sectionName: websecure
+  hostnames:
+    - mastodon.local
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
+```
+
 # 6.6.7
 
 - Added additional customization for redis secret. Can now specify auth secrey key:
