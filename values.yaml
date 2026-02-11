@@ -616,6 +616,36 @@ ingress:
         hosts:
           - streaming.mastodon.local
 
+# HTTPRoute configuration for Gateway API.
+httproute:
+  enabled: false
+  labels:
+  annotations:
+  parentRefs:
+    - name: example-gateway
+      namespace: example-gateway-namespace
+      sectionName: websecure
+  hostnames:
+    - mastodon.local
+
+  # Streaming hostnames, if different than the primary domain.
+  streamingHostnames:
+  #  - streaming.mastodon.local
+
+  # Rules/filters that match the web frontend.
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
+
+  # Rules/filters that match the streaming API.
+  streamingRules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /api/v1/streaming
+
 # Configuration for Elasticsearch.
 # When enabled, the bitnami helm chart is used for Elasticsearch deployment, and
 # all values here correspond to their values file. Please see the bitnami chart

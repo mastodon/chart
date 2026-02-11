@@ -1,0 +1,58 @@
+{{- if .Values.httproute.enabled -}}
+{{- $fullName := include "mastodon.fullname" . -}}
+{{- $webPort := .Values.mastodon.web.port -}}
+{{- $streamingPort := .Values.mastodon.streaming.port -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "mastodon.labels" . | nindent 4 }}
+    {{- with .Values.httproute.labels }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.httproute.annotations}}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    {{- toYaml .Values.httproute.parentRefs | nindent 4 }}
+  hostnames:
+    {{- toYaml .Values.httproute.hostnames | nindent 4 }}
+  rules:
+    {{- range .Values.httproute.rules }}
+    {{- with .matches }}
+    - matches:
+      {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .filters }}
+      filters:
+      {{- toYaml . | nindent 8 }}
+    {{- end }}
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: {{ $fullName }}-web
+          port: {{ $webPort }}
+          weight: 1
+    {{- end }}
+    {{- if not $.Values.httproute.streamingHostnames }}
+    {{- range .Values.httproute.streamingRules}}
+    {{- with .matches }}
+    - matches:
+      {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .filters }}
+      filters:
+      {{- toYaml . | nindent 8 }}
+    {{- end }}
+      backendRefs:
+        - group: ''
+          kind: Service
+          name: {{ $fullName }}-streaming
+          port: {{ $streamingPort }}
+          weight: 1
+    {{- end }}
+    {{- end }}
+{{- end }}
