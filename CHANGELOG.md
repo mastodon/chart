@@ -1,3 +1,22 @@
+# 6.8.1
+
+- Options to keep PVCs around in the event of helm deletion:
+```yaml
+mastodon:
+  persistence:
+    assets:
+      keepAfterDelete: true
+    system:
+      keepAfterDelete: true
+```
+- Options for log levels:
+```yaml
+mastodon:
+  logLevel:
+    rails: info
+    streaming: info
+```
+
 # 6.8.0
 
 - LDAP passwords can be given as secrets:
