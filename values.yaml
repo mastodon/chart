@@ -924,6 +924,9 @@ externalAuth:
     # base:
     # bind_dn:
     # password:
+    # passwordSecretRef:
+    #   name:
+    #   key: password
     # uid: cn
     # mail: mail
     # search_filter: "(|(%{uid}=%{email})(%{mail}=%{email}))"

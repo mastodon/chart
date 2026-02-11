@@ -1,3 +1,14 @@
+# 6.8.0
+
+- LDAP passwords can be given as secrets:
+```yaml
+externalAuth:
+  ldap:
+    passwordSecretRef:
+      name: ldap-auth
+      key: password
+```
+
 # 6.7.0
 
 - Added support for `HTTPRoute` via the Gateway API:
