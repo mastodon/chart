@@ -1,4 +1,4 @@
-# 6.6.7
+# 6.6.8
 
 - Options to keep PVCs around in the event of helm deletion:
 ```yaml
@@ -15,6 +15,25 @@ mastodon:
   logLevel:
     rails: info
     streaming: info
+```
+
+# 6.6.7
+
+- Added additional customization for redis secret. Can now specify auth secrey key:
+```yaml
+redis:
+  auth:
+    existingSecret:
+    existingSecretKey:
+  sidekiq:
+    auth:
+      existingSecret:
+      existingSecretKey:
+  cache:
+    auth:
+      existingSecret:
+      existingSecretKey:
+
 ```
 
 # 6.6.6
