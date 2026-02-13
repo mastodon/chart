@@ -112,6 +112,20 @@ spec:
                 secretKeyRef:
                   name: {{ template "mastodon.postgresql.secretName" . }}
                   key: password
+            {{- with .Values.externalAuth.oidc }}
+            {{- if .enabled }}
+              {{- if .existingSecret }}
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .existingSecret | quote }}
+                  key: OIDC_CLIENT_SECRET
+              {{- else if .client_secret }}
+            - name: OIDC_CLIENT_SECRET
+              value: {{ .client_secret | quote }}
+              {{- end }}
+            {{- end }}
+            {{- end }}
             {{- if .Values.postgresql.readReplica.auth.existingSecret }}
             - name: "REPLICA_DB_PASS"
               valueFrom:

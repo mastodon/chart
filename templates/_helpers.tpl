@@ -188,6 +188,17 @@ Get the mastodon secret.
 {{- end -}}
 {{- end -}}
 
+    {{/*
+    Get the oidc secret.
+    */}}
+    {{- define "externalAuth.secretName" -}}
+    {{- if .Values.externalAuth.oidc.existingSecret }}
+        {{- printf "%s" (tpl .Values.externalAuth.oidc.existingSecret $) -}}
+    {{- else -}}
+        {{- printf "%s-oidc" (include "mastodon.fullname" .) -}}
+    {{- end -}}
+    {{- end -}}
+
 {{/*
 Get the smtp secrets.
 */}}
