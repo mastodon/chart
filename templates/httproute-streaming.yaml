@@ -1,4 +1,4 @@
-{{- if .Values.httproute.streamingHostnames -}}
+{{- if or .Values.httproute.streamingHostnames .Values.httproute.streamingParentRefs -}}
 {{- $fullName := include "mastodon.fullname" . -}}
 {{- $streamingPort := .Values.mastodon.streaming.port -}}
 apiVersion: gateway.networking.k8s.io/v1
@@ -16,9 +16,9 @@ metadata:
   {{- end }}
 spec:
   parentRefs:
-    {{- toYaml .Values.httproute.parentRefs | nindent 4 }}
+    {{- coalesce .Values.httproute.streamingParentRefs .Values.httproute.parentRefs | toYaml | nindent 4 }}
   hostnames:
-    {{- toYaml .Values.httproute.streamingHostnames | nindent 4 }}
+    {{- coalesce .Values.httproute.streamingHostnames .Values.httproute.hostnames | toYaml | nindent 4 }}
   rules:
     {{- range .Values.httproute.streamingRules }}
     {{- with .matches }}

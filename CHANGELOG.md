@@ -1,3 +1,11 @@
+# 6.8.2
+
+- Added additional configuration for HTTPRoute objects:
+```yaml
+httproute:
+  streamingParentRef:
+```
+
 # 6.8.1
 
 - Options to keep PVCs around in the event of helm deletion:

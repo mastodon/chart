@@ -628,6 +628,12 @@ httproute:
   hostnames:
     - mastodon.local
 
+  # Streaming gateway parent ref, if streaming should be routed differently.
+  streamingParentRefs:
+  #  - name: example-streaming-gateway
+  #    namespace: example-streaming-gateway-namespace
+  #    sectionName: websecure
+
   # Streaming hostnames, if different than the primary domain.
   streamingHostnames:
   #  - streaming.mastodon.local
