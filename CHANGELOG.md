@@ -1,3 +1,7 @@
+# 6.8.5
+
+- Update the mastodon version to v4.5.9
+
 # 6.8.4
 
 - Update the mastodon version to v4.5.8
