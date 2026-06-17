@@ -1,3 +1,7 @@
+# 6.9.0
+
+- Update the mastodon version to v4.6.0. Please refer to the [release notes](https://github.com/mastodon/mastodon/releases/tag/v4.6.0) for important changes.
+
 # 6.8.7
 
 - Update the mastodon version to v4.5.11
