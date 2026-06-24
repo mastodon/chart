@@ -11,7 +11,7 @@ This chart is tested with k8s 1.21+ and helm 3.8.0+.
 
 # ⚠️ NOTICE ⚠️: This chart is deprecated
 
-As of the release of Mastodon v4.6.0, this chart is now deprecated, and will no longer receive new features. It will continue to be updated with new Mastodon releases for a time.
+As of the release of Mastodon v4.6.0, this chart is now deprecated, and will no longer receive new features. It will continue to be updated with new Mastodon releases until 2026-12-31.
 
 We encourage everyone to use our [new helm chart](https://github.com/mastodon/helm-charts/tree/main/charts/mastodon) going forward. Please refer to the [Migration Guide](https://github.com/mastodon/helm-charts/blob/main/charts/mastodon/MIGRATION.md) for instructions on how to begin using the new chart.
 
