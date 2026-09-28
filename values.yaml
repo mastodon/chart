@@ -795,8 +795,6 @@ redis:
     # set to the password you want
     existingSecret: ""
     existingSecretKey: redis-password
-  replica:
-    replicaCount: 0
 
   # Configuration for a separate redis instance only for sidekiq processing.
   # If enabled, any values not specified will be copied from the base config.
@@ -833,6 +831,7 @@ redis:
     nodeSelector: {}
   replica:
     nodeSelector: {}
+    replicaCount: 0
 
 # @ignored
 service:
