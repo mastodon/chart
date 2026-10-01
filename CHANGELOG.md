@@ -1,3 +1,7 @@
+# 6.10.3
+
+- Update the mastodon version to v4.7.3
+
 # 6.10.2
 
 - Update the mastodon version to v4.7.2
