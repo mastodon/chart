@@ -1,3 +1,7 @@
+# 6.10.5
+
+- Update the mastodon version to v4.7.4
+
 # 6.10.4
 
 - Remove duplicated `replica` key in Redis configuration
